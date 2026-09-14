@@ -43,8 +43,9 @@ b{font-weight:700}
 
 /* ---------- estructura ---------- */
 .env{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);max-width:1440px;margin:0 auto}
-.fig{position:sticky;top:0;height:100svh;display:flex;align-items:center;justify-content:center;padding:32px}
-.figin{width:100%;max-width:560px}
+.fig{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;
+  align-items:stretch;justify-content:center;gap:22px;padding:32px}
+.figin{width:100%;max-width:560px;align-self:stretch;min-width:0}
 .narr{padding:0 clamp(20px,4vw,64px)}
 .esc{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:14vh 0}
 .esc > *{max-width:min(34em,100%)}
@@ -113,7 +114,7 @@ svg{width:100%;height:auto;display:block;overflow:visible}
 /* ---------- modo presentar ---------- */
 body.pres .env{display:block;max-width:none}
 body.pres .fig{position:fixed;top:0;left:0;width:50vw;height:100svh;padding:40px}
-body.pres .figin{max-width:620px}
+body.pres .figin{max-width:620px;width:100%;align-self:center}
 body.pres .narr{margin-left:50vw;padding:0 clamp(24px,3.5vw,56px)}
 body.pres .esc{display:none;min-height:100svh;padding:0}
 body.pres .esc.viva{display:flex}
@@ -218,6 +219,27 @@ body.pres .esc > *{max-width:min(31em,100%)}
   .ins .grande{font-size:20px}
 }
 
+
+/* ---------- el mapa del oficio (siempre visible) ---------- */
+.mapa{opacity:0;transition:opacity .4s;width:100%;flex:0 0 auto;align-self:center;max-width:620px}
+.mapa.on{opacity:1}
+.mapa svg{width:100%;height:auto;display:block;overflow:visible;min-width:0}
+.mapa .grupo{fill:#fff;stroke:var(--linea);stroke-width:1}
+.mapa .et-grupo{font:600 10px Chivo,sans-serif;fill:var(--apagado)}
+.mapa .caja{fill:var(--sup);stroke:var(--linea);stroke-width:1;rx:2}
+.mapa .txt{font:12px Chivo,sans-serif;fill:var(--tinta)}
+.mapa .txt-s{font:10.5px Chivo,sans-serif;fill:var(--apagado)}
+.mapa .fle{stroke:var(--apagado);stroke-width:1.3;fill:none;marker-end:url(#pta)}
+/* lo que está activo se enciende, como el rojo de las slides de referencia */
+.mapa .viva .caja{fill:var(--rojo-p);stroke:var(--rojo);stroke-width:2}
+.mapa .viva .txt{font-weight:700}
+.mapa .marco{fill:none;stroke:var(--rojo);stroke-width:2;rx:3;opacity:0;
+  transition:opacity .35s}
+.mapa .viva .marco{opacity:1}
+.mapa .paso{opacity:.42;transition:opacity .35s}
+.mapa .paso.viva{opacity:1}
+@media (max-width:900px){ .mapa{margin-bottom:12px} }
+
 /* ---------- franja del recorrido (transversal) ---------- */
 .ruta{display:flex;align-items:center;gap:6px;margin-bottom:26px;
   opacity:0;transition:opacity .4s;flex-wrap:nowrap}
@@ -230,9 +252,9 @@ body.pres .esc > *{max-width:min(31em,100%)}
 .ruta .fle{color:var(--linea);font-size:13px;flex:0 0 auto}
 
 /* ---------- pantalla estilo streaming ---------- */
-.vis{display:none}
+.vis{display:none;align-self:center;width:100%;max-width:620px}
 .vis.on{display:block}
-.figin.con-vis > svg{display:none}
+.fig.con-vis > svg{display:none}
 .tele{background:#141414;border-radius:6px;padding:16px 0 18px;
   box-shadow:0 14px 34px rgba(20,20,24,.18);overflow:hidden}
 .tele .marca{font-family:Fraunces,Georgia,serif;font-variation-settings:'WONK' 1,'opsz' 90;
@@ -334,11 +356,66 @@ body.pres .esc > *{max-width:min(31em,100%)}
 <div class="env">
   <!-- ====================== FIGURA ====================== -->
   <div class="fig"><div class="figin">
-    <div class="ruta" id="ruta">
-      <div class="paso" data-paso="1">pregunta</div><div class="fle">&rsaquo;</div>
-      <div class="paso" data-paso="2">datos</div><div class="fle">&rsaquo;</div>
-      <div class="paso" data-paso="3">herramienta</div><div class="fle">&rsaquo;</div>
-      <div class="paso" data-paso="4">decisión</div>
+    <div class="mapa" id="mapa">
+      <svg viewBox="0 0 620 200" role="img" aria-label="El recorrido completo: alguien pregunta, los datos existen, una herramienta los ordena, sale un hallazgo y alguien decide">
+        <defs><marker id="pta" viewBox="0 0 8 8" refX="7" refY="4"
+          markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 1 L7 4 L0 7 z" fill="var(--apagado)"/></marker></defs>
+
+        <g class="paso" data-paso="1">
+          <rect class="marco" x="4" y="30" width="112" height="70"/>
+          <rect class="caja" x="12" y="38" width="96" height="54"/>
+          <text class="txt" x="60" y="60" text-anchor="middle">alguien</text>
+          <text class="txt" x="60" y="76" text-anchor="middle">pregunta</text>
+          <text class="txt-s" x="60" y="112" text-anchor="middle">«¿qué le muestro?»</text>
+        </g>
+        <path class="fle" d="M120 65 L146 65"/>
+
+        <g class="paso" data-paso="2">
+          <rect class="marco" x="142" y="14" width="126" height="102"/>
+          <text class="et-grupo" x="152" y="28">lo que ya existe</text>
+          <rect class="grupo" x="150" y="32" width="110" height="76"/>
+          <rect class="caja" x="158" y="40" width="94" height="28"/>
+          <text class="txt" x="205" y="58" text-anchor="middle">la tabla</text>
+          <rect class="caja" x="158" y="72" width="94" height="28"/>
+          <text class="txt-s" x="205" y="90" text-anchor="middle">millones de filas</text>
+        </g>
+        <path class="fle" d="M272 65 L298 65"/>
+
+        <g class="paso" data-paso="3">
+          <rect class="marco" x="294" y="14" width="130" height="102"/>
+          <text class="et-grupo" x="304" y="28">herramientas</text>
+          <rect class="grupo" x="302" y="32" width="114" height="76"/>
+          <rect class="caja" x="309" y="39" width="48" height="22"/>
+          <text class="txt-s" x="333" y="54" text-anchor="middle">SQL</text>
+          <rect class="caja" x="361" y="39" width="48" height="22"/>
+          <text class="txt-s" x="385" y="54" text-anchor="middle">hoja</text>
+          <rect class="caja" x="309" y="65" width="48" height="22"/>
+          <text class="txt-s" x="333" y="80" text-anchor="middle">estad.</text>
+          <rect class="caja" x="361" y="65" width="48" height="22"/>
+          <text class="txt-s" x="385" y="80" text-anchor="middle">BI</text>
+        </g>
+        <path class="fle" d="M428 65 L454 65"/>
+
+        <g class="paso" data-paso="4">
+          <rect class="marco" x="450" y="30" width="112" height="70"/>
+          <rect class="caja" x="458" y="38" width="96" height="54"/>
+          <text class="txt" x="506" y="60" text-anchor="middle">el hallazgo</text>
+          <text class="txt-s" x="506" y="78" text-anchor="middle">una frase</text>
+        </g>
+        <path class="fle" d="M566 65 L590 65"/>
+
+        <g class="paso" data-paso="5">
+          <rect class="marco" x="578" y="30" width="42" height="70"/>
+          <rect class="caja" x="584" y="38" width="32" height="54"/>
+          <text class="txt-s" x="600" y="60" text-anchor="middle">se</text>
+          <text class="txt-s" x="600" y="74" text-anchor="middle">decide</text>
+        </g>
+
+        <text class="txt-s" x="310" y="150" text-anchor="middle"
+          id="mapa-nota" style="font-size:12px"></text>
+      </svg>
+    </div>
     </div>
     <div class="vis" data-vis="1"><div class="tele">
         <div class="marca">MIRA</div>
@@ -778,6 +855,22 @@ body.pres .esc > *{max-width:min(31em,100%)}
   var solos = [].slice.call(document.querySelectorAll('[data-solo]'));
   var actual = -1;
 
+  // qué etapa del mapa se enciende en cada escena
+  var ETAPA = {1:1,2:1,3:1,4:2,5:2,6:2,7:2,8:2,9:2,10:3,11:4,12:4,13:5,14:5,15:5};
+  // la anotación bajo el mapa: es lo que lo vuelve narración
+  var NOTA = {
+    1:'Alguien tiene que decidir qué aparece en su pantalla',
+    2:'', 3:'La pregunta manda: define qué datos hacen falta',
+    4:'Los datos ya existían; nadie los había juntado',
+    5:'', 6:'Dos columnas bastan para ver grupos',
+    7:'', 8:'Con 300 millones de cuentas el ojo ya no alcanza',
+    9:'Y además vienen sucios',
+    10:'Cada herramienta resuelve un tramo distinto',
+    11:'El camino completo, de la pregunta al resultado',
+    12:'', 13:'Cambia la tabla, no cambia el método',
+    14:'', 15:'Y alguien decide con eso'
+  };
+
   // portada: mosaicos con los mismos tonos que las pantallas
   (function(){
     var r = document.querySelector('.rejilla'); if (!r) return;
@@ -820,20 +913,22 @@ body.pres .esc > *{max-width:min(31em,100%)}
       if (el) el.classList.toggle('tapar', tapa && !(id === 'gejes' && n < 12));
     });
     // franja del recorrido: qué etapa toca en cada escena
-    var mapa = {1:1,2:1,3:1,4:2,5:2,6:2,7:2,8:2,9:2,10:3,11:4,12:4,13:4,14:4,15:4};
+
     var vis = document.querySelectorAll('.vis'), hayVis = false;
     [].forEach.call(vis, function(el){
       var v = (+el.getAttribute('data-vis') === n);
       el.classList.toggle('on', v); if (v) hayVis = true;
     });
-    document.querySelector('.figin').classList.toggle('con-vis', hayVis);
-    var ruta = document.getElementById('ruta');
-    if (ruta){
-      ruta.classList.toggle('on', n >= 1 && n <= 15 && n !== 11);
-      var etapa = mapa[n] || 0;
-      [].forEach.call(ruta.querySelectorAll('.paso'), function(el){
+    document.querySelector('.fig').classList.toggle('con-vis', hayVis);
+    var elMapa = document.getElementById('mapa');
+    if (elMapa){
+      elMapa.classList.toggle('on', n >= 1 && n <= 15);
+      var etapa = ETAPA[n] || 0;
+      [].forEach.call(elMapa.querySelectorAll('.paso'), function(el){
         el.classList.toggle('viva', +el.getAttribute('data-paso') === etapa);
       });
+      var nota = document.getElementById('mapa-nota');
+      if (nota) nota.textContent = NOTA[n] || '';
     }
     document.getElementById('prog').style.width = (n/TOTAL*100) + '%';
     if (pres){
