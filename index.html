@@ -1,0 +1,548 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cómo piensa un analista</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Chivo:ital,wght@0,300..900;1,400&subset=latin&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --fondo:#14131A;
+  --sup:#232130;
+  --sup2:#2C2A3A;
+  --tinta:#F2EFE6;
+  --apagado:#9793A3;
+  --ambar:#E8C547;      /* solo texto/UI: 11:1 sobre --fondo */
+  --marca:#B8891C;      /* marcas de datos: validado en banda oscura */
+  --marca2:#3A88CC;     /* segundo grupo: validado */
+  --linea:#3A3747;
+}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden;max-width:100%}
+h1,h2,p,.prof{overflow-wrap:break-word}
+body{
+  margin:0;background:var(--fondo);color:var(--tinta);
+  font-family:Chivo,system-ui,-apple-system,Segoe UI,sans-serif;
+  font-size:21px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2{
+  font-family:Fraunces,Georgia,serif;
+  font-variation-settings:'WONK' 1,'opsz' 144,'SOFT' 20;
+  line-height:1.12;margin:0;font-weight:600;
+  letter-spacing:-.015em;
+}
+h2{font-size:clamp(30px,4.4vw,46px);margin-bottom:22px}
+p{margin:0 0 1em}
+.mut{color:var(--apagado)}
+mark{background:none;color:var(--ambar)}
+b{font-weight:700}
+
+/* ---------- estructura ---------- */
+.env{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);max-width:1440px;margin:0 auto}
+.fig{position:sticky;top:0;height:100svh;display:flex;align-items:center;justify-content:center;padding:32px}
+.figin{width:100%;max-width:560px}
+.narr{padding:0 clamp(20px,4vw,64px)}
+.esc{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:14vh 0}
+.esc > *{max-width:min(34em,100%)}
+
+/* ---------- portada ---------- */
+.portada{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  padding:0 clamp(20px,6vw,90px);max-width:min(1200px,100%);margin:0 auto}
+h1{font-size:clamp(34px,7.4vw,92px);max-width:min(14em,100%)}
+.sub{font-size:clamp(18px,2.1vw,25px);color:var(--apagado);max-width:min(30em,100%);margin-top:26px}
+.arranque{margin-top:44px;font-size:17px;color:var(--apagado)}
+kbd{font:inherit;background:var(--sup2);border:1px solid var(--linea);
+  border-radius:4px;padding:2px 8px;color:var(--tinta)}
+
+/* ---------- figura ---------- */
+svg{width:100%;height:auto;display:block;overflow:visible}
+.cap{font-family:Chivo;font-size:14px;fill:var(--apagado)}
+.cap-f{font-family:Chivo;font-size:15px;fill:var(--tinta);font-weight:600}
+.eje{stroke:var(--linea);stroke-width:1.5}
+.lema{font-family:Fraunces;font-variation-settings:'WONK' 1,'opsz' 90;
+  font-size:29px;fill:var(--tinta);font-weight:600}
+
+[data-desde]{opacity:0;transition:opacity .45s ease}
+.on{opacity:1}
+[data-solo]{opacity:0;transition:opacity .4s ease}
+.on-solo{opacity:1}
+.tapar{opacity:0!important}
+
+/* ---------- piezas ---------- */
+.par{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:26px 0}
+.opt{background:var(--sup);border:1px solid var(--linea);border-radius:3px;
+  padding:18px;text-align:left;color:inherit;font:inherit;cursor:pointer;
+  transition:border-color .2s,background .2s}
+.opt:hover{border-color:var(--apagado)}
+.opt .t{font-weight:700;display:block;margin-bottom:3px}
+.opt .g{font-size:15px;color:var(--apagado)}
+.opt[aria-pressed=true]{border-color:var(--ambar);background:var(--sup2)}
+
+.herr{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0}
+.herr button{background:var(--sup);border:1px solid var(--linea);color:var(--tinta);
+  font:inherit;font-size:17px;padding:9px 16px;border-radius:3px;cursor:pointer;
+  transition:border-color .2s,background .2s}
+.herr button:hover{border-color:var(--apagado)}
+.herr button[aria-pressed=true]{background:var(--ambar);color:#14131A;border-color:var(--ambar);font-weight:600}
+.salida{background:var(--sup);border-left:2px solid var(--ambar);padding:16px 20px;
+  min-height:92px;font-size:18px}
+.salida .q{color:var(--apagado);font-size:15px;display:block;margin-bottom:5px}
+
+.prof{border-top:1px solid var(--linea);padding:22px 0}
+.prof h3{font-family:Fraunces;font-variation-settings:'WONK' 1,'opsz' 60;
+  font-size:25px;margin:0 0 6px;font-weight:600}
+.prof .caso{font-size:19px;margin:0 0 10px}
+.liga{font-size:16px;color:var(--apagado);padding-left:14px;border-left:2px solid var(--marca)}
+.liga b{color:var(--tinta);font-weight:600}
+
+/* ---------- apéndice ---------- */
+.apen{max-width:min(820px,100%);margin:0 auto;padding:14vh clamp(20px,5vw,40px) 16vh}
+.apen h2{margin-bottom:28px}
+.fuente{border-top:1px solid var(--linea);padding:15px 0;font-size:16px}
+.fuente a{color:var(--ambar);text-decoration:none;border-bottom:1px solid var(--linea)}
+.fuente a:hover{border-color:var(--ambar)}
+.fuente .d{color:var(--apagado);font-size:14px;margin-top:3px}
+
+.barra{position:fixed;left:0;right:0;bottom:0;height:2px;background:var(--linea);z-index:60}
+.barra i{display:block;height:100%;width:0;background:var(--ambar);transition:width .3s}
+
+/* ---------- modo presentar ---------- */
+body.pres .env{display:block;max-width:none}
+body.pres .fig{position:fixed;top:0;left:0;width:50vw;height:100svh;padding:40px}
+body.pres .figin{max-width:620px}
+body.pres .narr{margin-left:50vw;padding:0 clamp(24px,3.5vw,56px)}
+body.pres .esc{display:none;min-height:100svh;padding:0}
+body.pres .esc.viva{display:flex}
+body.pres .portada,body.pres .apen{display:none}
+body.pres .portada.viva{display:flex}
+body.pres .apen.viva{display:block;margin-left:50vw}
+body.pres{font-size:23px}
+body.pres .esc > *{max-width:min(31em,100%)}
+
+@media (max-width:900px){
+  body{font-size:19px}
+  h1{font-size:clamp(32px,8.2vw,54px);max-width:100%}
+  h2{font-size:clamp(26px,6.4vw,36px)}
+  .sub{font-size:18px}
+  .prof h3{font-size:22px}
+  .prof .caso{font-size:18px}
+  .env{grid-template-columns:1fr}
+  .fig{position:sticky;height:44svh;padding:16px;background:var(--fondo);
+    border-bottom:1px solid var(--linea);z-index:5}
+  .esc{min-height:auto;padding:8vh 0}
+  .narr{padding:0 20px}
+  .par{grid-template-columns:1fr}
+  body.pres .fig{position:sticky;width:100%;height:44svh}
+  body.pres .narr{margin-left:0}
+  body.pres .apen.viva{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+:focus-visible{outline:2px solid var(--ambar);outline-offset:3px}
+</style>
+
+<div class="barra"><i id="prog"></i></div>
+
+<section class="portada" data-esc="0">
+  <h1>Cómo piensa un analista de datos</h1>
+  <p class="sub">Vamos a abrir Netflix y a preguntarnos por qué nos muestra
+  justo eso. Sin código, sin fórmulas — y al final, cómo esto aparece en lo
+  que ustedes ya estudiaron.</p>
+  <p class="arranque">Bajen para empezar. Para presentar: <kbd>→</kbd> avanza, <kbd>←</kbd> regresa.</p>
+</section>
+
+<div class="env">
+  <!-- ====================== FIGURA ====================== -->
+  <div class="fig"><div class="figin">
+    <svg viewBox="0 0 460 400" role="img" aria-labelledby="figt">
+      <title id="figt">Perfiles de Netflix colocados según qué tanto ven comedia y qué tanto ven suspenso</title>
+
+      <!-- ejes -->
+      <g data-desde="4" id="gejes">
+        <line class="eje" x1="70" y1="330" x2="420" y2="330"/>
+        <line class="eje" x1="70" y1="40"  x2="70"  y2="330"/>
+        <text class="cap" x="245" y="366" text-anchor="middle">horas de comedia al mes</text>
+        <text class="cap" x="-185" y="26" transform="rotate(-90)" text-anchor="middle">horas de suspenso al mes</text>
+      </g>
+
+      <!-- yo (escena 4) -->
+      <g data-desde="4" id="g4">
+        <circle cx="140" cy="120" r="10" fill="var(--ambar)"/>
+        <text class="cap-f" x="140" y="86" text-anchor="middle">ustedes</text>
+      </g>
+
+      <!-- vecinos (escena 5) -->
+      <g data-desde="5" id="g5">
+        <circle cx="118" cy="146" r="7" fill="var(--marca)" opacity=".85"/>
+        <circle cx="182" cy="132" r="7" fill="var(--marca)" opacity=".85"/>
+        <circle cx="100" cy="132" r="7" fill="var(--marca)" opacity=".85"/>
+        <circle cx="172" cy="148" r="7" fill="var(--marca)" opacity=".85"/>
+        <circle cx="146" cy="168" r="7" fill="var(--marca)" opacity=".85"/>
+        <text class="cap" x="140" y="200" text-anchor="middle">gente que ve parecido a ustedes</text>
+      </g>
+
+      <!-- el otro grupo (escena 6) -->
+      <g data-desde="6" id="g6">
+        <circle cx="340" cy="232" r="7" fill="var(--marca2)" opacity=".85"/>
+        <circle cx="382" cy="196" r="7" fill="var(--marca2)" opacity=".85"/>
+        <circle cx="352" cy="186" r="7" fill="var(--marca2)" opacity=".85"/>
+        <circle cx="392" cy="244" r="7" fill="var(--marca2)" opacity=".85"/>
+        <circle cx="318" cy="206" r="7" fill="var(--marca2)" opacity=".85"/>
+        <circle cx="366" cy="262" r="7" fill="var(--marca2)" opacity=".85"/>
+        <text class="cap" x="356" y="292" text-anchor="middle">otro grupo, otros gustos</text>
+      </g>
+
+      <!-- ruido (escena 8) -->
+      <g data-solo="8" id="ruido"></g>
+
+      <!-- dato imposible (escena 9) -->
+      <g data-solo="9">
+        <rect x="86" y="130" width="290" height="120" rx="3" fill="var(--sup)" stroke="var(--linea)"/>
+        <text class="cap-f" x="106" y="162">perfil 40318</text>
+        <text class="cap"   x="106" y="186">vio 31 horas seguidas, sin pausa</text>
+        <text class="cap-f" x="106" y="216" fill="var(--ambar)">nadie ve 31 horas sin parar</text>
+        <text class="cap"   x="106" y="238">se quedó la tele prendida</text>
+      </g>
+
+      <!-- recorrido (escena 11) -->
+      <g data-solo="11">
+        <rect x="42" y="150" width="108" height="52" rx="2" fill="var(--sup)" stroke="var(--linea)"/>
+        <text class="cap-f" x="96" y="172" text-anchor="middle">pregunta</text>
+        <text class="cap"   x="96" y="190" text-anchor="middle">¿qué le muestro?</text>
+
+        <rect x="176" y="150" width="108" height="52" rx="2" fill="var(--sup)" stroke="var(--linea)"/>
+        <text class="cap-f" x="230" y="172" text-anchor="middle">datos</text>
+        <text class="cap"   x="230" y="190" text-anchor="middle">qué vio antes</text>
+
+        <rect x="310" y="150" width="108" height="52" rx="2" fill="var(--sup)" stroke="var(--ambar)"/>
+        <text class="cap-f" x="364" y="172" text-anchor="middle">decisión</text>
+        <text class="cap"   x="364" y="190" text-anchor="middle">su pantalla</text>
+
+        <path d="M150 176 L176 176" stroke="var(--apagado)" stroke-width="1.5"/>
+        <path d="M284 176 L310 176" stroke="var(--apagado)" stroke-width="1.5"/>
+      </g>
+
+      <!-- lema (escena 12 en adelante) -->
+      <g data-solo="12" data-tambien="13,14">
+        <text class="lema" x="245" y="178" text-anchor="middle">cambia la tabla</text>
+        <text class="lema" x="245" y="216" text-anchor="middle" fill="var(--ambar)">no cambia el método</text>
+      </g>
+    </svg>
+  </div></div>
+
+  <!-- ====================== NARRATIVA ====================== -->
+  <div class="narr">
+
+    <section class="esc" data-esc="1">
+      <h2>Abran Netflix un momento.</h2>
+      <p>Esa primera pantalla que les aparece no es la misma que le aparece a su
+      mamá, ni a su vecino. Alguien decidió qué poner ahí, para cada uno de ustedes,
+      esta mañana.</p>
+      <p class="mut">Hoy vamos a ver cómo se toma esa decisión.</p>
+    </section>
+
+    <section class="esc" data-esc="2">
+      <h2>Antes de empezar, quiero quitarles un miedo.</h2>
+      <p>Nada de lo que vamos a ver hoy pasa de contar, promediar y comparar. No hay
+      fórmulas raras y no voy a mostrarles código.</p>
+      <p class="mut">Si alguna vez eligieron algo mirando precios, ya hicieron
+      la parte difícil de esto.</p>
+    </section>
+
+    <section class="esc" data-esc="3">
+      <h2>Les hago una pregunta.</h2>
+      <p>Si yo fuera Netflix y quisiera adivinar qué les va a gustar esta noche,
+      ¿qué creen que me serviría más saber de ustedes?</p>
+      <div class="par">
+        <button class="opt" data-pick="a" aria-pressed="false">
+          <span class="t">Su edad y dónde viven</span>
+          <span class="g">lo que pusieron al registrarse</span></button>
+        <button class="opt" data-pick="b" aria-pressed="false">
+          <span class="t">Qué vieron la semana pasada</span>
+          <span class="g">y hasta qué minuto llegaron</span></button>
+      </div>
+      <p class="mut" id="eco">Piénsenlo un segundo antes de que sigamos.</p>
+    </section>
+
+    <section class="esc" data-esc="4">
+      <h2>Lo que hacen importa más que quiénes son.</h2>
+      <p>Así que empecemos por ahí. Voy a poner a cada persona en un cuadro según dos
+      cosas nada más: cuántas horas de comedia ve al mes, y cuántas de suspenso.</p>
+      <p class="mut">Ese punto amarillo son ustedes. Nada más con dos números, ya
+      tienen un lugar.</p>
+    </section>
+
+    <section class="esc" data-esc="5">
+      <h2>Ahora miren quién les queda cerca.</h2>
+      <p>Estas personas no los conocen. Viven en otro país, tienen otra edad, otro
+      trabajo. Pero ven casi lo mismo que ustedes, casi las mismas horas.</p>
+      <p class="mut">Netflix no necesita saber quiénes son. Le basta con saber a
+      quién se parecen.</p>
+    </section>
+
+    <section class="esc" data-esc="6">
+      <h2>Y aquí está el otro grupo.</h2>
+      <p>Fíjense: nadie dibujó esa separación, aparece sola. Ustedes ya pueden
+      señalar dónde termina un grupo y empieza el otro.</p>
+      <p class="mut">Si alguien de ese grupo azul terminó una serie anoche y le
+      encantó, esa serie hoy le sale a los otros azules. No a ustedes.</p>
+    </section>
+
+    <section class="esc" data-esc="7">
+      <h2>Eso que acaban de hacer tiene nombre.</h2>
+      <p>Miraron unos datos, encontraron dos grupos y trazaron la línea entre ellos.
+      Eso es análisis de datos. No hubo truco.</p>
+      <p class="mut">El resto del oficio son herramientas para hacer lo mismo cuando
+      ya no se puede ver a simple vista. Y ese momento llega rápido.</p>
+    </section>
+
+    <section class="esc" data-esc="8">
+      <h2>Porque en realidad se ve así.</h2>
+      <p>Netflix tiene más de 300 millones de cuentas. Aquí está la misma pregunta
+      de hace un minuto — díganme ahora dónde está la línea.</p>
+      <p class="mut">No es que a ustedes les falte capacidad. Es que a simple vista
+      esto ya no se puede.</p>
+    </section>
+
+    <section class="esc" data-esc="9">
+      <h2>Y además los datos vienen sucios.</h2>
+      <p>Miren este perfil: 31 horas seguidas sin pausa. Eso no es alguien viendo
+      televisión, es una tele que se quedó prendida.</p>
+      <p class="mut">Si yo cuento eso como si fuera una persona viendo, mis números
+      quedan mal. Parte del trabajo es darse cuenta antes.</p>
+    </section>
+
+    <section class="esc" data-esc="10">
+      <h2>Aquí entran las herramientas.</h2>
+      <p>Se las voy a presentar por lo que nos dan, no por cómo se escriben.
+      Piquen la que quieran:</p>
+      <div class="herr">
+        <button data-h="sql" aria-pressed="false">SQL</button>
+        <button data-h="hoja" aria-pressed="false">Hoja de cálculo</button>
+        <button data-h="est" aria-pressed="false">Estadística</button>
+        <button data-h="bi" aria-pressed="false">Power BI</button>
+      </div>
+      <div class="salida" id="salida" aria-live="polite">
+        <span class="q">Escojan una</span>Cada una resuelve un problema distinto del camino.
+      </div>
+    </section>
+
+    <section class="esc" data-esc="11">
+      <h2>Y así queda el camino completo.</h2>
+      <p>Una pregunta que le importa a alguien. Datos que ya existían. Una
+      herramienta para poder verlos. Y una decisión que cambia algo.</p>
+      <p class="mut">Eso es el trabajo. Todo lo demás son detalles.</p>
+    </section>
+
+    <section class="esc" data-esc="12">
+      <h2>Ahora quiero que cambiemos la tabla.</h2>
+      <p>Porque esto es lo que de verdad me interesa que se lleven hoy: el método que
+      acabamos de recorrer no cambia. Lo único que cambia es qué hay en las columnas.</p>
+      <p class="mut">Busquen la suya.</p>
+    </section>
+
+    <section class="esc" data-esc="13">
+      <h2>Su carrera ya trabaja así.</h2>
+
+      <div class="prof">
+        <h3>Psicología</h3>
+        <p class="caso">¿Cómo le ponemos número a qué tan ansioso está alguien?
+        Un test no mide la ansiedad: mide respuestas que se le parecen.</p>
+        <p class="liga">Es <b>lo mismo que hicimos</b> con las horas de comedia.
+        Nadie midió el gusto de nadie — medimos lo que la gente hace y de ahí
+        dedujimos el resto.</p>
+      </div>
+
+      <div class="prof">
+        <h3>Salud y enfermería</h3>
+        <p class="caso">¿Qué paciente se nos complica esta noche? Presión, pulso,
+        temperatura — y una raya que separa «vigilar» de «ya».</p>
+        <p class="liga">Es <b>la misma raya</b> que ustedes trazaron entre los dos
+        grupos. Solo que los ejes ahora dicen presión y pulso.</p>
+      </div>
+    </section>
+
+    <section class="esc" data-esc="14">
+      <h2>Y también aquí.</h2>
+
+      <div class="prof">
+        <h3>Ingeniería</h3>
+        <p class="caso">¿Cuándo se nos va a romper la máquina? Los sensores avisan
+        antes, si alguien está mirando.</p>
+        <p class="liga">Son <b>las 31 horas seguidas</b>. En sensores el dato
+        faltante llega como −200, un número imposible que se mete en el promedio
+        si no lo cachamos.</p>
+      </div>
+
+      <div class="prof">
+        <h3>Negocio, marketing, ventas</h3>
+        <p class="caso">¿Qué clientes están por irse? Retener siempre cuesta menos
+        que conseguir uno nuevo.</p>
+        <p class="liga">Es <b>lo de Netflix al revés</b>. En vez de adivinar qué les
+        va a gustar, adivinamos quién ya se cansó.</p>
+      </div>
+    </section>
+
+    <section class="esc" data-esc="15">
+      <h2>Una última cosa, y los dejo.</h2>
+      <p>Van a oír «analista» y «científico de datos» como si uno fuera mejor.
+      El analista responde <b>qué pasó</b>; el científico estima <b>qué va a pasar</b>.
+      El segundo hace todo lo del primero, más predicción.</p>
+      <p class="mut">Por eso se empieza por analista: no es la versión chiquita, es
+      la base sobre la que va lo demás.</p>
+      <p>Y todo lo que vimos hoy — los grupos, la línea, el dato sucio — ya lo
+      hicieron ustedes en quince minutos, sin escribir una sola línea de código.</p>
+    </section>
+
+  </div>
+</div>
+
+<section class="apen" data-esc="16">
+  <h2>De dónde salió cada cosa</h2>
+  <p class="mut">Si quieren revisar por su cuenta, aquí están las fuentes y unos
+  datos abiertos para practicar.</p>
+
+  <div class="fuente">
+    <a href="https://ir.netflix.net/ir-overview/profile/default.aspx" target="_blank" rel="noopener">Netflix · Relación con inversionistas</a>
+    <div class="d">De aquí sale el número de cuentas. Netflix publica sus cifras
+    cada trimestre.</div>
+  </div>
+
+  <div class="fuente">
+    <a href="https://research.netflix.com/research-area/recommendations" target="_blank" rel="noopener">Netflix Research · Recomendaciones</a>
+    <div class="d">El equipo de Netflix explica cómo funciona el sistema que arma
+    su pantalla de inicio. En inglés, pero con ejemplos visuales.</div>
+  </div>
+
+  <div class="fuente">
+    <a href="https://archive.ics.uci.edu/dataset/45/heart+disease" target="_blank" rel="noopener">UCI · Heart Disease</a>
+    <div class="d">Salud. 303 pacientes, 14 columnas — cabe en una hoja de cálculo.
+    Para practicar la raya entre «vigilar» y «ya».</div>
+  </div>
+
+  <div class="fuente">
+    <a href="https://ourworldindata.org/grapher/happiness-cantril-ladder" target="_blank" rel="noopener">Our World in Data · Satisfacción con la vida</a>
+    <div class="d">Psicología. Escala de 0 a 10 por país y año, con todos los países
+    de la región. Filtren el suyo.</div>
+  </div>
+
+  <div class="fuente">
+    <a href="https://archive.ics.uci.edu/dataset/360/air+quality" target="_blank" rel="noopener">UCI · Air Quality</a>
+    <div class="d">Ingeniería. 9.358 lecturas de sensores. Los datos faltantes
+    vienen como −200: ahí está el ejercicio del que hablamos.</div>
+  </div>
+
+  <div class="fuente">
+    <a href="https://archive.ics.uci.edu/dataset/222/bank+marketing" target="_blank" rel="noopener">UCI · Bank Marketing</a>
+    <div class="d">Negocio. Quién contrata y quién no. Ojo con la columna
+    <i>duration</i>: predice casi perfecto, pero solo se sabe después de llamar.</div>
+  </div>
+</section>
+
+<script>
+(function(){
+  'use strict';
+  history.scrollRestoration = 'manual';
+
+  var TOTAL = 16;
+  var qs    = new URLSearchParams(location.search);
+  var pres  = qs.get('modo') === 'presentar';
+  var ini   = parseInt(qs.get('esc'), 10);
+  var escs  = [].slice.call(document.querySelectorAll('[data-esc]'));
+  var capas = [].slice.call(document.querySelectorAll('[data-desde]'));
+  var solos = [].slice.call(document.querySelectorAll('[data-solo]'));
+  var actual = -1;
+
+  // la nube de la escena 8: muchos perfiles, sin patrón visible
+  (function(){
+    var g = document.getElementById('ruido'), s = '';
+    for (var i = 0; i < 300; i++){
+      var x = 74 + Math.random()*342, y = 46 + Math.random()*278;
+      var c = Math.random() > .5 ? 'var(--marca)' : 'var(--marca2)';
+      s += '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="3.4" fill="'+c+'" opacity=".5"/>';
+    }
+    g.innerHTML = s;
+  })();
+
+  function pinta(n){
+    if (n === actual) return;
+    actual = n;
+    capas.forEach(function(el){
+      el.classList.toggle('on', n >= +el.getAttribute('data-desde'));
+    });
+    solos.forEach(function(el){
+      var vale = [el.getAttribute('data-solo')]
+        .concat((el.getAttribute('data-tambien') || '').split(',').filter(Boolean));
+      el.classList.toggle('on-solo', vale.indexOf(String(n)) > -1);
+    });
+    // en el abrumo y en el cierre, las referencias viejas estorban
+    var tapa = (n === 8 || n === 9 || n >= 12);
+    ['gejes','g4','g5','g6'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.classList.toggle('tapar', tapa && !(id === 'gejes' && n < 12));
+    });
+    document.getElementById('prog').style.width = (n/TOTAL*100) + '%';
+    if (pres){
+      escs.forEach(function(el){
+        el.classList.toggle('viva', +el.getAttribute('data-esc') === n);
+      });
+    }
+  }
+
+  if (pres){
+    document.body.className = 'pres';
+    var ir = function(d){
+      pinta(Math.min(TOTAL, Math.max(0, actual + d)));
+      window.scrollTo(0,0);
+    };
+    addEventListener('keydown', function(e){
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' '){ e.preventDefault(); ir(1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); ir(-1); }
+      else if (e.key === 'Home'){ e.preventDefault(); pinta(0); }
+    });
+    addEventListener('click', function(e){
+      if (e.target.closest('button,a')) return;
+      ir(e.clientX > innerWidth/2 ? 1 : -1);
+    });
+    pinta(isNaN(ini) ? 0 : Math.min(TOTAL, Math.max(0, ini)));
+  } else {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if (en.isIntersecting) pinta(+en.target.getAttribute('data-esc'));
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    escs.forEach(function(el){ io.observe(el); });
+    pinta(0);
+  }
+
+  var eco = document.getElementById('eco');
+  [].forEach.call(document.querySelectorAll('[data-pick]'), function(b){
+    b.addEventListener('click', function(){
+      [].forEach.call(document.querySelectorAll('[data-pick]'), function(o){
+        o.setAttribute('aria-pressed', String(o === b));
+      });
+      eco.textContent = b.dataset.pick === 'b'
+        ? 'Eso mismo. Lo que hacemos dice más que lo que declaramos.'
+        : 'Ayuda, pero poco. Dos personas de la misma edad ven cosas distintísimas.';
+    });
+  });
+
+  var TXT = {
+    sql:  ['SQL', 'Nos trae los datos que ya están guardados. «Dame todo lo que vio este perfil el mes pasado» — y llegan las filas.'],
+    hoja: ['Hoja de cálculo', 'Nos deja verlos y moverlos. Es donde uno descubre el perfil de 31 horas seguidas, porque ordena y salta a la vista.'],
+    est:  ['Estadística', 'Nos dice si el patrón es real o es casualidad. ¿Ese grupo ve de verdad más suspenso, o fueron cuatro personas raras?'],
+    bi:   ['Power BI', 'Se lo enseña a quien decide. Su jefe no va a leer la tabla; va a mirar el gráfico diez segundos y va a preguntar.']
+  };
+  var sal = document.getElementById('salida');
+  [].forEach.call(document.querySelectorAll('[data-h]'), function(b){
+    b.addEventListener('click', function(){
+      [].forEach.call(document.querySelectorAll('[data-h]'), function(o){
+        o.setAttribute('aria-pressed', String(o === b));
+      });
+      var t = TXT[b.dataset.h];
+      sal.innerHTML = '<span class="q">' + t[0] + '</span>' + t[1];
+    });
+  });
+})();
+</script>
