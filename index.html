@@ -161,6 +161,63 @@ body.pres .esc > *{max-width:min(31em,100%)}
   .port-txt{max-width:100%}
 }
 
+
+/* ---------- fotos, con tratamiento unificado ---------- */
+.foto{position:relative;border-radius:5px;overflow:hidden;background:var(--sup2)}
+.foto img{display:block;width:100%;height:100%;object-fit:cover;
+  filter:grayscale(100%) contrast(1.06)}
+.foto .et-foto{position:absolute;left:0;bottom:0;right:0;
+  background:linear-gradient(transparent,rgba(20,20,24,.86));
+  color:#fff;font-size:14px;padding:26px 14px 11px;line-height:1.3}
+.foto .et-foto b{display:block;font-size:16px;font-weight:700}
+
+
+.dos-fotos{display:grid;grid-template-columns:1fr 1fr;gap:12px;height:100%}
+.dos-fotos .foto{aspect-ratio:3/4}
+.vis > .foto{aspect-ratio:16/10}
+@media (max-width:900px){
+  .dos-fotos{grid-template-columns:1fr;gap:9px}
+  .dos-fotos .foto{aspect-ratio:16/10}
+}
+
+/* ---------- entra → sale ---------- */
+.es{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:6px 0}
+.vis .es{font-size:1.06em}
+.es-caja{border:1px solid var(--linea);border-radius:4px;overflow:hidden;
+  background:#fff;min-width:0}
+.es-caja > h4{margin:0;font:600 11.5px/1 Chivo,sans-serif;letter-spacing:.06em;
+  color:var(--apagado);padding:8px 11px;background:var(--sup);
+  border-bottom:1px solid var(--linea)}
+.es-cuerpo{padding:11px}
+.es .fle-g{color:var(--apagado);text-align:center;font-size:20px;line-height:1.1}
+.es .fle-g small{display:block;font-size:11px;margin-top:3px;color:var(--apagado)}
+
+/* la tabla cruda: fea a propósito */
+.tabla{width:100%;border-collapse:collapse;
+  font:13.5px/1.62 ui-monospace,SFMono-Regular,Menlo,monospace}
+.tabla th{text-align:left;font-weight:700;color:var(--apagado);
+  border-bottom:1px solid var(--linea);padding:3px 7px 5px;white-space:nowrap}
+.tabla td{padding:3px 7px;color:var(--tinta);white-space:nowrap}
+.tabla tr.mas td{color:var(--apagado)}
+.tabla .num{text-align:right}
+
+/* el insight */
+.ins{font-size:17px;line-height:1.4}
+.ins .grande{font-family:Fraunces,Georgia,serif;
+  font-variation-settings:'WONK' 1,'opsz' 90;font-weight:600;
+  font-size:26px;line-height:1.18;display:block;margin-bottom:10px}
+.ins .accion{margin-top:11px;padding-top:9px;border-top:1px solid var(--linea);
+  font-size:15px;color:var(--apagado)}
+.ins .accion b{color:var(--azul)}
+
+@media (max-width:900px){
+  .es{grid-template-columns:1fr;gap:8px}
+  .es .fle-g{transform:rotate(90deg);font-size:17px}
+  .es .fle-g small{display:none}
+  .tabla{font-size:11.5px}
+  .ins .grande{font-size:20px}
+}
+
 /* ---------- franja del recorrido (transversal) ---------- */
 .ruta{display:flex;align-items:center;gap:6px;margin-bottom:26px;
   opacity:0;transition:opacity .4s;flex-wrap:nowrap}
@@ -300,6 +357,99 @@ body.pres .esc > *{max-width:min(31em,100%)}
           </div>
         </div>
       </div></div>
+    <div class="vis" data-vis="2">
+      <div class="es" style="grid-template-columns:1fr">
+        <div class="es-caja">
+          <h4>todo lo que hace falta saber</h4>
+          <div class="es-cuerpo">
+            <div class="ops" style="margin:4px 0">
+              <div class="op"><div class="n">+</div><div class="q">contar</div></div>
+              <div class="op"><div class="n">&divide;</div><div class="q">promediar</div></div>
+              <div class="op"><div class="n">&gt;</div><div class="q">comparar</div></div>
+            </div>
+            <p class="mut" style="margin:14px 0 0;font-size:15px">
+            Nada de cálculo, nada de álgebra, nada de código.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="vis" data-vis="3">
+      <div class="es">
+        <div class="es-caja">
+          <h4>opción A · lo que declararon</h4>
+          <div class="es-cuerpo">
+            <table class="tabla">
+              <tr><th>perfil</th><th>edad</th><th>ciudad</th></tr>
+              <tr><td>1041</td><td>28</td><td>Lima</td></tr>
+              <tr><td>2277</td><td>28</td><td>Lima</td></tr>
+            </table>
+            <p class="mut" style="margin:11px 0 0;font-size:14px">
+            Mismos datos. ¿Ven lo mismo?</p>
+          </div>
+        </div>
+        <div class="fle-g">&nbsp;<small>&iquest;cu&aacute;l sirve?</small></div>
+        <div class="es-caja">
+          <h4>opción B · lo que hicieron</h4>
+          <div class="es-cuerpo">
+            <table class="tabla">
+              <tr><th>perfil</th><th class="num">comedia</th><th class="num">suspenso</th></tr>
+              <tr><td>1041</td><td class="num">12 h</td><td class="num">1 h</td></tr>
+              <tr><td>2277</td><td class="num">2 h</td><td class="num">9 h</td></tr>
+            </table>
+            <p class="mut" style="margin:11px 0 0;font-size:14px">
+            Aquí sí se nota la diferencia.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="vis" data-vis="15"><div class="foto"><img src="img/tele-720.webp" srcset="img/tele-720.webp 720w, img/tele-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1440" height="900" alt="Dos personas ven la televisión de noche en un sillón" loading="lazy" decoding="async"><div class="et-foto"><b>Y todo empezó aquí</b>Alguien decidió qué les iba a aparecer esta noche</div></div></div>
+    <div class="vis" data-vis="13"><div class="dos-fotos"><div class="foto"><img src="img/psico-720.webp" srcset="img/psico-720.webp 720w, img/psico-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Una terapeuta toma notas durante una sesión" loading="lazy" decoding="async"><div class="et-foto"><b>Psicología</b>Anotar lo que se observa ya es convertirlo en dato</div></div><div class="foto"><img src="img/salud-720.webp" srcset="img/salud-720.webp 720w, img/salud-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Un médico observa un estudio en la pantalla" loading="lazy" decoding="async"><div class="et-foto"><b>Salud</b>Leer una pantalla para decidir qué hacer con un paciente</div></div></div></div>
+    <div class="vis" data-vis="14"><div class="foto"><img src="img/ing-720.webp" srcset="img/ing-720.webp 720w, img/ing-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1440" height="900" alt="Un operario trabaja frente a un tablero de control" loading="lazy" decoding="async"><div class="et-foto"><b>Ingeniería</b>Los sensores avisan antes, si alguien está mirando</div></div></div>
+    <div class="vis" data-vis="10">
+      <div class="es" id="es-h">
+        <div class="es-caja">
+          <h4 id="h-ent">lo que recibe</h4>
+          <div class="es-cuerpo" id="ent-h">
+            <p class="mut" style="margin:0;font-size:15px">Escojan una herramienta
+            para ver qué entra y qué sale.</p>
+          </div>
+        </div>
+        <div class="fle-g" id="fle-h">&rarr;<small></small></div>
+        <div class="es-caja">
+          <h4 id="h-sal">lo que devuelve</h4>
+          <div class="es-cuerpo" id="sal-h"></div>
+        </div>
+      </div>
+    </div>
+    <div class="vis" data-vis="4">
+      <div class="es">
+        <div class="es-caja">
+          <h4>lo que hay guardado</h4>
+          <div class="es-cuerpo">
+            <table class="tabla">
+              <tr><th>perfil</th><th class="num">comedia</th><th class="num">suspenso</th></tr>
+              <tr><td>1041</td><td class="num">12 h</td><td class="num">1 h</td></tr>
+              <tr><td>2277</td><td class="num">2 h</td><td class="num">9 h</td></tr>
+              <tr><td>3814</td><td class="num">11 h</td><td class="num">2 h</td></tr>
+              <tr><td>4290</td><td class="num">1 h</td><td class="num">8 h</td></tr>
+              <tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="fle-g">&rarr;<small>dos columnas</small></div>
+        <div class="es-caja">
+          <h4>lo que se ve</h4>
+          <div class="es-cuerpo">
+            <div class="ins">
+              <span class="grande">Cada persona es un punto.</span>
+              Con dos números por perfil ya se puede poner a cada quien
+              en un lugar del cuadro.
+              <div class="accion">Ustedes son <b>el punto azul</b>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="vis vis-flujo" data-vis="11"><div class="flujo">
         <div class="et"><div class="caja">pregunta</div>
           <div class="pie">alguien necesita decidir algo</div></div>
@@ -433,7 +583,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       <h2>Lo que hacen importa más que quiénes son.</h2>
       <p>Así que empecemos por ahí. Voy a poner a cada persona en un cuadro según dos
       cosas nada más: cuántas horas de comedia ve al mes, y cuántas de suspenso.</p>
-      <p class="mut">Ese punto amarillo son ustedes. Nada más con dos números, ya
+      <p class="mut">Ese punto azul son ustedes. Nada más con dos números, ya
       tienen un lugar.</p>
     </section>
 
@@ -492,9 +642,8 @@ body.pres .esc > *{max-width:min(31em,100%)}
         <button data-h="bi" aria-pressed="false">
           <span class="ico"><svg viewBox="0 0 1200 1600"><use href="#i-pbi"/></svg></span>Power BI</button>
       </div>
-      <div class="salida" id="salida" aria-live="polite">
-        <span class="q">Escojan una</span>Cada una resuelve un problema distinto del camino.
-      </div>
+      <p class="mut" id="salida" aria-live="polite">Cada una resuelve un problema
+      distinto del camino.</p>
     </section>
 
     <section class="esc" data-esc="11">
@@ -733,10 +882,49 @@ body.pres .esc > *{max-width:min(31em,100%)}
   });
 
   var TXT = {
-    sql:  ['SQL', 'Nos trae los datos que ya están guardados. «Dame todo lo que vio este perfil el mes pasado» — y llegan las filas.'],
-    hoja: ['Hoja de cálculo', 'Nos deja verlos y moverlos. Es donde uno descubre el perfil de 31 horas seguidas, porque ordena y salta a la vista.'],
-    est:  ['Estadística', 'Nos dice si el patrón es real o es casualidad. ¿Ese grupo ve de verdad más suspenso, o fueron cuatro personas raras?'],
-    bi:   ['Power BI', 'Se lo enseña a quien decide. Su jefe no va a leer la tabla; va a mirar el gráfico diez segundos y va a preguntar.']
+    sql: ['SQL',
+      'Nos trae los datos que ya están guardados.',
+      'toda la base, millones de filas',
+      '<table class="tabla">'
+      +'<tr><th>perfil</th><th class="num">comedia</th><th class="num">suspenso</th></tr>'
+      +'<tr><td>1041</td><td class="num">12 h</td><td class="num">1 h</td></tr>'
+      +'<tr><td>3814</td><td class="num">11 h</td><td class="num">2 h</td></tr>'
+      +'<tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr></table>',
+      '<div class="ins"><span class="grande">Solo las filas que pedimos.</span>'
+      +'De millones, nos deja las que importan para esta pregunta.</div>',
+      'pedimos'],
+    hoja: ['Hoja de cálculo',
+      'Nos deja verlos y moverlos.',
+      'las filas que trajo SQL',
+      '<table class="tabla">'
+      +'<tr><th>perfil</th><th class="num">horas</th></tr>'
+      +'<tr><td>1041</td><td class="num">13 h</td></tr>'
+      +'<tr><td>9902</td><td class="num">31 h</td></tr>'
+      +'<tr><td>3814</td><td class="num">13 h</td></tr></table>',
+      '<div class="ins"><span class="grande">31 horas seguidas.</span>'
+      +'Al ordenar, el dato imposible salta a la vista.'
+      +'<div class="accion">Se revisa <b>antes</b> de promediar.</div></div>',
+      'ordenamos'],
+    est: ['Estadística',
+      'Nos dice si el patrón es real o es casualidad.',
+      'los dos grupos que encontramos',
+      '<table class="tabla">'
+      +'<tr><th>grupo</th><th class="num">gente</th><th class="num">comedia</th></tr>'
+      +'<tr><td>A</td><td class="num">4 812</td><td class="num">11.4 h</td></tr>'
+      +'<tr><td>B</td><td class="num">5 190</td><td class="num">2.1 h</td></tr></table>',
+      '<div class="ins"><span class="grande">No fue casualidad.</span>'
+      +'Con miles de personas en cada grupo, la diferencia se sostiene.'
+      +'<div class="accion">No fueron <b>cuatro raros</b>.</div></div>',
+      'comparamos'],
+    bi: ['Power BI',
+      'Se lo enseña a quien decide.',
+      'el resultado del análisis',
+      '<div class="ins" style="font-size:15px">Una tabla con números que'
+      +' su jefe no va a leer.</div>',
+      '<div class="ins"><span class="grande">Un gráfico de diez segundos.</span>'
+      +'La misma información, pero que alguien puede mirar y preguntar.'
+      +'<div class="accion">De ahí sale <b>la decisión</b>.</div></div>',
+      'mostramos']
   };
   var sal = document.getElementById('salida');
   [].forEach.call(document.querySelectorAll('[data-h]'), function(b){
@@ -745,8 +933,15 @@ body.pres .esc > *{max-width:min(31em,100%)}
         o.setAttribute('aria-pressed', String(o === b));
       });
       var t = TXT[b.dataset.h];
-      sal.innerHTML = '<span class="q">' + t[0] + '</span>' + t[1];
+      sal.textContent = t[1];
+      document.getElementById('h-ent').textContent = t[2];
+      document.getElementById('ent-h').innerHTML = t[3];
+      document.getElementById('sal-h').innerHTML = t[4];
+      document.getElementById('h-sal').textContent = 'lo que devuelve ' + t[0];
+      document.querySelector('#fle-h small').textContent = t[5];
     });
   });
+  var hIni = qs.get('h');
+  if (hIni && TXT[hIni]) { var bi = document.querySelector('[data-h="'+hIni+'"]'); if (bi) bi.click(); }
 })();
 </script>
