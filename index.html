@@ -42,16 +42,41 @@ p{margin:0 0 1em}
 mark{background:var(--ambar-p);color:var(--tinta);padding:0 3px}
 b{font-weight:700}
 
-/* ---------- estructura ---------- */
-.env{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  grid-template-rows:auto;align-items:start;max-width:1440px;margin:0 auto}
-.fig{position:sticky;top:0;align-self:start;height:100svh;max-height:100svh;
-  display:flex;flex-direction:column;align-items:stretch;justify-content:center;
-  gap:22px;padding:32px}
-.figin{width:100%;max-width:560px;align-self:stretch;min-width:0}
-.narr{padding:0 clamp(20px,4vw,64px)}
-.esc{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:14vh 0}
-.esc > *{max-width:min(34em,100%)}
+/* ---------- una escena a la vez, a pantalla completa ---------- */
+.env{display:block;max-width:none;margin:0}
+.fig{position:static;height:auto;display:contents}
+.figin{display:contents}
+.narr{display:contents}
+
+.esc{display:none;min-height:100svh;padding:clamp(14px,2.6vh,26px) clamp(20px,4vw,64px) 78px;
+  max-width:1180px;margin:0 auto;flex-direction:column;justify-content:flex-start}
+.esc.viva{display:flex}
+.esc > *{max-width:min(46em,100%)}
+.esc h2{margin-bottom:14px}
+.esc p{font-size:clamp(17px,1.55vw,21px)}
+
+/* el visual de cada escena, debajo del texto y a lo ancho */
+.vis{display:none;width:100%;max-width:100%;margin-top:clamp(14px,2.4vh,26px)}
+.vis.viva{display:block}
+.vis-svg{display:none;width:100%;max-width:620px;margin:clamp(14px,2.4vh,26px) auto 0}
+.vis-svg.viva{display:block}
+
+/* navegación */
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;
+  justify-content:space-between;padding:10px clamp(14px,3vw,30px) 16px;
+  pointer-events:none;z-index:70}
+.nav button{pointer-events:auto;background:#fff;border:1px solid var(--linea);
+  color:var(--tinta);width:46px;height:46px;border-radius:50%;cursor:pointer;
+  font-size:19px;line-height:1;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 10px rgba(20,20,24,.09);transition:border-color .2s,background .2s}
+.nav button:hover{border-color:var(--apagado)}
+.nav button[disabled]{opacity:.28;cursor:default}
+
+
+/* el gráfico acumulado: uno solo, se muestra en las escenas que no traen visual */
+.graf-panel{display:none;width:100%;max-width:min(560px,100%);
+  margin:clamp(14px,2.4vh,26px) auto 0}
+.graf-panel.viva{display:block}
 
 /* ---------- portada ---------- */
 .portada{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
@@ -96,11 +121,11 @@ svg{width:100%;height:auto;display:block;overflow:visible}
   min-height:92px;font-size:18px}
 .salida .q{color:var(--apagado);font-size:15px;display:block;margin-bottom:5px}
 
-.prof{border-top:1px solid var(--linea);padding:22px 0}
+.prof{border-top:1px solid var(--linea);padding:13px 0}
 .prof h3{font-family:Fraunces;font-variation-settings:'WONK' 1,'opsz' 60;
   font-size:25px;margin:0 0 6px;font-weight:600}
-.prof .caso{font-size:19px;margin:0 0 10px}
-.liga{font-size:16px;color:var(--apagado);padding-left:14px;border-left:3px solid var(--verde)}
+.prof .caso{font-size:17px;margin:0 0 7px}
+.liga{font-size:15px;color:var(--apagado);padding-left:12px;border-left:3px solid var(--verde)}
 .liga b{color:var(--tinta);font-weight:600}
 
 /* ---------- apéndice ---------- */
@@ -122,35 +147,18 @@ svg{width:100%;height:auto;display:block;overflow:visible}
 .barra{position:fixed;left:0;right:0;bottom:0;height:2px;background:var(--linea);z-index:60}
 .barra i{display:block;height:100%;width:0;background:var(--azul);transition:width .3s}
 
-/* ---------- modo presentar ---------- */
-body.pres .env{display:block;max-width:none}
-body.pres .fig{position:fixed;top:0;left:0;width:50vw;height:100svh;padding:40px}
-body.pres .figin{max-width:620px;width:100%;align-self:center}
-body.pres .narr{margin-left:50vw;padding:0 clamp(24px,3.5vw,56px)}
-body.pres .esc{display:none;min-height:100svh;padding:0}
-body.pres .esc.viva{display:flex}
-body.pres .portada,body.pres .apen{display:none}
-body.pres .portada.viva{display:flex}
-body.pres .apen.viva{display:block;margin-left:50vw}
-body.pres{font-size:23px}
-body.pres .esc > *{max-width:min(31em,100%)}
 
 @media (max-width:900px){
-  body{font-size:19px}
-  h1{font-size:clamp(32px,8.2vw,54px);max-width:100%}
-  h2{font-size:clamp(26px,6.4vw,36px)}
-  .sub{font-size:18px}
-  .prof h3{font-size:22px}
-  .prof .caso{font-size:18px}
-  .env{grid-template-columns:1fr}
-  .fig{position:sticky;height:44svh;padding:16px;background:var(--fondo);
-    border-bottom:1px solid var(--linea);z-index:5}
-  .esc{min-height:auto;padding:8vh 0}
-  .narr{padding:0 20px}
+  body{font-size:18px}
+  h1{font-size:clamp(30px,8vw,48px);max-width:100%}
+  h2{font-size:clamp(23px,5.8vw,31px)}
+  .sub{font-size:17px}
+  .prof h3{font-size:20px}
+  .prof .caso{font-size:17px}
+  .esc{padding:16px 20px 92px}
+  .esc p{font-size:16.5px}
   .par{grid-template-columns:1fr}
-  body.pres .fig{position:sticky;width:100%;height:44svh}
-  body.pres .narr{margin-left:0}
-  body.pres .apen.viva{margin-left:0}
+  .nav button{width:52px;height:52px;font-size:21px}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
@@ -184,9 +192,9 @@ body.pres .esc > *{max-width:min(31em,100%)}
 .foto .et-foto b{display:block;font-size:16px;font-weight:700}
 
 
-.dos-fotos{display:grid;grid-template-columns:1fr 1fr;gap:12px;height:100%}
-.dos-fotos .foto{aspect-ratio:3/4}
-.vis > .foto{aspect-ratio:16/10}
+.dos-fotos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dos-fotos .foto{aspect-ratio:3/4;max-height:30svh}
+.vis > .foto{width:100%;aspect-ratio:16/10;max-height:32svh;margin:0 auto}
 @media (max-width:900px){
   .dos-fotos{grid-template-columns:1fr;gap:9px}
   .dos-fotos .foto{aspect-ratio:16/10}
@@ -330,7 +338,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
 .flujo .fle{flex:0 0 18px;color:var(--linea);text-align:center;padding-top:14px;font-size:15px}
 
 /* ---------- mini diagrama por profesión ---------- */
-.mini{display:flex;gap:4px;margin:9px 0 0;font-size:11px}
+.mini{display:flex;gap:4px;margin:7px 0 0;font-size:10.5px}
 .mini span{flex:1;background:var(--sup);border:1px solid var(--linea);
   border-radius:2px;padding:5px 3px;text-align:center;color:var(--apagado);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -369,6 +377,10 @@ body.pres .esc > *{max-width:min(31em,100%)}
 <symbol id="i-pbi" viewBox="0 0 1200 1600"><mask id="pbi-mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="200" y="0" width="1200" height="1600"> <path d="m 1333.25,0 c 36.86,0 66.75,29.8849 66.75,66.75 v 1466.5 c 0,36.86 -29.89,66.75 -66.75,66.75 H 266.667 C 229.848,1600 200,1570.15 200,1533.33 V 866.667 C 200,829.848 229.848,800 266.667,800 H 525 V 466.667 C 525,429.848 554.848,400 591.667,400 H 850 V 66.75 C 850,29.885 879.885,0 916.75,0 Z" fill="#ffffff" id="pbi-path19600" /> </mask> <g mask="url(#pbi-mask0)" id="pbi-g19611" transform="translate(-200)"> <path d="m 1400,66.75 v 1466.5 c 0,36.86 -29.89,66.75 -66.75,66.75 H 916.75 C 879.885,1600 850,1570.11 850,1533.25 V 66.75 C 850,29.885 879.885,0 916.75,0 h 416.5 c 36.87,0 66.75,29.8849 66.75,66.75 z" fill="url(#pbi-paint0_linear)" id="pbi-path19603" style="fill:url(#pbi-paint0_linear)" /> <g id="pbi-g19607"> <path d="M 1075,466.667 V 1600 H 525 V 466.667 C 525,429.848 554.848,400 591.667,400 h 416.663 c 36.82,0 66.67,29.848 66.67,66.667 z" fill="url(#pbi-paint1_linear)" id="pbi-path19605" style="fill:url(#pbi-paint1_linear)" /> </g> <path d="m 200,866.667 v 666.663 c 0,36.82 29.848,66.67 66.667,66.67 H 750 V 866.667 C 750,829.848 720.152,800 683.333,800 H 266.667 C 229.848,800 200,829.848 200,866.667 Z" fill="url(#pbi-paint2_linear)" id="pbi-path19609" style="fill:url(#pbi-paint2_linear)" /> </g> <defs id="pbi-defs19653"> <linearGradient id="pbi-paint0_linear" x1="758.33301" y1="-1.49632e-05" x2="1447.8199" y2="1507.15" gradientUnits="userSpaceOnUse"> <stop stop-color="#E6AD10" id="pbi-stop19638" /> <stop offset="1" stop-color="#C87E0E" id="pbi-stop19640" /> </linearGradient> <linearGradient id="pbi-paint1_linear" x1="524.95502" y1="400" x2="1105.79" y2="1561.67" gradientUnits="userSpaceOnUse"> <stop stop-color="#F6D751" id="pbi-stop19643" /> <stop offset="1" stop-color="#E6AD10" id="pbi-stop19645" /> </linearGradient> <linearGradient id="pbi-paint2_linear" x1="199.955" y1="800" x2="519.784" y2="1581.6801" gradientUnits="userSpaceOnUse"> <stop stop-color="#F9E589" id="pbi-stop19648" /> <stop offset="1" stop-color="#F6D751" id="pbi-stop19650" /> </linearGradient> </defs></symbol>
 </svg>
 
+<nav class="nav">
+  <button id="atras" aria-label="Escena anterior">&#9664;</button>
+  <button id="adelante" aria-label="Escena siguiente">&#9654;</button>
+</nav>
 <div class="barra"><i id="prog"></i></div>
 
 <section class="portada" data-esc="0">
@@ -381,6 +393,63 @@ body.pres .esc > *{max-width:min(31em,100%)}
   </div>
 </section>
 
+<div class="graf-panel" id="grafPanel"><svg id="grafico" viewBox="0 0 460 400" role="img" aria-labelledby="figt">
+      <title id="figt">Perfiles de Netflix colocados según qué tanto ven comedia y qué tanto ven suspenso</title>
+
+      <!-- ejes -->
+      <g data-desde="4" id="gejes">
+        <line class="eje" x1="70" y1="330" x2="420" y2="330"/>
+        <line class="eje" x1="70" y1="40"  x2="70"  y2="330"/>
+        <text class="cap" x="245" y="366" text-anchor="middle">horas de comedia al mes</text>
+        <text class="cap" x="-185" y="26" transform="rotate(-90)" text-anchor="middle">horas de suspenso al mes</text>
+      </g>
+
+      <!-- yo (escena 4) -->
+      <g data-desde="4" id="g4">
+        <circle cx="140" cy="120" r="12" fill="var(--azul)" stroke="#fff" stroke-width="3"/>
+        <text class="cap-f" x="140" y="86" text-anchor="middle">ustedes</text>
+      </g>
+
+      <!-- vecinos (escena 5) -->
+      <g data-desde="5" id="g5">
+        <circle cx="118" cy="146" r="7" fill="var(--marca)" opacity=".85"/>
+        <circle cx="182" cy="132" r="7" fill="var(--marca)" opacity=".85"/>
+        <circle cx="100" cy="132" r="7" fill="var(--marca)" opacity=".85"/>
+        <circle cx="172" cy="148" r="7" fill="var(--marca)" opacity=".85"/>
+        <circle cx="146" cy="168" r="7" fill="var(--marca)" opacity=".85"/>
+        <text class="cap" x="140" y="200" text-anchor="middle">gente que ve parecido a ustedes</text>
+      </g>
+
+      <!-- el otro grupo (escena 6) -->
+      <g data-desde="6" id="g6">
+        <circle cx="340" cy="232" r="7" fill="var(--marca2)" opacity=".85"/>
+        <circle cx="382" cy="196" r="7" fill="var(--marca2)" opacity=".85"/>
+        <circle cx="352" cy="186" r="7" fill="var(--marca2)" opacity=".85"/>
+        <circle cx="392" cy="244" r="7" fill="var(--marca2)" opacity=".85"/>
+        <circle cx="318" cy="206" r="7" fill="var(--marca2)" opacity=".85"/>
+        <circle cx="366" cy="262" r="7" fill="var(--marca2)" opacity=".85"/>
+        <text class="cap" x="356" y="292" text-anchor="middle">otro grupo, otros gustos</text>
+      </g>
+
+      <!-- ruido (escena 8) -->
+      <g data-solo="8" id="ruido"></g>
+
+      <!-- dato imposible (escena 9) -->
+      <g data-solo="9">
+        <rect x="86" y="130" width="290" height="120" rx="3" fill="var(--sup)" stroke="var(--linea)"/>
+        <text class="cap-f" x="106" y="162">perfil 40318</text>
+        <text class="cap"   x="106" y="186">vio 31 horas seguidas, sin pausa</text>
+        <text class="cap-f" x="106" y="216" fill="var(--rojo)">nadie ve 31 horas sin parar</text>
+        <text class="cap"   x="106" y="238">se quedó la tele prendida</text>
+      </g>
+
+
+      <!-- lema (escena 12 en adelante) -->
+      <g data-solo="12" data-tambien="13,14">
+        <text class="lema" x="245" y="178" text-anchor="middle">cambia la tabla</text>
+        <text class="lema" x="245" y="216" text-anchor="middle" fill="var(--azul)">no cambia el método</text>
+      </g>
+    </svg></div>
 <div class="env">
   <!-- ====================== FIGURA ====================== -->
   <div class="fig"><div class="figin">
@@ -445,7 +514,18 @@ body.pres .esc > *{max-width:min(31em,100%)}
       </svg>
     </div>
     </div>
-    <div class="vis" data-vis="1"><div class="tele">
+                                    
+  <!-- ====================== NARRATIVA ====================== -->
+  <div class="narr">
+
+    <section class="esc" id="esc1" data-esc="1">
+      <h2>Abran Netflix un momento.</h2>
+
+      <p>Esa primera pantalla que les aparece no es la misma que le aparece a su
+      mamá, ni a su vecino. Alguien decidió qué poner ahí, para cada uno de ustedes,
+      esta mañana.</p>
+      <p class="mut">Hoy vamos a ver cómo se toma esa decisión.</p>
+      <div class="vis" data-vis="1"><div class="tele">
         <div class="marca">MIRA</div>
         <div class="fila"><b>Seguir viendo</b>
           <div class="tira">
@@ -462,7 +542,21 @@ body.pres .esc > *{max-width:min(31em,100%)}
           </div>
         </div>
       </div></div>
-    <div class="vis" data-vis="2">
+        </section>
+
+    <section class="esc" id="esc2" data-esc="2">
+      <h2>Antes de empezar, quiero quitarles un miedo.</h2>
+      <p>Nada de lo que vamos a ver hoy pasa de contar, promediar y comparar. No hay
+      fórmulas raras y no voy a mostrarles código.</p>
+      <div class="ops">
+        <div class="op"><div class="n">+</div><div class="q">contar</div></div>
+        <div class="op"><div class="n">÷</div><div class="q">promediar</div></div>
+        <div class="op"><div class="n">&gt;</div><div class="q">comparar</div></div>
+      </div>
+
+      <p class="mut">Si alguna vez eligieron algo mirando precios, ya hicieron
+      la parte difícil de esto.</p>
+      <div class="vis" data-vis="2">
       <div class="es" style="grid-template-columns:1fr">
         <div class="es-caja">
           <h4>todo lo que hace falta saber</h4>
@@ -478,7 +572,22 @@ body.pres .esc > *{max-width:min(31em,100%)}
         </div>
       </div>
     </div>
-    <div class="vis" data-vis="3">
+    </section>
+
+    <section class="esc" id="esc3" data-esc="3">
+      <h2>Les hago una pregunta.</h2>
+      <p>Si yo fuera Netflix y quisiera adivinar qué les va a gustar esta noche,
+      ¿qué creen que me serviría más saber de ustedes?</p>
+      <div class="par">
+        <button class="opt" data-pick="a" aria-pressed="false">
+          <span class="t">Su edad y dónde viven</span>
+          <span class="g">lo que pusieron al registrarse</span></button>
+        <button class="opt" data-pick="b" aria-pressed="false">
+          <span class="t">Qué vieron la semana pasada</span>
+          <span class="g">y hasta qué minuto llegaron</span></button>
+      </div>
+      <p class="mut" id="eco">Piénsenlo un segundo antes de que sigamos.</p>
+      <div class="vis" data-vis="3">
       <div class="es">
         <div class="es-caja">
           <h4>opción A · lo que declararon</h4>
@@ -507,126 +616,15 @@ body.pres .esc > *{max-width:min(31em,100%)}
         </div>
       </div>
     </div>
-    <div class="vis" data-vis="16">
-      <div class="caso">
-        <h3>Psicología</h3>
-        <div class="es">
-          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
-            <table class="tabla"><tr><th>paciente</th><th class="num">al inicio</th><th class="num">a las 4 sem.</th></tr><tr><td>A-102</td><td class="num">24</td><td class="num">21</td></tr><tr><td>A-118</td><td class="num">26</td><td class="num">14</td></tr><tr><td>A-133</td><td class="num">22</td><td class="num">20</td></tr><tr><td class="mas">…</td><td class="num mas">…</td><td class="num mas">…</td></tr></table>
-          </div></div>
-          <div class="fle-g">&rarr;<small>se compara</small></div>
-          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
-            <div class="ins"><span class="grande">Dos de estos tres no están mejorando.</span>El cuestionario en cada sesión lo muestra a las cuatro semanas, no a los seis meses.</div>
-          </div></div>
-        </div>
-        <div class="result">
-          <span class="q">Y ESTO CAMBIÓ</span>
-          <span class="cifra">La recuperación pasó de 28.8% a 73.8%</span>
-          <div class="det">Los medicamentos fueron los mismos en los dos grupos. Lo único que cambió fue medir en cada sesión y ajustar el tratamiento con esos datos.</div>
-          <div class="fte">Estudio con 120 pacientes, American Journal of Psychiatry, 2015</div>
-        </div>
-      </div>
-    </div>
-    <div class="vis" data-vis="17">
-      <div class="caso">
-        <h3>Salud y enfermería</h3>
-        <div class="es">
-          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
-            <table class="tabla"><tr><th>paciente</th><th class="num">presión</th><th class="num">pulso</th><th class="num">temp.</th></tr><tr><td>4821</td><td class="num">90</td><td class="num">118</td><td class="num">38.1</td></tr><tr><td>4822</td><td class="num">130</td><td class="num">76</td><td class="num">36.6</td></tr><tr><td>4823</td><td class="num">84</td><td class="num">126</td><td class="num">38.4</td></tr><tr><td class="mas">…</td><td class="num mas">…</td><td class="num mas">…</td><td class="num mas">…</td></tr></table>
-          </div></div>
-          <div class="fle-g">&rarr;<small>se vigila</small></div>
-          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
-            <div class="ins"><span class="grande">Dos de estos van a empeorar esta noche.</span>No es una corazonada: son las señales que aparecen horas antes de que se complique.</div>
-          </div></div>
-        </div>
-        <div class="result">
-          <span class="q">Y ESTO CAMBIÓ</span>
-          <span class="cifra">La mortalidad bajó de 13.9% a 8.8%</span>
-          <div class="det">En cuatro hospitales, con 6,681 pacientes. Los enfermeros revisaban cada dos horas a quien el sistema marcaba.</div>
-          <div class="fte">Critical Care Medicine, 2022</div>
-        </div>
-      </div>
-    </div>
-    <div class="vis" data-vis="18">
-      <div class="caso">
-        <h3>Ingeniería</h3>
-        <div class="es">
-          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
-            <table class="tabla">
-              <tr><th>hora</th><th class="num">viento</th><th class="num">energía</th></tr>
-              <tr><td>06:00</td><td class="num">14 km/h</td><td class="num">38</td></tr>
-              <tr><td>07:00</td><td class="num">22 km/h</td><td class="num">61</td></tr>
-              <tr><td>08:00</td><td class="num">19 km/h</td><td class="num">52</td></tr>
-              <tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr>
-            </table>
-          </div></div>
-          <div class="fle-g">&rarr;<small>se predice</small></div>
-          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
-            <div class="ins"><span class="grande">Cuánta energía va a haber pasado mañana.</span>
-            Con el clima y lo que pasó otras veces, se estima la producción con
-            36 horas de anticipación.</div>
-          </div></div>
-        </div>
-        <div class="result">
-          <span class="q">Y ESTO CAMBIÓ</span>
-          <span class="cifra">Subió 20% el valor de esa energía</span>
-          <div class="det">Sobre un parque eólico grande. Saber cuánta
-          energía habrá permite comprometerla con un día de anticipación, y eso
-          vale más que venderla sobre la marcha.</div>
-          <div class="fte">Google, 2019</div>
-        </div>
-      </div>
-    </div>
-    <div class="vis" data-vis="19">
-      <div class="caso">
-        <h3>Negocio y ventas</h3>
-        <div class="es">
-          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
-            <table class="tabla">
-              <tr><th>cliente</th><th class="num">usos/mes</th><th class="num">hace</th></tr>
-              <tr><td>C-4410</td><td class="num">18</td><td class="num">2 días</td></tr>
-              <tr><td>C-4411</td><td class="num">3</td><td class="num">26 días</td></tr>
-              <tr><td>C-4412</td><td class="num">21</td><td class="num">1 día</td></tr>
-              <tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr>
-            </table>
-          </div></div>
-          <div class="fle-g">&rarr;<small>se agrupa</small></div>
-          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
-            <div class="ins"><span class="grande">El de en medio ya se fue, aunque siga pagando.</span>
-            Dejó de usarlo hace casi un mes. La baja formal llega después.</div>
-          </div></div>
-        </div>
-        <div class="result">
-          <span class="q">Y ESTO CAMBIÓ</span>
-          <span class="cifra">Netflix estima más de mil millones al año</span>
-          <div class="det">Es el mismo sistema de recomendación del principio,
-          pero al revés: en vez de adivinar qué te va a gustar, detecta a quién
-          está por irse. Retener sale más barato que salir a buscar uno nuevo.</div>
-          <div class="fte">Escrito por gente de Netflix, 2015. La idea de que retener
-          cuesta unas cinco veces menos que captar viene de Harvard Business Review, 1990.</div>
-        </div>
-      </div>
-    </div>
-    <div class="vis" data-vis="20"><div class="foto"><img src="img/tele-720.webp" srcset="img/tele-720.webp 720w, img/tele-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1440" height="900" alt="Dos personas ven la televisión de noche en un sillón" loading="lazy" decoding="async"><div class="et-foto"><b>Y todo empezó aquí</b>Alguien decidió qué les iba a aparecer esta noche</div></div></div>
-    <div class="vis" data-vis="13"><div class="dos-fotos"><div class="foto"><img src="img/psico-720.webp" srcset="img/psico-720.webp 720w, img/psico-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Una terapeuta toma notas durante una sesión" loading="lazy" decoding="async"><div class="et-foto"><b>Psicología</b>Anotar lo que se observa ya es convertirlo en dato</div></div><div class="foto"><img src="img/salud-720.webp" srcset="img/salud-720.webp 720w, img/salud-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Un médico observa un estudio en la pantalla" loading="lazy" decoding="async"><div class="et-foto"><b>Salud</b>Leer una pantalla para decidir qué hacer con un paciente</div></div></div></div>
-    <div class="vis" data-vis="14"><div class="foto"><img src="img/ing-720.webp" srcset="img/ing-720.webp 720w, img/ing-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1440" height="900" alt="Un operario trabaja frente a un tablero de control" loading="lazy" decoding="async"><div class="et-foto"><b>Ingeniería</b>Los sensores avisan antes, si alguien está mirando</div></div></div>
-    <div class="vis" data-vis="10">
-      <div class="es" id="es-h">
-        <div class="es-caja">
-          <h4 id="h-ent">lo que recibe</h4>
-          <div class="es-cuerpo" id="ent-h">
-            <p class="mut" style="margin:0;font-size:15px">Escojan una herramienta
-            para ver qué entra y qué sale.</p>
-          </div>
-        </div>
-        <div class="fle-g" id="fle-h">&rarr;<small></small></div>
-        <div class="es-caja">
-          <h4 id="h-sal">lo que devuelve</h4>
-          <div class="es-cuerpo" id="sal-h"></div>
-        </div>
-      </div>
-    </div>
-    <div class="vis" data-vis="4">
+    </section>
+
+    <section class="esc" id="esc4" data-esc="4">
+      <h2>Lo que hacen importa más que quiénes son.</h2>
+      <p>Así que empecemos por ahí. Voy a poner a cada persona en un cuadro según dos
+      cosas nada más: cuántas horas de comedia ve al mes, y cuántas de suspenso.</p>
+      <p class="mut">Ese punto azul son ustedes. Nada más con dos números, ya
+      tienen un lugar.</p>
+      <div class="vis" data-vis="4">
       <div class="es">
         <div class="es-caja">
           <h4>lo que hay guardado</h4>
@@ -655,141 +653,6 @@ body.pres .esc > *{max-width:min(31em,100%)}
         </div>
       </div>
     </div>
-    <div class="vis vis-flujo" data-vis="11"><div class="flujo">
-        <div class="et"><div class="caja">pregunta</div>
-          <div class="pie">alguien necesita decidir algo</div></div>
-        <div class="fle">&rsaquo;</div>
-        <div class="et"><div class="caja">datos</div>
-          <div class="pie">ya existían, nadie los había juntado</div></div>
-        <div class="fle">&rsaquo;</div>
-        <div class="et"><div class="caja">herramienta</div>
-          <div class="pie">para poder verlos cuando son muchos</div></div>
-        <div class="fle">&rsaquo;</div>
-        <div class="et"><div class="caja">decisión</div>
-          <div class="pie">cambia lo que ve la gente</div></div>
-      </div></div>
-    <div class="vis" data-vis="7"><div class="tele">
-        <div class="fila"><b>Lo que ve el otro grupo esta noche</b>
-          <div class="tira">
-            <div class="mos m2">Suspenso</div><div class="mos m3">Thriller</div>
-            <div class="mos m1">Misterio</div><div class="mos m2">Crimen</div>
-            <div class="mos m4">Suspenso</div>
-          </div>
-        </div>
-        <div class="fila"><b>Lo que ven ustedes</b>
-          <div class="tira">
-            <div class="mos m4">Comedia</div><div class="mos m5">Comedia</div>
-            <div class="mos m1">Stand-up</div><div class="mos m3">Comedia</div>
-            <div class="mos m2">Romance</div>
-          </div>
-        </div>
-      </div></div>
-    <svg viewBox="0 0 460 400" role="img" aria-labelledby="figt">
-      <title id="figt">Perfiles de Netflix colocados según qué tanto ven comedia y qué tanto ven suspenso</title>
-
-      <!-- ejes -->
-      <g data-desde="4" id="gejes">
-        <line class="eje" x1="70" y1="330" x2="420" y2="330"/>
-        <line class="eje" x1="70" y1="40"  x2="70"  y2="330"/>
-        <text class="cap" x="245" y="366" text-anchor="middle">horas de comedia al mes</text>
-        <text class="cap" x="-185" y="26" transform="rotate(-90)" text-anchor="middle">horas de suspenso al mes</text>
-      </g>
-
-      <!-- yo (escena 4) -->
-      <g data-desde="4" id="g4">
-        <circle cx="140" cy="120" r="12" fill="var(--azul)" stroke="#fff" stroke-width="3"/>
-        <text class="cap-f" x="140" y="86" text-anchor="middle">ustedes</text>
-      </g>
-
-      <!-- vecinos (escena 5) -->
-      <g data-desde="5" id="g5">
-        <circle cx="118" cy="146" r="7" fill="var(--marca)" opacity=".85"/>
-        <circle cx="182" cy="132" r="7" fill="var(--marca)" opacity=".85"/>
-        <circle cx="100" cy="132" r="7" fill="var(--marca)" opacity=".85"/>
-        <circle cx="172" cy="148" r="7" fill="var(--marca)" opacity=".85"/>
-        <circle cx="146" cy="168" r="7" fill="var(--marca)" opacity=".85"/>
-        <text class="cap" x="140" y="200" text-anchor="middle">gente que ve parecido a ustedes</text>
-      </g>
-
-      <!-- el otro grupo (escena 6) -->
-      <g data-desde="6" id="g6">
-        <circle cx="340" cy="232" r="7" fill="var(--marca2)" opacity=".85"/>
-        <circle cx="382" cy="196" r="7" fill="var(--marca2)" opacity=".85"/>
-        <circle cx="352" cy="186" r="7" fill="var(--marca2)" opacity=".85"/>
-        <circle cx="392" cy="244" r="7" fill="var(--marca2)" opacity=".85"/>
-        <circle cx="318" cy="206" r="7" fill="var(--marca2)" opacity=".85"/>
-        <circle cx="366" cy="262" r="7" fill="var(--marca2)" opacity=".85"/>
-        <text class="cap" x="356" y="292" text-anchor="middle">otro grupo, otros gustos</text>
-      </g>
-
-      <!-- ruido (escena 8) -->
-      <g data-solo="8" id="ruido"></g>
-
-      <!-- dato imposible (escena 9) -->
-      <g data-solo="9">
-        <rect x="86" y="130" width="290" height="120" rx="3" fill="var(--sup)" stroke="var(--linea)"/>
-        <text class="cap-f" x="106" y="162">perfil 40318</text>
-        <text class="cap"   x="106" y="186">vio 31 horas seguidas, sin pausa</text>
-        <text class="cap-f" x="106" y="216" fill="var(--rojo)">nadie ve 31 horas sin parar</text>
-        <text class="cap"   x="106" y="238">se quedó la tele prendida</text>
-      </g>
-
-
-      <!-- lema (escena 12 en adelante) -->
-      <g data-solo="12" data-tambien="13,14">
-        <text class="lema" x="245" y="178" text-anchor="middle">cambia la tabla</text>
-        <text class="lema" x="245" y="216" text-anchor="middle" fill="var(--azul)">no cambia el método</text>
-      </g>
-    </svg>
-  </div>
-
-  <!-- ====================== NARRATIVA ====================== -->
-  <div class="narr">
-
-    <section class="esc" id="esc1" data-esc="1">
-      <h2>Abran Netflix un momento.</h2>
-
-      <p>Esa primera pantalla que les aparece no es la misma que le aparece a su
-      mamá, ni a su vecino. Alguien decidió qué poner ahí, para cada uno de ustedes,
-      esta mañana.</p>
-      <p class="mut">Hoy vamos a ver cómo se toma esa decisión.</p>
-    </section>
-
-    <section class="esc" id="esc2" data-esc="2">
-      <h2>Antes de empezar, quiero quitarles un miedo.</h2>
-      <p>Nada de lo que vamos a ver hoy pasa de contar, promediar y comparar. No hay
-      fórmulas raras y no voy a mostrarles código.</p>
-      <div class="ops">
-        <div class="op"><div class="n">+</div><div class="q">contar</div></div>
-        <div class="op"><div class="n">÷</div><div class="q">promediar</div></div>
-        <div class="op"><div class="n">&gt;</div><div class="q">comparar</div></div>
-      </div>
-
-      <p class="mut">Si alguna vez eligieron algo mirando precios, ya hicieron
-      la parte difícil de esto.</p>
-    </section>
-
-    <section class="esc" id="esc3" data-esc="3">
-      <h2>Les hago una pregunta.</h2>
-      <p>Si yo fuera Netflix y quisiera adivinar qué les va a gustar esta noche,
-      ¿qué creen que me serviría más saber de ustedes?</p>
-      <div class="par">
-        <button class="opt" data-pick="a" aria-pressed="false">
-          <span class="t">Su edad y dónde viven</span>
-          <span class="g">lo que pusieron al registrarse</span></button>
-        <button class="opt" data-pick="b" aria-pressed="false">
-          <span class="t">Qué vieron la semana pasada</span>
-          <span class="g">y hasta qué minuto llegaron</span></button>
-      </div>
-      <p class="mut" id="eco">Piénsenlo un segundo antes de que sigamos.</p>
-    </section>
-
-    <section class="esc" id="esc4" data-esc="4">
-      <h2>Lo que hacen importa más que quiénes son.</h2>
-      <p>Así que empecemos por ahí. Voy a poner a cada persona en un cuadro según dos
-      cosas nada más: cuántas horas de comedia ve al mes, y cuántas de suspenso.</p>
-      <p class="mut">Ese punto azul son ustedes. Nada más con dos números, ya
-      tienen un lugar.</p>
     </section>
 
     <section class="esc" id="esc5" data-esc="5">
@@ -815,6 +678,23 @@ body.pres .esc > *{max-width:min(31em,100%)}
       Eso es análisis de datos. No hubo truco.</p>
       <p class="mut">El resto del oficio son herramientas para hacer lo mismo cuando
       ya no se puede ver a simple vista. Y ese momento llega rápido.</p>
+      <div class="vis" data-vis="7"><div class="tele">
+        <div class="fila"><b>Lo que ve el otro grupo esta noche</b>
+          <div class="tira">
+            <div class="mos m2">Suspenso</div><div class="mos m3">Thriller</div>
+            <div class="mos m1">Misterio</div><div class="mos m2">Crimen</div>
+            <div class="mos m4">Suspenso</div>
+          </div>
+        </div>
+        <div class="fila"><b>Lo que ven ustedes</b>
+          <div class="tira">
+            <div class="mos m4">Comedia</div><div class="mos m5">Comedia</div>
+            <div class="mos m1">Stand-up</div><div class="mos m3">Comedia</div>
+            <div class="mos m2">Romance</div>
+          </div>
+        </div>
+      </div></div>
+  </div>
     </section>
 
     <section class="esc" id="esc8" data-esc="8">
@@ -849,6 +729,22 @@ body.pres .esc > *{max-width:min(31em,100%)}
       </div>
       <p class="mut" id="salida" aria-live="polite">Cada una resuelve un problema
       distinto del camino.</p>
+      <div class="vis" data-vis="10">
+      <div class="es" id="es-h">
+        <div class="es-caja">
+          <h4 id="h-ent">lo que recibe</h4>
+          <div class="es-cuerpo" id="ent-h">
+            <p class="mut" style="margin:0;font-size:15px">Escojan una herramienta
+            para ver qué entra y qué sale.</p>
+          </div>
+        </div>
+        <div class="fle-g" id="fle-h">&rarr;<small></small></div>
+        <div class="es-caja">
+          <h4 id="h-sal">lo que devuelve</h4>
+          <div class="es-cuerpo" id="sal-h"></div>
+        </div>
+      </div>
+    </div>
     </section>
 
     <section class="esc" id="esc11" data-esc="11">
@@ -856,7 +752,20 @@ body.pres .esc > *{max-width:min(31em,100%)}
       <p>Una pregunta que le importa a alguien. Datos que ya existían. Una
       herramienta para poder verlos. Y una decisión que cambia algo.</p>
       <p class="mut">Eso es el trabajo. Todo lo demás son detalles.</p>
-    </section>
+      <div class="vis vis-flujo" data-vis="11"><div class="flujo">
+        <div class="et"><div class="caja">pregunta</div>
+          <div class="pie">alguien necesita decidir algo</div></div>
+        <div class="fle">&rsaquo;</div>
+        <div class="et"><div class="caja">datos</div>
+          <div class="pie">ya existían, nadie los había juntado</div></div>
+        <div class="fle">&rsaquo;</div>
+        <div class="et"><div class="caja">herramienta</div>
+          <div class="pie">para poder verlos cuando son muchos</div></div>
+        <div class="fle">&rsaquo;</div>
+        <div class="et"><div class="caja">decisión</div>
+          <div class="pie">cambia lo que ve la gente</div></div>
+      </div></div>
+        </section>
 
     <section class="esc" id="esc12" data-esc="12">
       <h2>Ahora quiero que cambiemos la tabla.</h2>
@@ -886,6 +795,15 @@ body.pres .esc > *{max-width:min(31em,100%)}
         grupos. Solo que los ejes ahora dicen presión y pulso.</p>
         <div class="mini"><span class="">pregunta</span><span class="">datos</span><span class="ac">herramienta</span><span class="">decisión</span></div>
       </div>
+      <div class="vis" data-vis="13"><div class="dos-fotos"><div class="foto"><img src="img/psico-720.webp" srcset="img/psico-720.webp 720w, img/psico-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Una terapeuta toma notas durante una sesión" loading="lazy" decoding="async"><div class="et-foto"><b>Psicología</b>Anotar lo que se observa ya es convertirlo en dato</div></div><div class="foto"><img src="img/salud-720.webp" srcset="img/salud-720.webp 720w, img/salud-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Un médico observa un estudio en la pantalla" loading="lazy" decoding="async"><div class="et-foto"><b>Salud</b>Leer una pantalla para decidir qué hacer con un paciente</div></div></div></div>
+        </div>
+        <div class="fle-g" id="fle-h">&rarr;<small></small></div>
+        <div class="es-caja">
+          <h4 id="h-sal">lo que devuelve</h4>
+          <div class="es-cuerpo" id="sal-h"></div>
+        </div>
+      </div>
+    </div>
     </section>
 
     <section class="esc" id="esc14" data-esc="14">
@@ -909,7 +827,16 @@ body.pres .esc > *{max-width:min(31em,100%)}
         va a gustar, adivinamos quién ya se cansó.</p>
         <div class="mini"><span class="">pregunta</span><span class="">datos</span><span class="">herramienta</span><span class="ac">decisión</span></div>
       </div>
-    </section>
+      <div class="vis" data-vis="14"><div class="foto"><img src="img/ing-720.webp" srcset="img/ing-720.webp 720w, img/ing-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1440" height="900" alt="Un operario trabaja frente a un tablero de control" loading="lazy" decoding="async"><div class="et-foto"><b>Ingeniería</b>Los sensores avisan antes, si alguien está mirando</div></div></div>
+            </div>
+        <div class="fle-g" id="fle-h">&rarr;<small></small></div>
+        <div class="es-caja">
+          <h4 id="h-sal">lo que devuelve</h4>
+          <div class="es-cuerpo" id="sal-h"></div>
+        </div>
+      </div>
+    </div>
+          </section>
 
     <section class="esc" id="esc15" data-esc="15">
       <h2>«¿Y esto para qué sirve?»</h2>
@@ -926,6 +853,26 @@ body.pres .esc > *{max-width:min(31em,100%)}
       que al segundo grupo <b>le aplicaban un cuestionario en cada sesión</b> y
       ajustaban el tratamiento con esas respuestas.</p>
       <p class="mut">El doble de ajustes, y mucho más temprano. Eso fue todo.</p>
+      <div class="vis" data-vis="16">
+      <div class="caso">
+        <h3>Psicología</h3>
+        <div class="es">
+          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
+            <table class="tabla"><tr><th>paciente</th><th class="num">al inicio</th><th class="num">a las 4 sem.</th></tr><tr><td>A-102</td><td class="num">24</td><td class="num">21</td></tr><tr><td>A-118</td><td class="num">26</td><td class="num">14</td></tr><tr><td>A-133</td><td class="num">22</td><td class="num">20</td></tr><tr><td class="mas">…</td><td class="num mas">…</td><td class="num mas">…</td></tr></table>
+          </div></div>
+          <div class="fle-g">&rarr;<small>se compara</small></div>
+          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
+            <div class="ins"><span class="grande">Dos de estos tres no están mejorando.</span>El cuestionario en cada sesión lo muestra a las cuatro semanas, no a los seis meses.</div>
+          </div></div>
+        </div>
+        <div class="result">
+          <span class="q">Y ESTO CAMBIÓ</span>
+          <span class="cifra">La recuperación pasó de 28.8% a 73.8%</span>
+          <div class="det">Los medicamentos fueron los mismos en los dos grupos. Lo único que cambió fue medir en cada sesión y ajustar el tratamiento con esos datos.</div>
+          <div class="fte">Estudio con 120 pacientes, American Journal of Psychiatry, 2015</div>
+        </div>
+      </div>
+    </div>
     </section>
 
     <section class="esc" id="esc17" data-esc="17">
@@ -934,6 +881,26 @@ body.pres .esc > *{max-width:min(31em,100%)}
       juntarlos y buscar el patrón que aparece <b>horas antes</b> de que alguien
       se complique.</p>
       <p class="mut">Nadie compró una máquina nueva. Miraron mejor lo que ya tenían.</p>
+      <div class="vis" data-vis="17">
+      <div class="caso">
+        <h3>Salud y enfermería</h3>
+        <div class="es">
+          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
+            <table class="tabla"><tr><th>paciente</th><th class="num">presión</th><th class="num">pulso</th><th class="num">temp.</th></tr><tr><td>4821</td><td class="num">90</td><td class="num">118</td><td class="num">38.1</td></tr><tr><td>4822</td><td class="num">130</td><td class="num">76</td><td class="num">36.6</td></tr><tr><td>4823</td><td class="num">84</td><td class="num">126</td><td class="num">38.4</td></tr><tr><td class="mas">…</td><td class="num mas">…</td><td class="num mas">…</td><td class="num mas">…</td></tr></table>
+          </div></div>
+          <div class="fle-g">&rarr;<small>se vigila</small></div>
+          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
+            <div class="ins"><span class="grande">Dos de estos van a empeorar esta noche.</span>No es una corazonada: son las señales que aparecen horas antes de que se complique.</div>
+          </div></div>
+        </div>
+        <div class="result">
+          <span class="q">Y ESTO CAMBIÓ</span>
+          <span class="cifra">La mortalidad bajó de 13.9% a 8.8%</span>
+          <div class="det">En cuatro hospitales, con 6,681 pacientes. Los enfermeros revisaban cada dos horas a quien el sistema marcaba.</div>
+          <div class="fte">Critical Care Medicine, 2022</div>
+        </div>
+      </div>
+    </div>
     </section>
 
     <section class="esc" id="esc18" data-esc="18">
@@ -942,6 +909,36 @@ body.pres .esc > *{max-width:min(31em,100%)}
       producir. Con el clima y el historial, se estima con <b>36 horas</b> de
       anticipación.</p>
       <p class="mut">La turbina es la misma. Lo que cambió fue saber qué va a pasar.</p>
+      <div class="vis" data-vis="18">
+      <div class="caso">
+        <h3>Ingeniería</h3>
+        <div class="es">
+          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
+            <table class="tabla">
+              <tr><th>hora</th><th class="num">viento</th><th class="num">energía</th></tr>
+              <tr><td>06:00</td><td class="num">14 km/h</td><td class="num">38</td></tr>
+              <tr><td>07:00</td><td class="num">22 km/h</td><td class="num">61</td></tr>
+              <tr><td>08:00</td><td class="num">19 km/h</td><td class="num">52</td></tr>
+              <tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr>
+            </table>
+          </div></div>
+          <div class="fle-g">&rarr;<small>se predice</small></div>
+          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
+            <div class="ins"><span class="grande">Cuánta energía va a haber pasado mañana.</span>
+            Con el clima y lo que pasó otras veces, se estima la producción con
+            36 horas de anticipación.</div>
+          </div></div>
+        </div>
+        <div class="result">
+          <span class="q">Y ESTO CAMBIÓ</span>
+          <span class="cifra">Subió 20% el valor de esa energía</span>
+          <div class="det">Sobre un parque eólico grande. Saber cuánta
+          energía habrá permite comprometerla con un día de anticipación, y eso
+          vale más que venderla sobre la marcha.</div>
+          <div class="fte">Google, 2019</div>
+        </div>
+      </div>
+    </div>
     </section>
 
     <section class="esc" id="esc19" data-esc="19">
@@ -949,6 +946,36 @@ body.pres .esc > *{max-width:min(31em,100%)}
       <p>Alguien que deja de usar un servicio casi nunca avisa. Pero en los datos
       se ve semanas antes: entra menos, tarda más en volver.</p>
       <p class="mut">Es el recomendador del principio, al revés.</p>
+      <div class="vis" data-vis="19">
+      <div class="caso">
+        <h3>Negocio y ventas</h3>
+        <div class="es">
+          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
+            <table class="tabla">
+              <tr><th>cliente</th><th class="num">usos/mes</th><th class="num">hace</th></tr>
+              <tr><td>C-4410</td><td class="num">18</td><td class="num">2 días</td></tr>
+              <tr><td>C-4411</td><td class="num">3</td><td class="num">26 días</td></tr>
+              <tr><td>C-4412</td><td class="num">21</td><td class="num">1 día</td></tr>
+              <tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr>
+            </table>
+          </div></div>
+          <div class="fle-g">&rarr;<small>se agrupa</small></div>
+          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
+            <div class="ins"><span class="grande">El de en medio ya se fue, aunque siga pagando.</span>
+            Dejó de usarlo hace casi un mes. La baja formal llega después.</div>
+          </div></div>
+        </div>
+        <div class="result">
+          <span class="q">Y ESTO CAMBIÓ</span>
+          <span class="cifra">Netflix estima más de mil millones al año</span>
+          <div class="det">Es el mismo sistema de recomendación del principio,
+          pero al revés: en vez de adivinar qué te va a gustar, detecta a quién
+          está por irse. Retener sale más barato que salir a buscar uno nuevo.</div>
+          <div class="fte">Escrito por gente de Netflix, 2015. La idea de que retener
+          cuesta unas cinco veces menos que captar viene de Harvard Business Review, 1990.</div>
+        </div>
+      </div>
+    </div>
     </section>
 
     <section class="esc" id="esc20" data-esc="20">
@@ -960,6 +987,25 @@ body.pres .esc > *{max-width:min(31em,100%)}
       la base sobre la que va lo demás.</p>
       <p>Y todo lo que vimos hoy (los grupos, la línea, el dato sucio) ya lo
       hicieron ustedes en quince minutos, sin escribir una sola línea de código.</p>
+      <div class="vis" data-vis="20"><div class="foto"><img src="img/tele-720.webp" srcset="img/tele-720.webp 720w, img/tele-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1440" height="900" alt="Dos personas ven la televisión de noche en un sillón" loading="lazy" decoding="async"><div class="et-foto"><b>Y todo empezó aquí</b>Alguien decidió qué les iba a aparecer esta noche</div></div></div>
+    <div class="vis" data-vis="13"><div class="dos-fotos"><div class="foto"><img src="img/psico-720.webp" srcset="img/psico-720.webp 720w, img/psico-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Una terapeuta toma notas durante una sesión" loading="lazy" decoding="async"><div class="et-foto"><b>Psicología</b>Anotar lo que se observa ya es convertirlo en dato</div></div><div class="foto"><img src="img/salud-720.webp" srcset="img/salud-720.webp 720w, img/salud-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Un médico observa un estudio en la pantalla" loading="lazy" decoding="async"><div class="et-foto"><b>Salud</b>Leer una pantalla para decidir qué hacer con un paciente</div></div></div></div>
+    <div class="vis" data-vis="14"><div class="foto"><img src="img/ing-720.webp" srcset="img/ing-720.webp 720w, img/ing-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1440" height="900" alt="Un operario trabaja frente a un tablero de control" loading="lazy" decoding="async"><div class="et-foto"><b>Ingeniería</b>Los sensores avisan antes, si alguien está mirando</div></div></div>
+    <div class="vis" data-vis="10">
+      <div class="es" id="es-h">
+        <div class="es-caja">
+          <h4 id="h-ent">lo que recibe</h4>
+          <div class="es-cuerpo" id="ent-h">
+            <p class="mut" style="margin:0;font-size:15px">Escojan una herramienta
+            para ver qué entra y qué sale.</p>
+          </div>
+        </div>
+        <div class="fle-g" id="fle-h">&rarr;<small></small></div>
+        <div class="es-caja">
+          <h4 id="h-sal">lo que devuelve</h4>
+          <div class="es-cuerpo" id="sal-h"></div>
+        </div>
+      </div>
+    </div>
     </section>
 
   </div>
@@ -1036,7 +1082,6 @@ body.pres .esc > *{max-width:min(31em,100%)}
 
   var TOTAL = 21;
   var qs    = new URLSearchParams(location.search);
-  var pres  = qs.get('modo') === 'presentar';
   var ini   = parseInt(qs.get('esc'), 10);
   var escs  = [].slice.call(document.querySelectorAll('[data-esc]'));
   var capas = [].slice.call(document.querySelectorAll('[data-desde]'));
@@ -1119,40 +1164,50 @@ body.pres .esc > *{max-width:min(31em,100%)}
       if (nota) nota.textContent = NOTA[n] || '';
     }
     document.getElementById('prog').style.width = (n/TOTAL*100) + '%';
-    if (pres){
-      escs.forEach(function(el){
-        el.classList.toggle('viva', +el.getAttribute('data-esc') === n);
-      });
+  }
+  function ir(d){ vePor(Math.min(TOTAL, Math.max(0, actual + d))); }
+
+  function vePor(n){
+    pinta(n);
+    escs.forEach(function(el){
+      el.classList.toggle('viva', +el.getAttribute('data-esc') === n);
+    });
+    // el visual de esta escena; si no tiene, se queda el gráfico acumulado
+    [].forEach.call(document.querySelectorAll('.vis'), function(el){
+      el.classList.toggle('viva', +el.getAttribute('data-vis') === n);
+    });
+    var sinPropio = !document.querySelector('.vis[data-vis="' + n + '"]');
+    var gp = document.getElementById('grafPanel');
+    if (gp){
+      var muestra = sinPropio && n >= 4 && n <= 15;
+      gp.classList.toggle('viva', muestra);
+      // moverlo dentro de la escena activa, para que se vea con su texto
+      var sec = document.querySelector('section.esc.viva');
+      if (muestra && sec && gp.parentElement !== sec) sec.appendChild(gp);
     }
+    var a = document.getElementById('atras'), q = document.getElementById('adelante');
+    if (a) a.disabled = (n === 0);
+    if (q) q.disabled = (n === TOTAL);
+    window.scrollTo(0, 0);
   }
 
-  if (pres){
-    document.body.className = 'pres';
-    var ir = function(d){
-      pinta(Math.min(TOTAL, Math.max(0, actual + d)));
-      window.scrollTo(0,0);
-    };
-    addEventListener('keydown', function(e){
-      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' '){ e.preventDefault(); ir(1); }
-      else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); ir(-1); }
-      else if (e.key === 'Home'){ e.preventDefault(); pinta(0); }
-    });
-    addEventListener('click', function(e){
-      if (e.target.closest('button,a')) return;
-      ir(e.clientX > innerWidth/2 ? 1 : -1);
-    });
-    pinta(isNaN(ini) ? 0 : Math.min(TOTAL, Math.max(0, ini)));
-  } else {
-    // El observer con una franja generosa: dispara cuando la escena entra
-    // en el tercio central, no en una banda estrecha del 10%.
-    var io = new IntersectionObserver(function(entradas){
-      entradas.forEach(function(en){
-        if (en.isIntersecting) pinta(+en.target.getAttribute('data-esc'));
-      });
-    }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
-    escs.forEach(function(el){ io.observe(el); });
-    pinta(0);
-  }
+  addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' '){ e.preventDefault(); ir(1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); ir(-1); }
+    else if (e.key === 'Home'){ e.preventDefault(); vePor(0); }
+    else if (e.key === 'End'){ e.preventDefault(); vePor(TOTAL); }
+  });
+
+  // tocar la pantalla: derecha avanza, izquierda regresa
+  addEventListener('click', function(e){
+    if (e.target.closest('button,a,summary,details')) return;
+    ir(e.clientX > innerWidth / 2 ? 1 : -1);
+  });
+
+  document.getElementById('atras').addEventListener('click', function(){ ir(-1); });
+  document.getElementById('adelante').addEventListener('click', function(){ ir(1); });
+
+  vePor(isNaN(ini) ? 0 : Math.min(TOTAL, Math.max(0, ini)));
 
   var eco = document.getElementById('eco');
   [].forEach.call(document.querySelectorAll('[data-pick]'), function(b){
