@@ -21,7 +21,8 @@
   --marca2:#E0341A;       /* grupo 2 en gráficos */
 }
 *{box-sizing:border-box}
-html,body{overflow-x:hidden;max-width:100%}
+html,body{max-width:100%}
+body{overflow-x:clip}
 h1,h2,p,.prof{overflow-wrap:break-word}
 body{
   margin:0;background:var(--fondo);color:var(--tinta);
@@ -42,9 +43,11 @@ mark{background:var(--ambar-p);color:var(--tinta);padding:0 3px}
 b{font-weight:700}
 
 /* ---------- estructura ---------- */
-.env{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);max-width:1440px;margin:0 auto}
-.fig{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;
-  align-items:stretch;justify-content:center;gap:22px;padding:32px}
+.env{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  grid-template-rows:auto;align-items:start;max-width:1440px;margin:0 auto}
+.fig{position:sticky;top:0;align-self:start;height:100svh;max-height:100svh;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:center;
+  gap:22px;padding:32px}
 .figin{width:100%;max-width:560px;align-self:stretch;min-width:0}
 .narr{padding:0 clamp(20px,4vw,64px)}
 .esc{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:14vh 0}
@@ -103,10 +106,18 @@ svg{width:100%;height:auto;display:block;overflow:visible}
 /* ---------- apéndice ---------- */
 .apen{max-width:min(820px,100%);margin:0 auto;padding:14vh clamp(20px,5vw,40px) 16vh}
 .apen h2{margin-bottom:28px}
-.fuente{border-top:1px solid var(--linea);padding:15px 0;font-size:16px}
-.fuente a{color:var(--azul);text-decoration:none;border-bottom:1px solid var(--linea)}
-.fuente a:hover{border-color:var(--azul)}
-.fuente .d{color:var(--apagado);font-size:14px;margin-top:3px}
+.fuente{border-top:1px solid var(--linea);padding:0;font-size:16px}
+.fuente summary{cursor:pointer;padding:13px 0;font-weight:600;color:var(--azul);
+  list-style:none;display:flex;align-items:center;gap:9px}
+.fuente summary::-webkit-details-marker{display:none}
+.fuente summary::before{content:'+';font-family:ui-monospace,monospace;
+  font-weight:400;color:var(--apagado);width:1em;flex:0 0 auto}
+.fuente[open] summary::before{content:'2'}
+.fuente summary:hover{color:var(--tinta)}
+.fuente .d{color:var(--apagado);font-size:14.5px;padding:0 0 15px 1.55em;line-height:1.5}
+.fuente .liga-f{margin:9px 0 0}
+.fuente .liga-f a{color:var(--azul);text-decoration:none;border-bottom:1px solid var(--linea)}
+.fuente .liga-f a:hover{border-color:var(--azul)}
 
 .barra{position:fixed;left:0;right:0;bottom:0;height:2px;background:var(--linea);z-index:60}
 .barra i{display:block;height:100%;width:0;background:var(--azul);transition:width .3s}
@@ -730,12 +741,12 @@ body.pres .esc > *{max-width:min(31em,100%)}
         <text class="lema" x="245" y="216" text-anchor="middle" fill="var(--azul)">no cambia el método</text>
       </g>
     </svg>
-  </div></div>
+  </div>
 
   <!-- ====================== NARRATIVA ====================== -->
   <div class="narr">
 
-    <section class="esc" data-esc="1">
+    <section class="esc" id="esc1" data-esc="1">
       <h2>Abran Netflix un momento.</h2>
 
       <p>Esa primera pantalla que les aparece no es la misma que le aparece a su
@@ -744,7 +755,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       <p class="mut">Hoy vamos a ver cómo se toma esa decisión.</p>
     </section>
 
-    <section class="esc" data-esc="2">
+    <section class="esc" id="esc2" data-esc="2">
       <h2>Antes de empezar, quiero quitarles un miedo.</h2>
       <p>Nada de lo que vamos a ver hoy pasa de contar, promediar y comparar. No hay
       fórmulas raras y no voy a mostrarles código.</p>
@@ -758,7 +769,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       la parte difícil de esto.</p>
     </section>
 
-    <section class="esc" data-esc="3">
+    <section class="esc" id="esc3" data-esc="3">
       <h2>Les hago una pregunta.</h2>
       <p>Si yo fuera Netflix y quisiera adivinar qué les va a gustar esta noche,
       ¿qué creen que me serviría más saber de ustedes?</p>
@@ -773,7 +784,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       <p class="mut" id="eco">Piénsenlo un segundo antes de que sigamos.</p>
     </section>
 
-    <section class="esc" data-esc="4">
+    <section class="esc" id="esc4" data-esc="4">
       <h2>Lo que hacen importa más que quiénes son.</h2>
       <p>Así que empecemos por ahí. Voy a poner a cada persona en un cuadro según dos
       cosas nada más: cuántas horas de comedia ve al mes, y cuántas de suspenso.</p>
@@ -781,7 +792,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       tienen un lugar.</p>
     </section>
 
-    <section class="esc" data-esc="5">
+    <section class="esc" id="esc5" data-esc="5">
       <h2>Ahora miren quién les queda cerca.</h2>
       <p>Estas personas no los conocen. Viven en otro país, tienen otra edad, otro
       trabajo. Pero ven casi lo mismo que ustedes, casi las mismas horas.</p>
@@ -789,7 +800,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       quién se parecen.</p>
     </section>
 
-    <section class="esc" data-esc="6">
+    <section class="esc" id="esc6" data-esc="6">
       <h2>Y aquí está el otro grupo.</h2>
       <p>Fíjense: nadie dibujó esa separación, aparece sola. Ustedes ya pueden
       señalar dónde termina un grupo y empieza el otro.</p>
@@ -798,7 +809,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
 
     </section>
 
-    <section class="esc" data-esc="7">
+    <section class="esc" id="esc7" data-esc="7">
       <h2>Eso que acaban de hacer tiene nombre.</h2>
       <p>Miraron unos datos, encontraron dos grupos y trazaron la línea entre ellos.
       Eso es análisis de datos. No hubo truco.</p>
@@ -806,7 +817,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       ya no se puede ver a simple vista. Y ese momento llega rápido.</p>
     </section>
 
-    <section class="esc" data-esc="8">
+    <section class="esc" id="esc8" data-esc="8">
       <h2>Porque en realidad se ve así.</h2>
       <p>Netflix tiene más de 300 millones de cuentas. Aquí está la misma pregunta
       de hace un minuto. Díganme ahora dónde está la línea.</p>
@@ -814,7 +825,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       esto ya no se puede.</p>
     </section>
 
-    <section class="esc" data-esc="9">
+    <section class="esc" id="esc9" data-esc="9">
       <h2>Y además los datos vienen sucios.</h2>
       <p>Miren este perfil: 31 horas seguidas sin pausa. Eso no es alguien viendo
       televisión, es una tele que se quedó prendida.</p>
@@ -822,7 +833,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       quedan mal. Parte del trabajo es darse cuenta antes.</p>
     </section>
 
-    <section class="esc" data-esc="10">
+    <section class="esc" id="esc10" data-esc="10">
       <h2>Aquí entran las herramientas.</h2>
       <p>Se las voy a presentar por lo que nos dan, no por cómo se escriben.
       Piquen la que quieran:</p>
@@ -840,21 +851,21 @@ body.pres .esc > *{max-width:min(31em,100%)}
       distinto del camino.</p>
     </section>
 
-    <section class="esc" data-esc="11">
+    <section class="esc" id="esc11" data-esc="11">
       <h2>Y así queda el camino completo.</h2>
       <p>Una pregunta que le importa a alguien. Datos que ya existían. Una
       herramienta para poder verlos. Y una decisión que cambia algo.</p>
       <p class="mut">Eso es el trabajo. Todo lo demás son detalles.</p>
     </section>
 
-    <section class="esc" data-esc="12">
+    <section class="esc" id="esc12" data-esc="12">
       <h2>Ahora quiero que cambiemos la tabla.</h2>
       <p>Porque esto es lo que de verdad me interesa que se lleven hoy: el método que
       acabamos de recorrer no cambia. Lo único que cambia es qué hay en las columnas.</p>
       <p class="mut">Busquen la suya.</p>
     </section>
 
-    <section class="esc" data-esc="13">
+    <section class="esc" id="esc13" data-esc="13">
       <h2>¿Y en tu profesión?</h2>
 
       <div class="prof">
@@ -877,7 +888,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       </div>
     </section>
 
-    <section class="esc" data-esc="14">
+    <section class="esc" id="esc14" data-esc="14">
       <h2>Y también aquí.</h2>
 
       <div class="prof">
@@ -900,7 +911,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       </div>
     </section>
 
-    <section class="esc" data-esc="15">
+    <section class="esc" id="esc15" data-esc="15">
       <h2>«¿Y esto para qué sirve?»</h2>
       <p>Es la pregunta justa, y se las voy a contestar con dos casos publicados,
       con nombre y cifras. No son ejemplos que me inventé.</p>
@@ -908,7 +919,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       existían.</p>
     </section>
 
-    <section class="esc" data-esc="16">
+    <section class="esc" id="esc16" data-esc="16">
       <h2>El caso que más me gusta.</h2>
       <p>A un grupo de pacientes con depresión les dieron los medicamentos de
       siempre. Al otro grupo, los mismos medicamentos. La única diferencia fue
@@ -917,7 +928,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       <p class="mut">El doble de ajustes, y mucho más temprano. Eso fue todo.</p>
     </section>
 
-    <section class="esc" data-esc="17">
+    <section class="esc" id="esc17" data-esc="17">
       <h2>Y este salva vidas.</h2>
       <p>Los signos vitales ya se anotaban. Siempre se anotaron. Lo nuevo fue
       juntarlos y buscar el patrón que aparece <b>horas antes</b> de que alguien
@@ -925,7 +936,7 @@ body.pres .esc > *{max-width:min(31em,100%)}
       <p class="mut">Nadie compró una máquina nueva. Miraron mejor lo que ya tenían.</p>
     </section>
 
-    <section class="esc" data-esc="18">
+    <section class="esc" id="esc18" data-esc="18">
       <h2>Lo mismo, con el viento.</h2>
       <p>Una granja de turbinas no puede prometer energía si no sabe cuánta va a
       producir. Con el clima y el historial, se estima con <b>36 horas</b> de
@@ -933,14 +944,14 @@ body.pres .esc > *{max-width:min(31em,100%)}
       <p class="mut">La turbina es la misma. Lo que cambió fue saber qué va a pasar.</p>
     </section>
 
-    <section class="esc" data-esc="19">
+    <section class="esc" id="esc19" data-esc="19">
       <h2>Y lo mismo con los clientes.</h2>
       <p>Alguien que deja de usar un servicio casi nunca avisa. Pero en los datos
       se ve semanas antes: entra menos, tarda más en volver.</p>
       <p class="mut">Es el recomendador del principio, al revés.</p>
     </section>
 
-    <section class="esc" data-esc="20">
+    <section class="esc" id="esc20" data-esc="20">
       <h2>Una última cosa, y los dejo.</h2>
       <p>Van a oír «analista» y «científico de datos» como si uno fuera mejor.
       El analista responde <b>qué pasó</b>; el científico estima <b>qué va a pasar</b>.
@@ -959,61 +970,61 @@ body.pres .esc > *{max-width:min(31em,100%)}
   <p class="mut">Si quieren revisar por su cuenta, aquí están las fuentes y unos
   datos abiertos para practicar.</p>
 
-  <div class="fuente">
-    <a href="https://ir.netflix.net/ir-overview/profile/default.aspx" target="_blank" rel="noopener">Netflix · Relación con inversionistas</a>
+  <details class="fuente">
+    <summary>Netflix · Relación con inversionistas</summary>
     <div class="d">De aquí sale el número de cuentas. Netflix publica sus cifras
-    cada trimestre.</div>
-  </div>
+    cada trimestre.<p class="liga-f"><a href="https://ir.netflix.net/ir-overview/profile/default.aspx" target="_blank" rel="noopener">Abrir la fuente</a></p></div>
+  </details>
 
-  <div class="fuente">
-    <a href="https://research.netflix.com/research-area/recommendations" target="_blank" rel="noopener">Netflix Research · Recomendaciones</a>
+  <details class="fuente">
+    <summary>Netflix Research · Recomendaciones</summary>
     <div class="d">El equipo de Netflix explica cómo funciona el sistema que arma
-    su pantalla de inicio. En inglés, pero con ejemplos visuales.</div>
-  </div>
+    su pantalla de inicio. En inglés, pero con ejemplos visuales.<p class="liga-f"><a href="https://research.netflix.com/research-area/recommendations" target="_blank" rel="noopener">Abrir la fuente</a></p></div>
+  </details>
 
-  <div class="fuente">
-    <a href="https://psychiatryonline.org/doi/10.1176/appi.ajp.2015.14050652" target="_blank" rel="noopener">Medir en cada sesión, en depresión</a>
+  <details class="fuente">
+    <summary>Medir en cada sesión, en depresión</summary>
     <div class="d">De aquí sale el 28.8% contra 73.8%. Estudio con 120 pacientes,
-    con los mismos medicamentos en los dos grupos. American Journal of Psychiatry, 2015.</div>
-  </div>
+    con los mismos medicamentos en los dos grupos. American Journal of Psychiatry, 2015.<p class="liga-f"><a href="https://psychiatryonline.org/doi/10.1176/appi.ajp.2015.14050652" target="_blank" rel="noopener">Abrir la fuente</a></p></div>
+  </details>
 
-  <div class="fuente">
-    <a href="https://pubmed.ncbi.nlm.nih.gov/35452010/" target="_blank" rel="noopener">Alerta temprana en hospitales</a>
+  <details class="fuente">
+    <summary>Alerta temprana en hospitales</summary>
     <div class="d">De aquí sale la mortalidad de 13.9% a 8.8%, con 6,681 pacientes
     en cuatro hospitales. Critical Care Medicine, 2022. Ojo: compara dos años
-    seguidos, no es un sorteo al azar entre pacientes.</div>
-  </div>
+    seguidos, no es un sorteo al azar entre pacientes.<p class="liga-f"><a href="https://pubmed.ncbi.nlm.nih.gov/35452010/" target="_blank" rel="noopener">Abrir la fuente</a></p></div>
+  </details>
 
-  <div class="fuente">
-    <a href="https://dl.acm.org/doi/10.1145/2843948" target="_blank" rel="noopener">El sistema de recomendación de Netflix</a>
+  <details class="fuente">
+    <summary>El sistema de recomendación de Netflix</summary>
     <div class="d">Escrito por gente de Netflix. De aquí sale que influye en cerca
     del 80% de las horas vistas, y que ellos estiman que les ahorra más de mil
-    millones de dólares al año.</div>
-  </div>
+    millones de dólares al año.<p class="liga-f"><a href="https://dl.acm.org/doi/10.1145/2843948" target="_blank" rel="noopener">Abrir la fuente</a></p></div>
+  </details>
 
-  <div class="fuente">
-    <a href="https://archive.ics.uci.edu/dataset/45/heart+disease" target="_blank" rel="noopener">UCI · Heart Disease</a>
+  <details class="fuente">
+    <summary>UCI · Heart Disease</summary>
     <div class="d">Salud. 303 pacientes y 14 columnas, cabe en una hoja de cálculo.
-    Para practicar la raya entre «vigilar» y «ya».</div>
-  </div>
+    Para practicar la raya entre «vigilar» y «ya».<p class="liga-f"><a href="https://archive.ics.uci.edu/dataset/45/heart+disease" target="_blank" rel="noopener">Abrir la fuente</a></p></div>
+  </details>
 
-  <div class="fuente">
-    <a href="https://ourworldindata.org/grapher/happiness-cantril-ladder" target="_blank" rel="noopener">Our World in Data · Satisfacción con la vida</a>
+  <details class="fuente">
+    <summary>Our World in Data · Satisfacción con la vida</summary>
     <div class="d">Psicología. Escala de 0 a 10 por país y año, con todos los países
-    de la región. Filtren el suyo.</div>
-  </div>
+    de la región. Filtren el suyo.<p class="liga-f"><a href="https://ourworldindata.org/grapher/happiness-cantril-ladder" target="_blank" rel="noopener">Abrir la fuente</a></p></div>
+  </details>
 
-  <div class="fuente">
-    <a href="https://archive.ics.uci.edu/dataset/360/air+quality" target="_blank" rel="noopener">UCI · Air Quality</a>
+  <details class="fuente">
+    <summary>UCI · Air Quality</summary>
     <div class="d">Ingeniería. 9.358 lecturas de sensores. Los datos faltantes
-    vienen como −200: ahí está el ejercicio del que hablamos.</div>
-  </div>
+    vienen como −200: ahí está el ejercicio del que hablamos.<p class="liga-f"><a href="https://archive.ics.uci.edu/dataset/360/air+quality" target="_blank" rel="noopener">Abrir la fuente</a></p></div>
+  </details>
 
-  <div class="fuente">
-    <a href="https://archive.ics.uci.edu/dataset/222/bank+marketing" target="_blank" rel="noopener">UCI · Bank Marketing</a>
+  <details class="fuente">
+    <summary>UCI · Bank Marketing</summary>
     <div class="d">Negocio. Quién contrata y quién no. Ojo con la columna
-    <i>duration</i>: predice casi perfecto, pero solo se sabe después de llamar.</div>
-  </div>
+    <i>duration</i>: predice casi perfecto, pero solo se sabe después de llamar.<p class="liga-f"><a href="https://archive.ics.uci.edu/dataset/222/bank+marketing" target="_blank" rel="noopener">Abrir la fuente</a></p></div>
+  </details>
   <p class="legal">Todas las marcas y logotipos son propiedad de sus respectivos
   dueños. Se usan aquí de forma ilustrativa y con fines educativos.</p>
 </section>
@@ -1132,11 +1143,13 @@ body.pres .esc > *{max-width:min(31em,100%)}
     });
     pinta(isNaN(ini) ? 0 : Math.min(TOTAL, Math.max(0, ini)));
   } else {
-    var io = new IntersectionObserver(function(es){
-      es.forEach(function(en){
+    // El observer con una franja generosa: dispara cuando la escena entra
+    // en el tercio central, no en una banda estrecha del 10%.
+    var io = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(en){
         if (en.isIntersecting) pinta(+en.target.getAttribute('data-esc'));
       });
-    }, { rootMargin: '-45% 0px -45% 0px' });
+    }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
     escs.forEach(function(el){ io.observe(el); });
     pinta(0);
   }
