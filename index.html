@@ -132,8 +132,9 @@ kbd{font:inherit;font-size:14px;background:var(--sup);border:1px solid var(--lin
 .result .cifra{font-family:Fraunces,Georgia,serif;font-variation-settings:'WONK' 1,'opsz' 90;
   font-weight:600;font-size:clamp(18px,2vw,22px);line-height:1.14;display:block}
 .result .det{font-size:13.5px;color:var(--apagado);margin-top:4px;line-height:1.4}
-.result .fte{font-size:11px;color:var(--apagado);margin-top:6px;
-  padding-top:5px;border-top:1px solid rgba(0,133,93,.28);line-height:1.35}
+.result .fte{font-size:10.5px;color:var(--apagado);margin-top:7px;
+  line-height:1.3;opacity:.45;transition:opacity .2s}
+.result:hover .fte{opacity:.85}
 
 /* ---------- fotos ---------- */
 .foto{position:relative;border-radius:5px;overflow:hidden;background:var(--sup2)}
@@ -208,15 +209,15 @@ kbd{font:inherit;font-size:14px;background:var(--sup);border:1px solid var(--lin
 .apen{display:none;min-height:100svh;max-width:min(820px,100%);margin:0 auto;
   padding:clamp(20px,5vh,50px) clamp(20px,5vw,40px) 110px}
 .apen.viva{display:block}
-.fuente{border-top:1px solid var(--linea);font-size:16px}
-.fuente summary{cursor:pointer;padding:13px 0;font-weight:600;color:var(--azul);
+.fuente{border-top:1px solid var(--linea);font-size:15px}
+.fuente summary{cursor:pointer;padding:10px 0;font-weight:500;color:var(--apagado);font-size:14.5px;
   list-style:none;display:flex;align-items:center;gap:9px}
 .fuente summary::-webkit-details-marker{display:none}
 .fuente summary::before{content:'+';font-family:ui-monospace,monospace;
   font-weight:400;color:var(--apagado);width:1em;flex:0 0 auto}
 .fuente[open] summary::before{content:'\2212'}
 .fuente summary:hover{color:var(--tinta)}
-.fuente .d{color:var(--apagado);font-size:14.5px;padding:0 0 15px 1.55em;line-height:1.5}
+.fuente .d{color:var(--apagado);font-size:13.5px;padding:0 0 13px 1.55em;line-height:1.5}
 .legal{border-top:1px solid var(--linea);margin-top:30px;padding-top:14px;
   font-size:13px;color:var(--apagado)}
 
@@ -986,7 +987,7 @@ kbd{font:inherit;font-size:14px;background:var(--sup);border:1px solid var(--lin
 
 <section class="apen" data-esc="21">
   <h2>De dónde salió cada cosa</h2>
-  <p class="mut">Si quieren revisar por su cuenta, aquí están las fuentes y unos
+  <p class="mut" style="font-size:13.5px">Si quieren revisar por su cuenta, aquí están las fuentes y unos
   datos abiertos para practicar.</p>
 
   <details class="fuente">
