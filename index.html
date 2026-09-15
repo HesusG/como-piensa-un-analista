@@ -7,366 +7,240 @@
 <style>
 :root{
   --fondo:#FFFFFF;
-  --sup:#F4F5F7;          /* superficie suave */
-  --sup2:#E9ECF1;         /* superficie marcada */
-  --tinta:#141418;        /* texto principal */
-  --apagado:#5E6470;      /* texto secundario */
+  --sup:#F4F5F7;
+  --sup2:#E9ECF1;
+  --tinta:#141418;
+  --apagado:#5E6470;
   --linea:#D5D9E0;
   --azul:#1B5FD9;   --azul-p:#D8E7FF;  --azul-viz:#327EFF;
   --verde:#00855D;  --verde-p:#CCE7DF;
   --ambar:#B07A00;  --ambar-p:#FFF1CC;
-  --morado:#7B2FF7; --morado-p:#E4D9FF;
   --rojo:#E0341A;   --rojo-p:#FFDDD4;
-  --marca:#327EFF;        /* grupo 1 en gráficos, sobre blanco */
-  --marca2:#E0341A;       /* grupo 2 en gráficos */
+  --marca:#327EFF;
+  --marca2:#E0341A;
 }
 *{box-sizing:border-box}
 html,body{max-width:100%}
-body{overflow-x:clip}
-h1,h2,p,.prof{overflow-wrap:break-word}
 body{
   margin:0;background:var(--fondo);color:var(--tinta);
   font-family:Chivo,system-ui,-apple-system,Segoe UI,sans-serif;
-  font-size:21px;line-height:1.55;
-  -webkit-font-smoothing:antialiased;
+  font-size:20px;line-height:1.5;-webkit-font-smoothing:antialiased;
 }
 h1,h2{
   font-family:Fraunces,Georgia,serif;
   font-variation-settings:'WONK' 1,'opsz' 144,'SOFT' 20;
-  line-height:1.12;margin:0;font-weight:600;
-  letter-spacing:-.015em;
+  line-height:1.12;margin:0;font-weight:600;letter-spacing:-.015em;
 }
-h2{font-size:clamp(30px,4.4vw,46px);margin-bottom:22px}
-p{margin:0 0 1em}
+h2{font-size:clamp(24px,3.1vw,35px);margin-bottom:12px}
+p{margin:0 0 .85em}
 .mut{color:var(--apagado)}
-mark{background:var(--ambar-p);color:var(--tinta);padding:0 3px}
 b{font-weight:700}
+a{color:var(--azul)}
 
-/* ---------- una escena a la vez, a pantalla completa ---------- */
-.env{display:block;max-width:none;margin:0}
-.fig{position:static;height:auto;display:contents}
-.figin{display:contents}
-.narr{display:contents}
-
-.esc{display:none;min-height:100svh;padding:clamp(14px,2.6vh,26px) clamp(20px,4vw,64px) 78px;
-  max-width:1180px;margin:0 auto;flex-direction:column;justify-content:flex-start}
+/* ---------- la escena ---------- */
+.esc{display:none;min-height:100svh;flex-direction:column;justify-content:center;
+  max-width:1120px;margin:0 auto;
+  padding:clamp(12px,2.2vh,22px) clamp(20px,4vw,56px) 88px}
 .esc.viva{display:flex}
-.esc > *{max-width:min(46em,100%)}
-.esc h2{margin-bottom:14px}
-.esc p{font-size:clamp(17px,1.55vw,21px)}
+.esc > p, .esc > h2{max-width:min(42em,100%)}
+.esc p{font-size:clamp(15.5px,1.35vw,18px);margin-bottom:.7em}
 
-/* el visual de cada escena, debajo del texto y a lo ancho */
-.vis{display:none;width:100%;max-width:100%;margin-top:clamp(14px,2.4vh,26px)}
-.vis.viva{display:block}
-.vis-svg{display:none;width:100%;max-width:620px;margin:clamp(14px,2.4vh,26px) auto 0}
-.vis-svg.viva{display:block}
+/* el visual, debajo del texto y a lo ancho */
+.vis{margin-top:clamp(10px,1.8vh,20px);width:100%}
+.vis > svg{width:100%;max-width:520px;max-height:42svh;height:auto;
+  display:block;margin:0 auto;overflow:visible}
 
-/* navegación */
-.nav{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;
-  justify-content:space-between;padding:10px clamp(14px,3vw,30px) 16px;
-  pointer-events:none;z-index:70}
-.nav button{pointer-events:auto;background:#fff;border:1px solid var(--linea);
-  color:var(--tinta);width:46px;height:46px;border-radius:50%;cursor:pointer;
-  font-size:19px;line-height:1;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 10px rgba(20,20,24,.09);transition:border-color .2s,background .2s}
-.nav button:hover{border-color:var(--apagado)}
-.nav button[disabled]{opacity:.28;cursor:default}
-
-
-/* el gráfico acumulado: uno solo, se muestra en las escenas que no traen visual */
-.graf-panel{display:none;width:100%;max-width:min(560px,100%);
-  margin:clamp(14px,2.4vh,26px) auto 0}
-.graf-panel.viva{display:block}
-
-/* ---------- portada ---------- */
-.portada{min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-  padding:0 clamp(20px,6vw,90px);max-width:min(1200px,100%);margin:0 auto}
-h1{font-size:clamp(34px,7.4vw,92px);max-width:min(14em,100%)}
-.sub{font-size:clamp(18px,2.1vw,25px);color:var(--apagado);max-width:min(30em,100%);margin-top:26px}
-.arranque{margin-top:44px;font-size:17px;color:var(--apagado)}
-kbd{font:inherit;background:var(--sup2);border:1px solid var(--linea);
-  border-radius:4px;padding:2px 8px;color:var(--tinta)}
-
-/* ---------- figura ---------- */
-svg{width:100%;height:auto;display:block;overflow:visible}
-.cap{font-family:Chivo;font-size:14px;fill:var(--apagado)}
-.cap-f{font-family:Chivo;font-size:15px;fill:var(--tinta);font-weight:600}
-.eje{stroke:var(--linea);stroke-width:1.5}
-.lema{font-family:Fraunces;font-variation-settings:'WONK' 1,'opsz' 90;
-  font-size:29px;fill:var(--tinta);font-weight:600}
-
-[data-desde]{opacity:0;transition:opacity .45s ease}
-.on{opacity:1}
-[data-solo]{opacity:0;transition:opacity .4s ease}
-.on-solo{opacity:1}
-.tapar{opacity:0!important}
-
-/* ---------- piezas ---------- */
-.par{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:26px 0}
-.opt{background:var(--sup);border:1px solid var(--linea);border-radius:3px;
-  padding:18px;text-align:left;color:inherit;font:inherit;cursor:pointer;
-  transition:border-color .2s,background .2s}
-.opt:hover{border-color:var(--apagado)}
-.opt .t{font-weight:700;display:block;margin-bottom:3px}
-.opt .g{font-size:15px;color:var(--apagado)}
-.opt[aria-pressed=true]{border-color:var(--azul);background:var(--azul-p)}
-
-.herr{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0}
-.herr button{background:var(--sup);border:1px solid var(--linea);color:var(--tinta);
-  font:inherit;font-size:17px;padding:9px 16px;border-radius:3px;cursor:pointer;
-  transition:border-color .2s,background .2s}
-.herr button:hover{border-color:var(--apagado)}
-.herr button[aria-pressed=true]{background:var(--ambar);color:#14131A;border-color:var(--ambar);font-weight:600}
-.salida{background:var(--sup);border-left:3px solid var(--azul);padding:16px 20px;
-  min-height:92px;font-size:18px}
-.salida .q{color:var(--apagado);font-size:15px;display:block;margin-bottom:5px}
-
-.prof{border-top:1px solid var(--linea);padding:13px 0}
-.prof h3{font-family:Fraunces;font-variation-settings:'WONK' 1,'opsz' 60;
-  font-size:25px;margin:0 0 6px;font-weight:600}
-.prof .caso{font-size:17px;margin:0 0 7px}
-.liga{font-size:15px;color:var(--apagado);padding-left:12px;border-left:3px solid var(--verde)}
-.liga b{color:var(--tinta);font-weight:600}
-
-/* ---------- apéndice ---------- */
-.apen{max-width:min(820px,100%);margin:0 auto;padding:14vh clamp(20px,5vw,40px) 16vh}
-.apen h2{margin-bottom:28px}
-.fuente{border-top:1px solid var(--linea);padding:0;font-size:16px}
-.fuente summary{cursor:pointer;padding:13px 0;font-weight:600;color:var(--azul);
-  list-style:none;display:flex;align-items:center;gap:9px}
-.fuente summary::-webkit-details-marker{display:none}
-.fuente summary::before{content:'+';font-family:ui-monospace,monospace;
-  font-weight:400;color:var(--apagado);width:1em;flex:0 0 auto}
-.fuente[open] summary::before{content:'2'}
-.fuente summary:hover{color:var(--tinta)}
-.fuente .d{color:var(--apagado);font-size:14.5px;padding:0 0 15px 1.55em;line-height:1.5}
-.fuente .liga-f{margin:9px 0 0}
-.fuente .liga-f a{color:var(--azul);text-decoration:none;border-bottom:1px solid var(--linea)}
-.fuente .liga-f a:hover{border-color:var(--azul)}
-
-.barra{position:fixed;left:0;right:0;bottom:0;height:2px;background:var(--linea);z-index:60}
+/* ---------- navegación ---------- */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:70;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  padding:12px clamp(14px,3vw,30px) 18px;pointer-events:none}
+.nav button{pointer-events:auto;display:inline-flex;align-items:center;gap:9px;
+  background:#fff;border:1px solid var(--linea);color:var(--tinta);
+  font:inherit;font-size:16px;padding:11px 20px;border-radius:999px;cursor:pointer;
+  box-shadow:0 2px 12px rgba(20,20,24,.1);transition:border-color .18s,background .18s}
+.nav button:hover:not([disabled]){border-color:var(--azul);color:var(--azul)}
+.nav button[disabled]{opacity:.3;cursor:default}
+.barra{position:fixed;left:0;right:0;bottom:0;height:3px;background:var(--linea);z-index:71}
 .barra i{display:block;height:100%;width:0;background:var(--azul);transition:width .3s}
 
-
-@media (max-width:900px){
-  body{font-size:18px}
-  h1{font-size:clamp(30px,8vw,48px);max-width:100%}
-  h2{font-size:clamp(23px,5.8vw,31px)}
-  .sub{font-size:17px}
-  .prof h3{font-size:20px}
-  .prof .caso{font-size:17px}
-  .esc{padding:16px 20px 92px}
-  .esc p{font-size:16.5px}
-  .par{grid-template-columns:1fr}
-  .nav button{width:52px;height:52px;font-size:21px}
-}
-@media (prefers-reduced-motion:reduce){
-  *{transition:none!important;animation:none!important}
-}
-
-
-/* ---------- portada: la cuadrícula de mosaicos como héroe ---------- */
-.portada{position:relative;overflow:hidden}
-.rejilla{position:absolute;top:0;right:0;bottom:0;width:62%;
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));
-  grid-auto-rows:128px;gap:9px;padding:20px;pointer-events:none;
-  -webkit-mask-image:linear-gradient(100deg,transparent 0,transparent 20%,#000 62%);
-  mask-image:linear-gradient(100deg,transparent 0,transparent 20%,#000 62%)}
+/* ---------- portada ---------- */
+.portada{display:none;min-height:100svh;flex-direction:column;justify-content:center;
+  position:relative;overflow:hidden;padding:0 clamp(20px,6vw,90px)}
+.portada.viva{display:flex}
+h1{font-size:clamp(34px,7vw,84px);max-width:min(13em,100%)}
+.sub{font-size:clamp(17px,2vw,24px);color:var(--apagado);max-width:min(28em,100%);margin-top:24px}
+.arranque{margin-top:38px;font-size:16px;color:var(--apagado)}
+kbd{font:inherit;font-size:14px;background:var(--sup);border:1px solid var(--linea);
+  border-radius:4px;padding:2px 7px}
+.rejilla{position:absolute;top:0;right:0;bottom:0;width:60%;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));
+  grid-auto-rows:124px;gap:9px;padding:20px;pointer-events:none;
+  -webkit-mask-image:linear-gradient(100deg,transparent 0,transparent 22%,#000 64%);
+  mask-image:linear-gradient(100deg,transparent 0,transparent 22%,#000 64%)}
 .rejilla i{border-radius:5px;display:block}
 .port-txt{position:relative;z-index:1;max-width:min(19em,72%)}
-@media (max-width:900px){
-  .rejilla{width:100%;opacity:.22;
-    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 70%);
-    mask-image:linear-gradient(180deg,transparent 0,#000 70%)}
-  .port-txt{max-width:100%}
-}
+.cap{font-family:Chivo;font-size:13px;fill:var(--apagado)}
+.cap-f{font-family:Chivo;font-size:14px;fill:var(--tinta);font-weight:600}
+.lema{font-family:Fraunces;font-variation-settings:'WONK' 1,'opsz' 90;
+  font-size:30px;fill:var(--tinta);font-weight:600}
 
-
-/* ---------- fotos, con tratamiento unificado ---------- */
-.foto{position:relative;border-radius:5px;overflow:hidden;background:var(--sup2)}
-.foto img{display:block;width:100%;height:100%;object-fit:cover;
-  filter:grayscale(100%) contrast(1.06)}
-.foto .et-foto{position:absolute;left:0;bottom:0;right:0;
-  background:linear-gradient(transparent,rgba(20,20,24,.86));
-  color:#fff;font-size:14px;padding:26px 14px 11px;line-height:1.3}
-.foto .et-foto b{display:block;font-size:16px;font-weight:700}
-
-
-.dos-fotos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.dos-fotos .foto{aspect-ratio:3/4;max-height:30svh}
-.vis > .foto{width:100%;aspect-ratio:16/10;max-height:32svh;margin:0 auto}
-@media (max-width:900px){
-  .dos-fotos{grid-template-columns:1fr;gap:9px}
-  .dos-fotos .foto{aspect-ratio:16/10}
-}
-
-
-/* ---------- el resultado: qué cambió de verdad ---------- */
-.result{border:1px solid var(--verde);border-radius:4px;background:var(--verde-p);
-  padding:13px 15px;margin-top:12px}
-.result .q{font:600 11.5px/1 Chivo,sans-serif;letter-spacing:.06em;
-  color:var(--verde);display:block;margin-bottom:7px}
-.result .cifra{font-family:Fraunces,Georgia,serif;
-  font-variation-settings:'WONK' 1,'opsz' 90;font-weight:600;
-  font-size:25px;line-height:1.15;color:var(--tinta);display:block}
-.result .det{font-size:14px;color:var(--apagado);margin-top:5px}
-.result .fte{font-size:11.5px;color:var(--apagado);margin-top:8px;
-  padding-top:7px;border-top:1px solid rgba(0,133,93,.28)}
-.caso{display:grid;gap:11px}
-.caso h3{font-family:Fraunces;font-variation-settings:'WONK' 1,'opsz' 60;
-  font-size:22px;margin:0;font-weight:600}
-@media (max-width:900px){ .result .cifra{font-size:21px} }
-
-/* ---------- entra → sale ---------- */
-.es{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:6px 0}
-.vis .es{font-size:1.06em}
-.es-caja{border:1px solid var(--linea);border-radius:4px;overflow:hidden;
-  background:#fff;min-width:0}
-.es-caja > h4{margin:0;font:600 11.5px/1 Chivo,sans-serif;letter-spacing:.06em;
-  color:var(--apagado);padding:8px 11px;background:var(--sup);
-  border-bottom:1px solid var(--linea)}
-.es-cuerpo{padding:11px;overflow-x:auto}
-.es .fle-g{color:var(--apagado);text-align:center;font-size:20px;line-height:1.1}
-.es .fle-g small{display:block;font-size:11px;margin-top:3px;color:var(--apagado)}
-
-/* la tabla cruda: fea a propósito */
-.tabla{width:100%;border-collapse:collapse;
-  font:13.5px/1.62 ui-monospace,SFMono-Regular,Menlo,monospace}
-.tabla th{text-align:left;font-weight:700;color:var(--apagado);
-  border-bottom:1px solid var(--linea);padding:3px 7px 5px;white-space:nowrap}
-.tabla td{padding:3px 7px;color:var(--tinta);white-space:nowrap}
-.tabla tr.mas td{color:var(--apagado)}
-.tabla .num{text-align:right}
-
-/* el insight */
-.ins{font-size:17px;line-height:1.4}
-.ins .grande{font-family:Fraunces,Georgia,serif;
-  font-variation-settings:'WONK' 1,'opsz' 90;font-weight:600;
-  font-size:26px;line-height:1.18;display:block;margin-bottom:10px}
-.ins .accion{margin-top:11px;padding-top:9px;border-top:1px solid var(--linea);
-  font-size:15px;color:var(--apagado)}
-.ins .accion b{color:var(--azul)}
-
-@media (max-width:900px){
-  .es{grid-template-columns:1fr;gap:8px}
-  .es .fle-g{transform:rotate(90deg);font-size:17px}
-  .es .fle-g small{display:none}
-  .tabla{font-size:11.5px}
-  .ins .grande{font-size:20px}
-}
-
-
-/* ---------- el mapa del oficio (siempre visible) ---------- */
-.mapa{opacity:0;transition:opacity .4s;width:100%;flex:0 0 auto;align-self:center;max-width:620px}
-.mapa.on{opacity:1}
-.mapa svg{width:100%;height:auto;display:block;overflow:visible;min-width:0}
-.mapa .grupo{fill:#fff;stroke:var(--linea);stroke-width:1}
-.mapa .et-grupo{font:600 10px Chivo,sans-serif;fill:var(--apagado)}
-.mapa .caja{fill:var(--sup);stroke:var(--linea);stroke-width:1;rx:2}
-.mapa .txt{font:12px Chivo,sans-serif;fill:var(--tinta)}
-.mapa .txt-s{font:10.5px Chivo,sans-serif;fill:var(--apagado)}
-.mapa .fle{stroke:var(--apagado);stroke-width:1.3;fill:none;marker-end:url(#pta)}
-/* lo que está activo se enciende, como el rojo de las slides de referencia */
-.mapa .viva .caja{fill:var(--rojo-p);stroke:var(--rojo);stroke-width:2}
-.mapa .viva .txt{font-weight:700}
-.mapa .marco{fill:none;stroke:var(--rojo);stroke-width:2;rx:3;opacity:0;
-  transition:opacity .35s}
-.mapa .viva .marco{opacity:1}
-.mapa .paso{opacity:.42;transition:opacity .35s}
-.mapa .paso.viva{opacity:1}
-@media (max-width:900px){ .mapa{margin-bottom:12px} }
-
-/* ---------- franja del recorrido (transversal) ---------- */
-.ruta{display:flex;align-items:center;gap:6px;margin-bottom:26px;
-  opacity:0;transition:opacity .4s;flex-wrap:nowrap}
-.ruta.on{opacity:1}
-.ruta .paso{flex:1;min-width:0;text-align:center;padding:7px 4px;border-radius:3px;
-  font-size:13px;color:var(--apagado);background:var(--sup);
-  border:1px solid var(--linea);transition:background .35s,color .35s,border-color .35s;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ruta .paso.viva{background:var(--azul);color:#fff;border-color:var(--azul);font-weight:700}
-.ruta .fle{color:var(--linea);font-size:13px;flex:0 0 auto}
-
-/* ---------- pantalla estilo streaming ---------- */
-.vis{display:none;align-self:center;width:100%;max-width:620px}
-.vis.on{display:block}
-.fig.con-vis > svg{display:none}
-.tele{background:#141414;border-radius:6px;padding:16px 0 18px;
-  box-shadow:0 14px 34px rgba(20,20,24,.18);overflow:hidden}
+/* ---------- pantalla de streaming ---------- */
+.tele{background:#141414;border-radius:6px;padding:14px 0 16px;overflow:hidden;
+  box-shadow:0 12px 30px rgba(20,20,24,.16);max-width:640px;margin:0 auto}
 .tele .marca{font-family:Fraunces,Georgia,serif;font-variation-settings:'WONK' 1,'opsz' 90;
-  color:#E50914;font-size:26px;font-weight:700;letter-spacing:-.04em;
-  padding:0 16px;margin-bottom:14px;line-height:1}
-.tele .fila{margin-bottom:14px}
-.tele .fila b{display:block;color:#fff;font-size:13px;font-weight:600;
-  padding:0 16px;margin-bottom:7px}
-.tira{display:flex;gap:7px;padding:0 16px}
+  color:#E50914;font-size:23px;font-weight:700;letter-spacing:-.04em;
+  padding:0 14px;margin-bottom:12px;line-height:1}
+.tele .fila{margin-bottom:12px}
+.tele .fila b{display:block;color:#fff;font-size:12.5px;font-weight:600;padding:0 14px;margin-bottom:6px}
+.tira{display:flex;gap:6px;padding:0 14px}
 .mos{flex:1;aspect-ratio:2/3;border-radius:4px;display:flex;align-items:flex-end;
-  padding:7px 6px;font-size:11px;color:#fff;line-height:1.15;
-  transition:transform .35s,box-shadow .35s;transform-origin:center bottom}
-.mos.sel{transform:scale(1.09);box-shadow:0 10px 26px rgba(0,0,0,.45);
-  outline:3px solid var(--azul);outline-offset:2px}
+  padding:6px 5px;font-size:10.5px;color:#fff;line-height:1.15}
 .m1{background:linear-gradient(160deg,#5B3A8C,#2E1D4A)}
 .m2{background:linear-gradient(160deg,#1F5A7A,#0E2C3D)}
 .m3{background:linear-gradient(160deg,#7A3B2E,#3D1B14)}
 .m4{background:linear-gradient(160deg,#2F6B4F,#143026)}
 .m5{background:linear-gradient(160deg,#6B5A2E,#332B14)}
 
-/* ---------- herramientas con icono ---------- */
-.herr{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:22px 0}
-.herr button{display:flex;align-items:center;gap:11px;text-align:left;
+/* ---------- entra → sale ---------- */
+.es{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;max-width:820px;margin:0 auto}
+.es-caja{border:1px solid var(--linea);border-radius:4px;overflow:hidden;background:#fff;min-width:0}
+.es-caja h4{margin:0;font:600 11px/1 Chivo,sans-serif;letter-spacing:.06em;
+  color:var(--apagado);padding:8px 11px;background:var(--sup);border-bottom:1px solid var(--linea)}
+.es-cuerpo{padding:9px;overflow-x:auto}
+.fle-g{color:var(--apagado);text-align:center;font-size:19px;line-height:1.1}
+.fle-g small{display:block;font-size:11px;margin-top:3px}
+
+.tabla{width:100%;border-collapse:collapse;font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
+.tabla th{text-align:left;font-weight:700;color:var(--apagado);
+  border-bottom:1px solid var(--linea);padding:3px 7px 5px;white-space:nowrap}
+.tabla td{padding:3px 7px;white-space:nowrap}
+.tabla tr.mas td{color:var(--apagado)}
+.tabla .num{text-align:right}
+
+.ins{font-size:14.5px;line-height:1.38}
+.ins .grande{font-family:Fraunces,Georgia,serif;font-variation-settings:'WONK' 1,'opsz' 90;
+  font-weight:600;font-size:19px;line-height:1.16;display:block;margin-bottom:6px}
+.ins .accion{margin-top:10px;padding-top:8px;border-top:1px solid var(--linea);
+  font-size:14.5px;color:var(--apagado)}
+.ins .accion b{color:var(--azul)}
+
+/* ---------- el resultado ---------- */
+.result{border:1px solid var(--verde);border-radius:4px;background:var(--verde-p);
+  padding:11px 15px;margin:11px auto 0;max-width:820px}
+.result .q{font:600 11px/1 Chivo,sans-serif;letter-spacing:.06em;
+  color:var(--verde);display:block;margin-bottom:7px}
+.result .cifra{font-family:Fraunces,Georgia,serif;font-variation-settings:'WONK' 1,'opsz' 90;
+  font-weight:600;font-size:clamp(18px,2vw,22px);line-height:1.14;display:block}
+.result .det{font-size:13.5px;color:var(--apagado);margin-top:4px;line-height:1.4}
+.result .fte{font-size:11.5px;color:var(--apagado);margin-top:8px;
+  padding-top:7px;border-top:1px solid rgba(0,133,93,.28)}
+
+/* ---------- fotos ---------- */
+.foto{position:relative;border-radius:5px;overflow:hidden;background:var(--sup2)}
+.foto img{display:block;width:100%;height:100%;object-fit:cover;
+  filter:grayscale(100%) contrast(1.06)}
+.foto .et-foto{position:absolute;left:0;right:0;bottom:0;
+  background:linear-gradient(transparent,rgba(20,20,24,.86));
+  color:#fff;font-size:13px;padding:24px 13px 10px;line-height:1.3}
+.foto .et-foto b{display:block;font-size:15px;font-weight:700}
+.dos-fotos{display:grid;grid-template-columns:1fr 1fr;gap:11px;max-width:620px;margin:0 auto}
+.vis .dos-fotos > .foto{height:250px;aspect-ratio:auto}
+.vis > .una-foto{width:100%;max-width:560px;height:230px;aspect-ratio:auto;margin:0 auto}
+
+/* ---------- herramientas ---------- */
+.herr{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 auto 14px;max-width:820px}
+.herr button{display:flex;align-items:center;gap:8px;justify-content:center;
   background:var(--sup);border:1px solid var(--linea);color:var(--tinta);
-  font:inherit;font-size:17px;padding:12px 14px;border-radius:4px;cursor:pointer;
-  transition:border-color .2s,background .2s}
+  font:inherit;font-size:15px;padding:11px 10px;border-radius:4px;cursor:pointer;
+  transition:border-color .18s,background .18s}
 .herr button:hover{border-color:var(--apagado)}
-.herr button[aria-pressed=true]{background:var(--azul-p);border-color:var(--azul)}
-.ico{width:26px;height:26px;display:inline-flex;align-items:center;
-  justify-content:center;flex:0 0 auto}
+.herr button[aria-pressed=true]{background:var(--azul-p);border-color:var(--azul);font-weight:600}
+.ico{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
 .ico svg{max-width:100%;max-height:100%}
-.ico-pg{padding:1px}
-.ico-mono svg{fill:currentColor;width:100%;height:100%}
 
-/* ---------- diagrama narrado (estilo slides) ---------- */
-.flujo{display:flex;align-items:flex-start;gap:0;margin:8px 0}
-.vis-flujo .et .caja{padding:17px 8px;font-size:17px}
-.vis-flujo .et .pie{font-size:13.5px;margin-top:11px}
-.et{flex:1;min-width:0;text-align:center}
-.et .caja{background:var(--sup);border:1px solid var(--linea);border-radius:3px;
-  padding:13px 6px;font-weight:700;font-size:15px;color:var(--tinta)}
-.et.viva .caja{border-color:var(--azul);background:var(--azul-p)}
-.et .pie{font-size:12.5px;color:var(--apagado);margin-top:9px;line-height:1.35;padding:0 3px}
-.et.viva .pie{color:var(--tinta)}
-.flujo .fle{flex:0 0 18px;color:var(--linea);text-align:center;padding-top:14px;font-size:15px}
-
-/* ---------- mini diagrama por profesión ---------- */
+/* ---------- profesiones ---------- */
+.prof{border-top:1px solid var(--linea);padding:9px 0}
+.prof h3{font-family:Fraunces;font-variation-settings:'WONK' 1,'opsz' 60;
+  font-size:21px;margin:0 0 5px;font-weight:600}
+.prof .caso{font-size:16.5px;margin:0 0 7px}
+.liga{font-size:14.5px;color:var(--apagado);padding-left:12px;border-left:3px solid var(--verde)}
+.liga b{color:var(--tinta);font-weight:600}
 .mini{display:flex;gap:4px;margin:7px 0 0;font-size:10.5px}
-.mini span{flex:1;background:var(--sup);border:1px solid var(--linea);
-  border-radius:2px;padding:5px 3px;text-align:center;color:var(--apagado);
+.mini span{flex:1;background:var(--sup);border:1px solid var(--linea);border-radius:2px;
+  padding:5px 3px;text-align:center;color:var(--apagado);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mini span.ac{border-color:var(--azul);background:var(--azul-p);color:var(--tinta);font-weight:600}
 
-/* ---------- operaciones simples (escena 2) ---------- */
-.ops{display:flex;gap:10px;margin:24px 0}
+/* ---------- las tres operaciones ---------- */
+.ops{display:flex;gap:10px;max-width:520px;margin:0 auto}
 .op{flex:1;background:var(--sup);border:1px solid var(--linea);border-radius:4px;
   padding:14px 10px;text-align:center}
-.op .n{font-family:Chivo,system-ui,sans-serif;font-weight:700;
-  font-size:40px;color:var(--azul);line-height:1;margin-bottom:8px}
-.op .q{font-size:15px;color:var(--tinta)}
+.op .n{font-weight:700;font-size:36px;color:var(--azul);line-height:1;margin-bottom:6px}
+.op .q{font-size:14.5px}
 
-/* ---------- pie legal ---------- */
-.legal{border-top:1px solid var(--linea);margin-top:34px;padding-top:15px;
+/* ---------- la pregunta ---------- */
+.par{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:760px;margin:0 auto}
+.opt{background:var(--sup);border:1px solid var(--linea);border-radius:4px;
+  padding:16px;text-align:left;color:inherit;font:inherit;cursor:pointer;
+  transition:border-color .18s,background .18s}
+.opt:hover{border-color:var(--apagado)}
+.opt[aria-pressed=true]{border-color:var(--azul);background:var(--azul-p)}
+.opt .t{font-weight:700;display:block;margin-bottom:3px}
+.opt .g{font-size:14px;color:var(--apagado)}
+
+/* ---------- diagrama del camino ---------- */
+.flujo{display:flex;align-items:flex-start;max-width:860px;margin:0 auto}
+.et{flex:1;min-width:0;text-align:center}
+.et .caja{background:var(--sup);border:1px solid var(--linea);border-radius:3px;
+  padding:14px 6px;font-weight:700;font-size:15px}
+.et .pie{font-size:12.5px;color:var(--apagado);margin-top:8px;line-height:1.35;padding:0 3px}
+.flujo .fle{flex:0 0 18px;color:var(--linea);text-align:center;padding-top:15px;font-size:15px}
+
+/* ---------- mapa del recorrido ---------- */
+.mapa{display:flex;align-items:center;gap:5px;margin-bottom:13px;max-width:760px;flex-wrap:nowrap}
+.mapa .paso{flex:1;min-width:0;text-align:center;padding:5px 4px;border-radius:3px;
+  font-size:11.5px;color:var(--apagado);background:var(--sup);border:1px solid var(--linea);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mapa .paso.viva{background:var(--azul);color:#fff;border-color:var(--azul);font-weight:700}
+.mapa .fle{color:var(--linea);font-size:12px;flex:0 0 auto}
+
+/* ---------- apéndice ---------- */
+.apen{display:none;min-height:100svh;max-width:min(820px,100%);margin:0 auto;
+  padding:clamp(20px,5vh,50px) clamp(20px,5vw,40px) 110px}
+.apen.viva{display:block}
+.fuente{border-top:1px solid var(--linea);font-size:16px}
+.fuente summary{cursor:pointer;padding:13px 0;font-weight:600;color:var(--azul);
+  list-style:none;display:flex;align-items:center;gap:9px}
+.fuente summary::-webkit-details-marker{display:none}
+.fuente summary::before{content:'+';font-family:ui-monospace,monospace;
+  font-weight:400;color:var(--apagado);width:1em;flex:0 0 auto}
+.fuente[open] summary::before{content:'\2212'}
+.fuente summary:hover{color:var(--tinta)}
+.fuente .d{color:var(--apagado);font-size:14.5px;padding:0 0 15px 1.55em;line-height:1.5}
+.legal{border-top:1px solid var(--linea);margin-top:30px;padding-top:14px;
   font-size:13px;color:var(--apagado)}
 
-@media (max-width:900px){
-  .herr{grid-template-columns:1fr}
-  .ruta .paso{font-size:11px;padding:6px 3px}
-  .flujo{flex-direction:column;gap:10px}
-  .flujo .fle{display:none}
-  .et .pie{margin-bottom:4px}
-  .ops{flex-direction:column}
-  .tele .marca{font-size:22px}
-}
-
 :focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+@media (max-width:900px){
+  body{font-size:18px}
+  h2{font-size:clamp(22px,5.6vw,30px)}
+  .esc{padding:14px 20px 100px}
+  .es{grid-template-columns:1fr;gap:9px}
+  .fle-g{transform:rotate(90deg)}
+  .fle-g small{display:none}
+  .herr{grid-template-columns:1fr 1fr}
+  .par{grid-template-columns:1fr}
+  .ops{flex-direction:column}
+  .vis .dos-fotos > .foto{height:150px}
+  .vis > .una-foto{height:150px}
+  .flujo{flex-direction:column;gap:9px}
+  .flujo .fle{display:none}
+  .mapa{font-size:10px;gap:3px}
+  .mapa .paso{padding:5px 2px;font-size:10px}
+  .nav button{font-size:15px;padding:12px 18px}
+}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -378,8 +252,8 @@ svg{width:100%;height:auto;display:block;overflow:visible}
 </svg>
 
 <nav class="nav">
-  <button id="atras" aria-label="Escena anterior">&#9664;</button>
-  <button id="adelante" aria-label="Escena siguiente">&#9654;</button>
+  <button id="atras" type="button">&#9664; Anterior</button>
+  <button id="adelante" type="button">Siguiente &#9654;</button>
 </nav>
 <div class="barra"><i id="prog"></i></div>
 
@@ -389,143 +263,16 @@ svg{width:100%;height:auto;display:block;overflow:visible}
     <h1>Cómo piensa<br>un analista de datos</h1>
     <p class="sub">Alguien decidió qué aparece en tu pantalla esta mañana.
     Vamos a ver cómo se toma esa decisión: sin código y sin fórmulas.</p>
-    <p class="arranque">Bajen para empezar. Para presentar: <kbd>&rarr;</kbd> avanza, <kbd>&larr;</kbd> regresa.</p>
+    <p class="arranque">Avanza con el botón de abajo o con <kbd>&rarr;</kbd></p>
   </div>
 </section>
-
-<div class="graf-panel" id="grafPanel"><svg id="grafico" viewBox="0 0 460 400" role="img" aria-labelledby="figt">
-      <title id="figt">Perfiles de Netflix colocados según qué tanto ven comedia y qué tanto ven suspenso</title>
-
-      <!-- ejes -->
-      <g data-desde="4" id="gejes">
-        <line class="eje" x1="70" y1="330" x2="420" y2="330"/>
-        <line class="eje" x1="70" y1="40"  x2="70"  y2="330"/>
-        <text class="cap" x="245" y="366" text-anchor="middle">horas de comedia al mes</text>
-        <text class="cap" x="-185" y="26" transform="rotate(-90)" text-anchor="middle">horas de suspenso al mes</text>
-      </g>
-
-      <!-- yo (escena 4) -->
-      <g data-desde="4" id="g4">
-        <circle cx="140" cy="120" r="12" fill="var(--azul)" stroke="#fff" stroke-width="3"/>
-        <text class="cap-f" x="140" y="86" text-anchor="middle">ustedes</text>
-      </g>
-
-      <!-- vecinos (escena 5) -->
-      <g data-desde="5" id="g5">
-        <circle cx="118" cy="146" r="7" fill="var(--marca)" opacity=".85"/>
-        <circle cx="182" cy="132" r="7" fill="var(--marca)" opacity=".85"/>
-        <circle cx="100" cy="132" r="7" fill="var(--marca)" opacity=".85"/>
-        <circle cx="172" cy="148" r="7" fill="var(--marca)" opacity=".85"/>
-        <circle cx="146" cy="168" r="7" fill="var(--marca)" opacity=".85"/>
-        <text class="cap" x="140" y="200" text-anchor="middle">gente que ve parecido a ustedes</text>
-      </g>
-
-      <!-- el otro grupo (escena 6) -->
-      <g data-desde="6" id="g6">
-        <circle cx="340" cy="232" r="7" fill="var(--marca2)" opacity=".85"/>
-        <circle cx="382" cy="196" r="7" fill="var(--marca2)" opacity=".85"/>
-        <circle cx="352" cy="186" r="7" fill="var(--marca2)" opacity=".85"/>
-        <circle cx="392" cy="244" r="7" fill="var(--marca2)" opacity=".85"/>
-        <circle cx="318" cy="206" r="7" fill="var(--marca2)" opacity=".85"/>
-        <circle cx="366" cy="262" r="7" fill="var(--marca2)" opacity=".85"/>
-        <text class="cap" x="356" y="292" text-anchor="middle">otro grupo, otros gustos</text>
-      </g>
-
-      <!-- ruido (escena 8) -->
-      <g data-solo="8" id="ruido"></g>
-
-      <!-- dato imposible (escena 9) -->
-      <g data-solo="9">
-        <rect x="86" y="130" width="290" height="120" rx="3" fill="var(--sup)" stroke="var(--linea)"/>
-        <text class="cap-f" x="106" y="162">perfil 40318</text>
-        <text class="cap"   x="106" y="186">vio 31 horas seguidas, sin pausa</text>
-        <text class="cap-f" x="106" y="216" fill="var(--rojo)">nadie ve 31 horas sin parar</text>
-        <text class="cap"   x="106" y="238">se quedó la tele prendida</text>
-      </g>
-
-
-      <!-- lema (escena 12 en adelante) -->
-      <g data-solo="12" data-tambien="13,14">
-        <text class="lema" x="245" y="178" text-anchor="middle">cambia la tabla</text>
-        <text class="lema" x="245" y="216" text-anchor="middle" fill="var(--azul)">no cambia el método</text>
-      </g>
-    </svg></div>
-<div class="env">
-  <!-- ====================== FIGURA ====================== -->
-  <div class="fig"><div class="figin">
-    <div class="mapa" id="mapa">
-      <svg viewBox="0 0 620 200" role="img" aria-label="El recorrido completo: alguien pregunta, los datos existen, una herramienta los ordena, sale un hallazgo y alguien decide">
-        <defs><marker id="pta" viewBox="0 0 8 8" refX="7" refY="4"
-          markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M0 1 L7 4 L0 7 z" fill="var(--apagado)"/></marker></defs>
-
-        <g class="paso" data-paso="1">
-          <rect class="marco" x="4" y="30" width="112" height="70"/>
-          <rect class="caja" x="12" y="38" width="96" height="54"/>
-          <text class="txt" x="60" y="60" text-anchor="middle">alguien</text>
-          <text class="txt" x="60" y="76" text-anchor="middle">pregunta</text>
-          <text class="txt-s" x="60" y="112" text-anchor="middle">«¿qué le muestro?»</text>
-        </g>
-        <path class="fle" d="M120 65 L146 65"/>
-
-        <g class="paso" data-paso="2">
-          <rect class="marco" x="142" y="14" width="126" height="102"/>
-          <text class="et-grupo" x="152" y="28">lo que ya existe</text>
-          <rect class="grupo" x="150" y="32" width="110" height="76"/>
-          <rect class="caja" x="158" y="40" width="94" height="28"/>
-          <text class="txt" x="205" y="58" text-anchor="middle">la tabla</text>
-          <rect class="caja" x="158" y="72" width="94" height="28"/>
-          <text class="txt-s" x="205" y="90" text-anchor="middle">millones de filas</text>
-        </g>
-        <path class="fle" d="M272 65 L298 65"/>
-
-        <g class="paso" data-paso="3">
-          <rect class="marco" x="294" y="14" width="130" height="102"/>
-          <text class="et-grupo" x="304" y="28">herramientas</text>
-          <rect class="grupo" x="302" y="32" width="114" height="76"/>
-          <rect class="caja" x="309" y="39" width="48" height="22"/>
-          <text class="txt-s" x="333" y="54" text-anchor="middle">SQL</text>
-          <rect class="caja" x="361" y="39" width="48" height="22"/>
-          <text class="txt-s" x="385" y="54" text-anchor="middle">hoja</text>
-          <rect class="caja" x="309" y="65" width="48" height="22"/>
-          <text class="txt-s" x="333" y="80" text-anchor="middle">estad.</text>
-          <rect class="caja" x="361" y="65" width="48" height="22"/>
-          <text class="txt-s" x="385" y="80" text-anchor="middle">BI</text>
-        </g>
-        <path class="fle" d="M428 65 L454 65"/>
-
-        <g class="paso" data-paso="4">
-          <rect class="marco" x="450" y="30" width="112" height="70"/>
-          <rect class="caja" x="458" y="38" width="96" height="54"/>
-          <text class="txt" x="506" y="60" text-anchor="middle">el hallazgo</text>
-          <text class="txt-s" x="506" y="78" text-anchor="middle">una frase</text>
-        </g>
-        <path class="fle" d="M566 65 L590 65"/>
-
-        <g class="paso" data-paso="5">
-          <rect class="marco" x="578" y="30" width="42" height="70"/>
-          <rect class="caja" x="584" y="38" width="32" height="54"/>
-          <text class="txt-s" x="600" y="60" text-anchor="middle">se</text>
-          <text class="txt-s" x="600" y="74" text-anchor="middle">decide</text>
-        </g>
-
-        <text class="txt-s" x="310" y="150" text-anchor="middle"
-          id="mapa-nota" style="font-size:12px"></text>
-      </svg>
-    </div>
-    </div>
-                                    
-  <!-- ====================== NARRATIVA ====================== -->
-  <div class="narr">
-
-    <section class="esc" id="esc1" data-esc="1">
-      <h2>Abran Netflix un momento.</h2>
-
-      <p>Esa primera pantalla que les aparece no es la misma que le aparece a su
-      mamá, ni a su vecino. Alguien decidió qué poner ahí, para cada uno de ustedes,
-      esta mañana.</p>
-      <p class="mut">Hoy vamos a ver cómo se toma esa decisión.</p>
-      <div class="vis" data-vis="1"><div class="tele">
+<section class="esc" data-esc="1">
+  <div class="mapa" aria-hidden="true"><div class="paso viva">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso">decisión</div></div>
+  <h2>Abran Netflix un momento.</h2>
+  <p>Esa primera pantalla que les aparece no es la misma que le aparece a su mamá, ni a su vecino. Alguien decidió qué poner ahí, para cada uno de ustedes, esta mañana.</p>
+  <p class='mut'>Hoy vamos a ver cómo se toma esa decisión.</p>
+  <div class="vis">
+    <div class="tele">
         <div class="marca">MIRA</div>
         <div class="fila"><b>Seguir viendo</b>
           <div class="tira">
@@ -541,475 +288,694 @@ svg{width:100%;height:auto;display:block;overflow:visible}
             <div class="mos m3">Comedia</div>
           </div>
         </div>
-      </div></div>
-        </section>
-
-    <section class="esc" id="esc2" data-esc="2">
-      <h2>Antes de empezar, quiero quitarles un miedo.</h2>
-      <p>Nada de lo que vamos a ver hoy pasa de contar, promediar y comparar. No hay
-      fórmulas raras y no voy a mostrarles código.</p>
-      <div class="ops">
-        <div class="op"><div class="n">+</div><div class="q">contar</div></div>
-        <div class="op"><div class="n">÷</div><div class="q">promediar</div></div>
-        <div class="op"><div class="n">&gt;</div><div class="q">comparar</div></div>
       </div>
-
-      <p class="mut">Si alguna vez eligieron algo mirando precios, ya hicieron
-      la parte difícil de esto.</p>
-      <div class="vis" data-vis="2">
-      <div class="es" style="grid-template-columns:1fr">
-        <div class="es-caja">
-          <h4>todo lo que hace falta saber</h4>
-          <div class="es-cuerpo">
-            <div class="ops" style="margin:4px 0">
-              <div class="op"><div class="n">+</div><div class="q">contar</div></div>
-              <div class="op"><div class="n">&divide;</div><div class="q">promediar</div></div>
-              <div class="op"><div class="n">&gt;</div><div class="q">comparar</div></div>
-            </div>
-            <p class="mut" style="margin:14px 0 0;font-size:15px">
-            Nada de cálculo, nada de álgebra, nada de código.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    </section>
-
-    <section class="esc" id="esc3" data-esc="3">
-      <h2>Les hago una pregunta.</h2>
-      <p>Si yo fuera Netflix y quisiera adivinar qué les va a gustar esta noche,
-      ¿qué creen que me serviría más saber de ustedes?</p>
-      <div class="par">
-        <button class="opt" data-pick="a" aria-pressed="false">
-          <span class="t">Su edad y dónde viven</span>
-          <span class="g">lo que pusieron al registrarse</span></button>
-        <button class="opt" data-pick="b" aria-pressed="false">
-          <span class="t">Qué vieron la semana pasada</span>
-          <span class="g">y hasta qué minuto llegaron</span></button>
-      </div>
-      <p class="mut" id="eco">Piénsenlo un segundo antes de que sigamos.</p>
-      <div class="vis" data-vis="3">
-      <div class="es">
-        <div class="es-caja">
-          <h4>opción A · lo que declararon</h4>
-          <div class="es-cuerpo">
-            <table class="tabla">
-              <tr><th>perfil</th><th>edad</th><th>ciudad</th></tr>
-              <tr><td>1041</td><td>28</td><td>Lima</td></tr>
-              <tr><td>2277</td><td>28</td><td>Lima</td></tr>
-            </table>
-            <p class="mut" style="margin:11px 0 0;font-size:14px">
-            Mismos datos. ¿Ven lo mismo?</p>
-          </div>
-        </div>
-        <div class="fle-g">&nbsp;<small>&iquest;cu&aacute;l sirve?</small></div>
-        <div class="es-caja">
-          <h4>opción B · lo que hicieron</h4>
-          <div class="es-cuerpo">
-            <table class="tabla">
-              <tr><th>perfil</th><th class="num">comedia</th><th class="num">suspenso</th></tr>
-              <tr><td>1041</td><td class="num">12 h</td><td class="num">1 h</td></tr>
-              <tr><td>2277</td><td class="num">2 h</td><td class="num">9 h</td></tr>
-            </table>
-            <p class="mut" style="margin:11px 0 0;font-size:14px">
-            Aquí sí se nota la diferencia.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    </section>
-
-    <section class="esc" id="esc4" data-esc="4">
-      <h2>Lo que hacen importa más que quiénes son.</h2>
-      <p>Así que empecemos por ahí. Voy a poner a cada persona en un cuadro según dos
-      cosas nada más: cuántas horas de comedia ve al mes, y cuántas de suspenso.</p>
-      <p class="mut">Ese punto azul son ustedes. Nada más con dos números, ya
-      tienen un lugar.</p>
-      <div class="vis" data-vis="4">
-      <div class="es">
-        <div class="es-caja">
-          <h4>lo que hay guardado</h4>
-          <div class="es-cuerpo">
-            <table class="tabla">
-              <tr><th>perfil</th><th class="num">comedia</th><th class="num">suspenso</th></tr>
-              <tr><td>1041</td><td class="num">12 h</td><td class="num">1 h</td></tr>
-              <tr><td>2277</td><td class="num">2 h</td><td class="num">9 h</td></tr>
-              <tr><td>3814</td><td class="num">11 h</td><td class="num">2 h</td></tr>
-              <tr><td>4290</td><td class="num">1 h</td><td class="num">8 h</td></tr>
-              <tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr>
-            </table>
-          </div>
-        </div>
-        <div class="fle-g">&rarr;<small>dos columnas</small></div>
-        <div class="es-caja">
-          <h4>lo que se ve</h4>
-          <div class="es-cuerpo">
-            <div class="ins">
-              <span class="grande">Cada persona es un punto.</span>
-              Con dos números por perfil ya se puede poner a cada quien
-              en un lugar del cuadro.
-              <div class="accion">Ustedes son <b>el punto azul</b>.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </section>
-
-    <section class="esc" id="esc5" data-esc="5">
-      <h2>Ahora miren quién les queda cerca.</h2>
-      <p>Estas personas no los conocen. Viven en otro país, tienen otra edad, otro
-      trabajo. Pero ven casi lo mismo que ustedes, casi las mismas horas.</p>
-      <p class="mut">Netflix no necesita saber quiénes son. Le basta con saber a
-      quién se parecen.</p>
-    </section>
-
-    <section class="esc" id="esc6" data-esc="6">
-      <h2>Y aquí está el otro grupo.</h2>
-      <p>Fíjense: nadie dibujó esa separación, aparece sola. Ustedes ya pueden
-      señalar dónde termina un grupo y empieza el otro.</p>
-      <p class="mut">Si alguien de ese otro grupo terminó una serie anoche y le encantó,
-      esa serie hoy le sale a los de su grupo. No a ustedes.</p>
-
-    </section>
-
-    <section class="esc" id="esc7" data-esc="7">
-      <h2>Eso que acaban de hacer tiene nombre.</h2>
-      <p>Miraron unos datos, encontraron dos grupos y trazaron la línea entre ellos.
-      Eso es análisis de datos. No hubo truco.</p>
-      <p class="mut">El resto del oficio son herramientas para hacer lo mismo cuando
-      ya no se puede ver a simple vista. Y ese momento llega rápido.</p>
-      <div class="vis" data-vis="7"><div class="tele">
-        <div class="fila"><b>Lo que ve el otro grupo esta noche</b>
-          <div class="tira">
-            <div class="mos m2">Suspenso</div><div class="mos m3">Thriller</div>
-            <div class="mos m1">Misterio</div><div class="mos m2">Crimen</div>
-            <div class="mos m4">Suspenso</div>
-          </div>
-        </div>
-        <div class="fila"><b>Lo que ven ustedes</b>
-          <div class="tira">
-            <div class="mos m4">Comedia</div><div class="mos m5">Comedia</div>
-            <div class="mos m1">Stand-up</div><div class="mos m3">Comedia</div>
-            <div class="mos m2">Romance</div>
-          </div>
-        </div>
-      </div></div>
   </div>
-    </section>
+</section>
 
-    <section class="esc" id="esc8" data-esc="8">
-      <h2>Porque en realidad se ve así.</h2>
-      <p>Netflix tiene más de 300 millones de cuentas. Aquí está la misma pregunta
-      de hace un minuto. Díganme ahora dónde está la línea.</p>
-      <p class="mut">No es que a ustedes les falte capacidad. Es que a simple vista
-      esto ya no se puede.</p>
-    </section>
-
-    <section class="esc" id="esc9" data-esc="9">
-      <h2>Y además los datos vienen sucios.</h2>
-      <p>Miren este perfil: 31 horas seguidas sin pausa. Eso no es alguien viendo
-      televisión, es una tele que se quedó prendida.</p>
-      <p class="mut">Si yo cuento eso como si fuera una persona viendo, mis números
-      quedan mal. Parte del trabajo es darse cuenta antes.</p>
-    </section>
-
-    <section class="esc" id="esc10" data-esc="10">
-      <h2>Aquí entran las herramientas.</h2>
-      <p>Se las voy a presentar por lo que nos dan, no por cómo se escriben.
-      Piquen la que quieran:</p>
-      <div class="herr">
-        <button data-h="sql" aria-pressed="false">
-          <span class="ico ico-pg"><svg viewBox="0 0 24 24"><use href="#i-pg"/></svg></span>SQL</button>
-        <button data-h="hoja" aria-pressed="false">
-          <span class="ico"><svg viewBox="0 0 32 32"><use href="#i-xl"/></svg></span>Hoja de cálculo</button>
-        <button data-h="est" aria-pressed="false">
-          <span class="ico"><svg viewBox="0 0 24 24"><use href="#i-py"/></svg></span>Estadística</button>
-        <button data-h="bi" aria-pressed="false">
-          <span class="ico"><svg viewBox="0 0 1200 1600"><use href="#i-pbi"/></svg></span>Power BI</button>
-      </div>
-      <p class="mut" id="salida" aria-live="polite">Cada una resuelve un problema
-      distinto del camino.</p>
-      <div class="vis" data-vis="10">
-      <div class="es" id="es-h">
-        <div class="es-caja">
-          <h4 id="h-ent">lo que recibe</h4>
-          <div class="es-cuerpo" id="ent-h">
-            <p class="mut" style="margin:0;font-size:15px">Escojan una herramienta
-            para ver qué entra y qué sale.</p>
-          </div>
-        </div>
-        <div class="fle-g" id="fle-h">&rarr;<small></small></div>
-        <div class="es-caja">
-          <h4 id="h-sal">lo que devuelve</h4>
-          <div class="es-cuerpo" id="sal-h"></div>
-        </div>
-      </div>
+<section class="esc" data-esc="2">
+  <div class="mapa" aria-hidden="true"><div class="paso viva">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso">decisión</div></div>
+  <h2>Antes de empezar, quiero quitarles un miedo.</h2>
+  <p>Nada de lo que vamos a ver hoy pasa de contar, promediar y comparar. No hay fórmulas raras y no voy a mostrarles código.</p>
+  <p class='mut'>Si alguna vez eligieron algo mirando precios, ya hicieron la parte difícil de esto.</p>
+  <div class="vis">
+    <div class="ops">
+      <div class="op"><div class="n">+</div><div class="q">contar</div></div>
+      <div class="op"><div class="n">&divide;</div><div class="q">promediar</div></div>
+      <div class="op"><div class="n">&gt;</div><div class="q">comparar</div></div>
     </div>
-    </section>
-
-    <section class="esc" id="esc11" data-esc="11">
-      <h2>Y así queda el camino completo.</h2>
-      <p>Una pregunta que le importa a alguien. Datos que ya existían. Una
-      herramienta para poder verlos. Y una decisión que cambia algo.</p>
-      <p class="mut">Eso es el trabajo. Todo lo demás son detalles.</p>
-      <div class="vis vis-flujo" data-vis="11"><div class="flujo">
-        <div class="et"><div class="caja">pregunta</div>
-          <div class="pie">alguien necesita decidir algo</div></div>
-        <div class="fle">&rsaquo;</div>
-        <div class="et"><div class="caja">datos</div>
-          <div class="pie">ya existían, nadie los había juntado</div></div>
-        <div class="fle">&rsaquo;</div>
-        <div class="et"><div class="caja">herramienta</div>
-          <div class="pie">para poder verlos cuando son muchos</div></div>
-        <div class="fle">&rsaquo;</div>
-        <div class="et"><div class="caja">decisión</div>
-          <div class="pie">cambia lo que ve la gente</div></div>
-      </div></div>
-        </section>
-
-    <section class="esc" id="esc12" data-esc="12">
-      <h2>Ahora quiero que cambiemos la tabla.</h2>
-      <p>Porque esto es lo que de verdad me interesa que se lleven hoy: el método que
-      acabamos de recorrer no cambia. Lo único que cambia es qué hay en las columnas.</p>
-      <p class="mut">Busquen la suya.</p>
-    </section>
-
-    <section class="esc" id="esc13" data-esc="13">
-      <h2>¿Y en tu profesión?</h2>
-
-      <div class="prof">
-        <h3>Psicología</h3>
-        <p class="caso">¿Cómo le ponemos número a qué tan ansioso está alguien?
-        Un test no mide la ansiedad: mide respuestas que se le parecen.</p>
-        <p class="liga">Es <b>lo mismo que hicimos</b> con las horas de comedia.
-        Nadie midió el gusto de nadie: medimos lo que la gente hace y de ahí
-        dedujimos el resto.</p>
-        <div class="mini"><span class="">pregunta</span><span class="ac">datos</span><span class="">herramienta</span><span class="">decisión</span></div>
-      </div>
-
-      <div class="prof">
-        <h3>Salud y enfermería</h3>
-        <p class="caso">¿Qué paciente se nos complica esta noche? Presión, pulso,
-        temperatura, y una raya que separa «vigilar» de «ya».</p>
-        <p class="liga">Es <b>la misma raya</b> que ustedes trazaron entre los dos
-        grupos. Solo que los ejes ahora dicen presión y pulso.</p>
-        <div class="mini"><span class="">pregunta</span><span class="">datos</span><span class="ac">herramienta</span><span class="">decisión</span></div>
-      </div>
-      <div class="vis" data-vis="13"><div class="dos-fotos"><div class="foto"><img src="img/psico-720.webp" srcset="img/psico-720.webp 720w, img/psico-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Una terapeuta toma notas durante una sesión" loading="lazy" decoding="async"><div class="et-foto"><b>Psicología</b>Anotar lo que se observa ya es convertirlo en dato</div></div><div class="foto"><img src="img/salud-720.webp" srcset="img/salud-720.webp 720w, img/salud-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Un médico observa un estudio en la pantalla" loading="lazy" decoding="async"><div class="et-foto"><b>Salud</b>Leer una pantalla para decidir qué hacer con un paciente</div></div></div></div>
-        </div>
-        <div class="fle-g" id="fle-h">&rarr;<small></small></div>
-        <div class="es-caja">
-          <h4 id="h-sal">lo que devuelve</h4>
-          <div class="es-cuerpo" id="sal-h"></div>
-        </div>
-      </div>
-    </div>
-    </section>
-
-    <section class="esc" id="esc14" data-esc="14">
-      <h2>Y también aquí.</h2>
-
-      <div class="prof">
-        <h3>Ingeniería</h3>
-        <p class="caso">¿Cuándo se nos va a romper la máquina? Los sensores avisan
-        antes, si alguien está mirando.</p>
-        <p class="liga">Son <b>las 31 horas seguidas</b>. En sensores el dato
-        faltante llega como −200, un número imposible que se mete en el promedio
-        si no lo cachamos.</p>
-        <div class="mini"><span class="">pregunta</span><span class="ac">datos</span><span class="">herramienta</span><span class="">decisión</span></div>
-      </div>
-
-      <div class="prof">
-        <h3>Negocio, marketing, ventas</h3>
-        <p class="caso">¿Qué clientes están por irse? Retener siempre cuesta menos
-        que conseguir uno nuevo.</p>
-        <p class="liga">Es <b>lo de Netflix al revés</b>. En vez de adivinar qué les
-        va a gustar, adivinamos quién ya se cansó.</p>
-        <div class="mini"><span class="">pregunta</span><span class="">datos</span><span class="">herramienta</span><span class="ac">decisión</span></div>
-      </div>
-      <div class="vis" data-vis="14"><div class="foto"><img src="img/ing-720.webp" srcset="img/ing-720.webp 720w, img/ing-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1440" height="900" alt="Un operario trabaja frente a un tablero de control" loading="lazy" decoding="async"><div class="et-foto"><b>Ingeniería</b>Los sensores avisan antes, si alguien está mirando</div></div></div>
-            </div>
-        <div class="fle-g" id="fle-h">&rarr;<small></small></div>
-        <div class="es-caja">
-          <h4 id="h-sal">lo que devuelve</h4>
-          <div class="es-cuerpo" id="sal-h"></div>
-        </div>
-      </div>
-    </div>
-          </section>
-
-    <section class="esc" id="esc15" data-esc="15">
-      <h2>«¿Y esto para qué sirve?»</h2>
-      <p>Es la pregunta justa, y se las voy a contestar con dos casos publicados,
-      con nombre y cifras. No son ejemplos que me inventé.</p>
-      <p class="mut">En los dos, lo único que cambió fue mirar los datos que ya
-      existían.</p>
-    </section>
-
-    <section class="esc" id="esc16" data-esc="16">
-      <h2>El caso que más me gusta.</h2>
-      <p>A un grupo de pacientes con depresión les dieron los medicamentos de
-      siempre. Al otro grupo, los mismos medicamentos. La única diferencia fue
-      que al segundo grupo <b>le aplicaban un cuestionario en cada sesión</b> y
-      ajustaban el tratamiento con esas respuestas.</p>
-      <p class="mut">El doble de ajustes, y mucho más temprano. Eso fue todo.</p>
-      <div class="vis" data-vis="16">
-      <div class="caso">
-        <h3>Psicología</h3>
-        <div class="es">
-          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
-            <table class="tabla"><tr><th>paciente</th><th class="num">al inicio</th><th class="num">a las 4 sem.</th></tr><tr><td>A-102</td><td class="num">24</td><td class="num">21</td></tr><tr><td>A-118</td><td class="num">26</td><td class="num">14</td></tr><tr><td>A-133</td><td class="num">22</td><td class="num">20</td></tr><tr><td class="mas">…</td><td class="num mas">…</td><td class="num mas">…</td></tr></table>
-          </div></div>
-          <div class="fle-g">&rarr;<small>se compara</small></div>
-          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
-            <div class="ins"><span class="grande">Dos de estos tres no están mejorando.</span>El cuestionario en cada sesión lo muestra a las cuatro semanas, no a los seis meses.</div>
-          </div></div>
-        </div>
-        <div class="result">
-          <span class="q">Y ESTO CAMBIÓ</span>
-          <span class="cifra">La recuperación pasó de 28.8% a 73.8%</span>
-          <div class="det">Los medicamentos fueron los mismos en los dos grupos. Lo único que cambió fue medir en cada sesión y ajustar el tratamiento con esos datos.</div>
-          <div class="fte">Estudio con 120 pacientes, American Journal of Psychiatry, 2015</div>
-        </div>
-      </div>
-    </div>
-    </section>
-
-    <section class="esc" id="esc17" data-esc="17">
-      <h2>Y este salva vidas.</h2>
-      <p>Los signos vitales ya se anotaban. Siempre se anotaron. Lo nuevo fue
-      juntarlos y buscar el patrón que aparece <b>horas antes</b> de que alguien
-      se complique.</p>
-      <p class="mut">Nadie compró una máquina nueva. Miraron mejor lo que ya tenían.</p>
-      <div class="vis" data-vis="17">
-      <div class="caso">
-        <h3>Salud y enfermería</h3>
-        <div class="es">
-          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
-            <table class="tabla"><tr><th>paciente</th><th class="num">presión</th><th class="num">pulso</th><th class="num">temp.</th></tr><tr><td>4821</td><td class="num">90</td><td class="num">118</td><td class="num">38.1</td></tr><tr><td>4822</td><td class="num">130</td><td class="num">76</td><td class="num">36.6</td></tr><tr><td>4823</td><td class="num">84</td><td class="num">126</td><td class="num">38.4</td></tr><tr><td class="mas">…</td><td class="num mas">…</td><td class="num mas">…</td><td class="num mas">…</td></tr></table>
-          </div></div>
-          <div class="fle-g">&rarr;<small>se vigila</small></div>
-          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
-            <div class="ins"><span class="grande">Dos de estos van a empeorar esta noche.</span>No es una corazonada: son las señales que aparecen horas antes de que se complique.</div>
-          </div></div>
-        </div>
-        <div class="result">
-          <span class="q">Y ESTO CAMBIÓ</span>
-          <span class="cifra">La mortalidad bajó de 13.9% a 8.8%</span>
-          <div class="det">En cuatro hospitales, con 6,681 pacientes. Los enfermeros revisaban cada dos horas a quien el sistema marcaba.</div>
-          <div class="fte">Critical Care Medicine, 2022</div>
-        </div>
-      </div>
-    </div>
-    </section>
-
-    <section class="esc" id="esc18" data-esc="18">
-      <h2>Lo mismo, con el viento.</h2>
-      <p>Una granja de turbinas no puede prometer energía si no sabe cuánta va a
-      producir. Con el clima y el historial, se estima con <b>36 horas</b> de
-      anticipación.</p>
-      <p class="mut">La turbina es la misma. Lo que cambió fue saber qué va a pasar.</p>
-      <div class="vis" data-vis="18">
-      <div class="caso">
-        <h3>Ingeniería</h3>
-        <div class="es">
-          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
-            <table class="tabla">
-              <tr><th>hora</th><th class="num">viento</th><th class="num">energía</th></tr>
-              <tr><td>06:00</td><td class="num">14 km/h</td><td class="num">38</td></tr>
-              <tr><td>07:00</td><td class="num">22 km/h</td><td class="num">61</td></tr>
-              <tr><td>08:00</td><td class="num">19 km/h</td><td class="num">52</td></tr>
-              <tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr>
-            </table>
-          </div></div>
-          <div class="fle-g">&rarr;<small>se predice</small></div>
-          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
-            <div class="ins"><span class="grande">Cuánta energía va a haber pasado mañana.</span>
-            Con el clima y lo que pasó otras veces, se estima la producción con
-            36 horas de anticipación.</div>
-          </div></div>
-        </div>
-        <div class="result">
-          <span class="q">Y ESTO CAMBIÓ</span>
-          <span class="cifra">Subió 20% el valor de esa energía</span>
-          <div class="det">Sobre un parque eólico grande. Saber cuánta
-          energía habrá permite comprometerla con un día de anticipación, y eso
-          vale más que venderla sobre la marcha.</div>
-          <div class="fte">Google, 2019</div>
-        </div>
-      </div>
-    </div>
-    </section>
-
-    <section class="esc" id="esc19" data-esc="19">
-      <h2>Y lo mismo con los clientes.</h2>
-      <p>Alguien que deja de usar un servicio casi nunca avisa. Pero en los datos
-      se ve semanas antes: entra menos, tarda más en volver.</p>
-      <p class="mut">Es el recomendador del principio, al revés.</p>
-      <div class="vis" data-vis="19">
-      <div class="caso">
-        <h3>Negocio y ventas</h3>
-        <div class="es">
-          <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
-            <table class="tabla">
-              <tr><th>cliente</th><th class="num">usos/mes</th><th class="num">hace</th></tr>
-              <tr><td>C-4410</td><td class="num">18</td><td class="num">2 días</td></tr>
-              <tr><td>C-4411</td><td class="num">3</td><td class="num">26 días</td></tr>
-              <tr><td>C-4412</td><td class="num">21</td><td class="num">1 día</td></tr>
-              <tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr>
-            </table>
-          </div></div>
-          <div class="fle-g">&rarr;<small>se agrupa</small></div>
-          <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
-            <div class="ins"><span class="grande">El de en medio ya se fue, aunque siga pagando.</span>
-            Dejó de usarlo hace casi un mes. La baja formal llega después.</div>
-          </div></div>
-        </div>
-        <div class="result">
-          <span class="q">Y ESTO CAMBIÓ</span>
-          <span class="cifra">Netflix estima más de mil millones al año</span>
-          <div class="det">Es el mismo sistema de recomendación del principio,
-          pero al revés: en vez de adivinar qué te va a gustar, detecta a quién
-          está por irse. Retener sale más barato que salir a buscar uno nuevo.</div>
-          <div class="fte">Escrito por gente de Netflix, 2015. La idea de que retener
-          cuesta unas cinco veces menos que captar viene de Harvard Business Review, 1990.</div>
-        </div>
-      </div>
-    </div>
-    </section>
-
-    <section class="esc" id="esc20" data-esc="20">
-      <h2>Una última cosa, y los dejo.</h2>
-      <p>Van a oír «analista» y «científico de datos» como si uno fuera mejor.
-      El analista responde <b>qué pasó</b>; el científico estima <b>qué va a pasar</b>.
-      El segundo hace todo lo del primero, más predicción.</p>
-      <p class="mut">Por eso se empieza por analista: no es la versión chiquita, es
-      la base sobre la que va lo demás.</p>
-      <p>Y todo lo que vimos hoy (los grupos, la línea, el dato sucio) ya lo
-      hicieron ustedes en quince minutos, sin escribir una sola línea de código.</p>
-      <div class="vis" data-vis="20"><div class="foto"><img src="img/tele-720.webp" srcset="img/tele-720.webp 720w, img/tele-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1440" height="900" alt="Dos personas ven la televisión de noche en un sillón" loading="lazy" decoding="async"><div class="et-foto"><b>Y todo empezó aquí</b>Alguien decidió qué les iba a aparecer esta noche</div></div></div>
-    <div class="vis" data-vis="13"><div class="dos-fotos"><div class="foto"><img src="img/psico-720.webp" srcset="img/psico-720.webp 720w, img/psico-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Una terapeuta toma notas durante una sesión" loading="lazy" decoding="async"><div class="et-foto"><b>Psicología</b>Anotar lo que se observa ya es convertirlo en dato</div></div><div class="foto"><img src="img/salud-720.webp" srcset="img/salud-720.webp 720w, img/salud-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1080" height="1440" alt="Un médico observa un estudio en la pantalla" loading="lazy" decoding="async"><div class="et-foto"><b>Salud</b>Leer una pantalla para decidir qué hacer con un paciente</div></div></div></div>
-    <div class="vis" data-vis="14"><div class="foto"><img src="img/ing-720.webp" srcset="img/ing-720.webp 720w, img/ing-1440.webp 1440w" sizes="(max-width:900px) 100vw, 640px" width="1440" height="900" alt="Un operario trabaja frente a un tablero de control" loading="lazy" decoding="async"><div class="et-foto"><b>Ingeniería</b>Los sensores avisan antes, si alguien está mirando</div></div></div>
-    <div class="vis" data-vis="10">
-      <div class="es" id="es-h">
-        <div class="es-caja">
-          <h4 id="h-ent">lo que recibe</h4>
-          <div class="es-cuerpo" id="ent-h">
-            <p class="mut" style="margin:0;font-size:15px">Escojan una herramienta
-            para ver qué entra y qué sale.</p>
-          </div>
-        </div>
-        <div class="fle-g" id="fle-h">&rarr;<small></small></div>
-        <div class="es-caja">
-          <h4 id="h-sal">lo que devuelve</h4>
-          <div class="es-cuerpo" id="sal-h"></div>
-        </div>
-      </div>
-    </div>
-    </section>
-
   </div>
-</div>
+</section>
+
+<section class="esc" data-esc="3">
+  <div class="mapa" aria-hidden="true"><div class="paso viva">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso">decisión</div></div>
+  <h2>Les hago una pregunta.</h2>
+  <p>Si yo fuera Netflix y quisiera adivinar qué les va a gustar esta noche, ¿qué creen que me serviría más saber de ustedes?</p>
+  <div class="vis">
+    <div class="par">
+      <button class="opt" type="button" data-pick="a" aria-pressed="false">
+        <span class="t">Su edad y dónde viven</span>
+        <span class="g">lo que pusieron al registrarse</span></button>
+      <button class="opt" type="button" data-pick="b" aria-pressed="false">
+        <span class="t">Qué vieron la semana pasada</span>
+        <span class="g">y hasta qué minuto llegaron</span></button>
+    </div>
+    <p class="mut" id="eco" style="text-align:center;margin:14px 0 0">Piénsenlo un segundo antes de que sigamos.</p>
+  </div>
+</section>
+
+<section class="esc" data-esc="4">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso viva">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso">decisión</div></div>
+  <h2>Lo que hacen importa más que quiénes son.</h2>
+  <p>Así que empecemos por ahí. Voy a poner a cada persona en un cuadro según dos cosas nada más: cuántas horas de comedia ve al mes, y cuántas de suspenso.</p>
+  <p class='mut'>Ese punto azul son ustedes. Nada más con dos números, ya tienen un lugar.</p>
+  <div class="vis">
+    <svg viewBox="0 0 420 345" role="img" aria-label="Personas colocadas según cuántas horas de comedia y de suspenso ven al mes">
+      <line x1="62" y1="300" x2="400" y2="300" stroke="var(--linea)" stroke-width="1.5"/>
+      <line x1="62" y1="30"  x2="62"  y2="300" stroke="var(--linea)" stroke-width="1.5"/>
+      <text x="231" y="332" text-anchor="middle" class="cap">horas de comedia al mes</text>
+      <text x="-165" y="20" transform="rotate(-90)" text-anchor="middle" class="cap">horas de suspenso al mes</text>
+      <circle cx="128" cy="108" r="11" fill="var(--azul-viz)" stroke="#fff" stroke-width="3"/>
+      <text x="128" y="86" text-anchor="middle" class="cap-f">ustedes</text>
+    </svg>
+  </div>
+</section>
+
+<section class="esc" data-esc="5">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso viva">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso">decisión</div></div>
+  <h2>Ahora miren quién les queda cerca.</h2>
+  <p>Estas personas no los conocen. Viven en otro país, tienen otra edad, otro trabajo. Pero ven casi lo mismo que ustedes, casi las mismas horas.</p>
+  <p class='mut'>Netflix no necesita saber quiénes son. Le basta con saber a quién se parecen.</p>
+  <div class="vis">
+    <svg viewBox="0 0 420 345" role="img" aria-label="Personas colocadas según cuántas horas de comedia y de suspenso ven al mes">
+      <line x1="62" y1="300" x2="400" y2="300" stroke="var(--linea)" stroke-width="1.5"/>
+      <line x1="62" y1="30"  x2="62"  y2="300" stroke="var(--linea)" stroke-width="1.5"/>
+      <text x="231" y="332" text-anchor="middle" class="cap">horas de comedia al mes</text>
+      <text x="-165" y="20" transform="rotate(-90)" text-anchor="middle" class="cap">horas de suspenso al mes</text>
+      <circle cx="106" cy="134" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="166" cy="120" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="92"  cy="120" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="158" cy="136" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="132" cy="156" r="7" fill="var(--marca)" opacity=".85"/>
+      <text x="128" y="186" text-anchor="middle" class="cap">gente que ve parecido a ustedes</text>
+      <circle cx="128" cy="108" r="11" fill="var(--azul-viz)" stroke="#fff" stroke-width="3"/>
+      <text x="128" y="86" text-anchor="middle" class="cap-f">ustedes</text>
+    </svg>
+  </div>
+</section>
+
+<section class="esc" data-esc="6">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso viva">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso">decisión</div></div>
+  <h2>Y aquí está el otro grupo.</h2>
+  <p>Fíjense: nadie dibujó esa separación, aparece sola. Ustedes ya pueden señalar dónde termina un grupo y empieza el otro.</p>
+  <p class='mut'>Si alguien de ese otro grupo terminó una serie anoche y le encantó, esa serie hoy le sale a los de su grupo. No a ustedes.</p>
+  <div class="vis">
+    <svg viewBox="0 0 420 345" role="img" aria-label="Personas colocadas según cuántas horas de comedia y de suspenso ven al mes">
+      <line x1="62" y1="300" x2="400" y2="300" stroke="var(--linea)" stroke-width="1.5"/>
+      <line x1="62" y1="30"  x2="62"  y2="300" stroke="var(--linea)" stroke-width="1.5"/>
+      <text x="231" y="332" text-anchor="middle" class="cap">horas de comedia al mes</text>
+      <text x="-165" y="20" transform="rotate(-90)" text-anchor="middle" class="cap">horas de suspenso al mes</text>
+      <circle cx="106" cy="134" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="166" cy="120" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="92"  cy="120" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="158" cy="136" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="132" cy="156" r="7" fill="var(--marca)" opacity=".85"/>
+      <text x="128" y="186" text-anchor="middle" class="cap">gente que ve parecido a ustedes</text>
+      <circle cx="312" cy="214" r="7" fill="var(--marca2)" opacity=".85"/>
+      <circle cx="352" cy="180" r="7" fill="var(--marca2)" opacity=".85"/>
+      <circle cx="324" cy="172" r="7" fill="var(--marca2)" opacity=".85"/>
+      <circle cx="360" cy="224" r="7" fill="var(--marca2)" opacity=".85"/>
+      <circle cx="292" cy="190" r="7" fill="var(--marca2)" opacity=".85"/>
+      <circle cx="338" cy="242" r="7" fill="var(--marca2)" opacity=".85"/>
+      <text x="326" y="270" text-anchor="middle" class="cap">otro grupo, otros gustos</text>
+      <circle cx="128" cy="108" r="11" fill="var(--azul-viz)" stroke="#fff" stroke-width="3"/>
+      <text x="128" y="86" text-anchor="middle" class="cap-f">ustedes</text>
+    </svg>
+  </div>
+</section>
+
+<section class="esc" data-esc="7">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso viva">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso">decisión</div></div>
+  <h2>Eso que acaban de hacer tiene nombre.</h2>
+  <p>Miraron unos datos, encontraron dos grupos y trazaron la línea entre ellos. Eso es análisis de datos. No hubo truco.</p>
+  <p class='mut'>El resto del oficio son herramientas para hacer lo mismo cuando ya no se puede ver a simple vista. Y ese momento llega rápido.</p>
+  <div class="vis">
+    <svg viewBox="0 0 420 345" role="img" aria-label="Gráfico de personas según lo que ven">
+      <line x1="62" y1="300" x2="400" y2="300" stroke="var(--linea)" stroke-width="1.5"/>
+      <line x1="62" y1="30"  x2="62"  y2="300" stroke="var(--linea)" stroke-width="1.5"/>
+      <text x="231" y="332" text-anchor="middle" class="cap">horas de comedia al mes</text>
+      <circle cx="128" cy="108" r="11" fill="var(--azul-viz)" stroke="#fff" stroke-width="3"/>
+      <circle cx="106" cy="134" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="166" cy="120" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="92"  cy="120" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="132" cy="156" r="7" fill="var(--marca)" opacity=".85"/>
+      <circle cx="312" cy="214" r="7" fill="var(--marca2)" opacity=".85"/>
+      <circle cx="352" cy="180" r="7" fill="var(--marca2)" opacity=".85"/>
+      <circle cx="324" cy="172" r="7" fill="var(--marca2)" opacity=".85"/>
+      <circle cx="360" cy="224" r="7" fill="var(--marca2)" opacity=".85"/>
+      <path d="M232 40 L232 292" stroke="var(--ambar)" stroke-width="2.5" stroke-dasharray="7 6"/>
+      <text x="232" y="26" text-anchor="middle" class="cap-f" fill="var(--ambar)">la raya</text>
+    </svg>
+  </div>
+</section>
+
+<section class="esc" data-esc="8">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso viva">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso">decisión</div></div>
+  <h2>Porque en realidad se ve así.</h2>
+  <p>Netflix tiene más de 300 millones de cuentas. Aquí está la misma pregunta de hace un minuto. Díganme ahora dónde está la línea.</p>
+  <p class='mut'>No es que a ustedes les falte capacidad. Es que a simple vista esto ya no se puede.</p>
+  <div class="vis">
+    <svg viewBox="0 0 420 345" role="img" aria-label="Gráfico de personas según lo que ven">
+      <line x1="62" y1="300" x2="400" y2="300" stroke="var(--linea)" stroke-width="1.5"/>
+      <line x1="62" y1="30"  x2="62"  y2="300" stroke="var(--linea)" stroke-width="1.5"/>
+      <text x="231" y="332" text-anchor="middle" class="cap">horas de comedia al mes</text>
+      <circle cx="173" cy="75" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="90" cy="174" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="85" cy="167" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="209" cy="54" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="206" cy="249" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="140" cy="198" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="256" cy="138" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="81" cy="257" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="114" cy="66" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="335" cy="83" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="277" cy="132" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="87" cy="51" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="291" cy="146" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="259" cy="153" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="328" cy="216" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="256" cy="172" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="307" cy="110" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="105" cy="144" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="116" cy="162" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="287" cy="233" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="355" cy="117" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="262" cy="186" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="343" cy="280" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="285" cy="52" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="280" cy="292" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="160" cy="136" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="73" cy="155" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="105" cy="51" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="109" cy="100" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="354" cy="57" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="247" cy="264" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="351" cy="108" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="184" cy="264" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="116" cy="81" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="143" cy="161" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="153" cy="37" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="188" cy="182" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="294" cy="169" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="289" cy="50" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="323" cy="262" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="195" cy="139" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="275" cy="52" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="135" cy="78" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="83" cy="36" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="99" cy="130" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="355" cy="194" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="149" cy="126" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="107" cy="255" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="220" cy="161" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="100" cy="124" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="340" cy="78" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="380" cy="172" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="245" cy="43" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="389" cy="259" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="152" cy="131" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="321" cy="173" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="175" cy="94" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="391" cy="256" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="336" cy="227" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="237" cy="128" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="75" cy="108" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="295" cy="283" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="375" cy="291" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="186" cy="93" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="131" cy="89" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="363" cy="253" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="281" cy="242" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="284" cy="271" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="314" cy="159" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="326" cy="122" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="387" cy="138" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="378" cy="223" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="108" cy="75" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="332" cy="74" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="390" cy="206" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="247" cy="70" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="386" cy="204" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="374" cy="148" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="339" cy="90" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="163" cy="98" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="152" cy="144" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="366" cy="127" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="259" cy="269" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="369" cy="165" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="239" cy="41" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="126" cy="37" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="123" cy="158" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="250" cy="120" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="249" cy="238" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="251" cy="100" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="321" cy="167" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="317" cy="271" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="268" cy="166" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="295" cy="153" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="224" cy="279" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="355" cy="279" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="251" cy="279" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="111" cy="67" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="90" cy="98" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="287" cy="238" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="117" cy="221" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="113" cy="264" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="138" cy="282" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="227" cy="291" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="119" cy="147" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="178" cy="87" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="304" cy="41" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="211" cy="41" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="272" cy="168" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="391" cy="239" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="101" cy="105" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="323" cy="106" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="205" cy="271" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="151" cy="75" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="254" cy="217" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="85" cy="214" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="90" cy="278" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="331" cy="58" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="88" cy="259" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="178" cy="179" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="154" cy="69" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="145" cy="64" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="83" cy="88" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="167" cy="232" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="231" cy="82" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="72" cy="101" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="308" cy="178" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="223" cy="277" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="336" cy="148" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="341" cy="137" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="293" cy="289" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="341" cy="218" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="200" cy="126" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="109" cy="54" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="150" cy="78" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="344" cy="261" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="159" cy="98" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="218" cy="77" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="153" cy="284" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="247" cy="99" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="168" cy="128" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="192" cy="158" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="132" cy="166" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="153" cy="59" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="80" cy="42" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="143" cy="187" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="314" cy="206" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="356" cy="136" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="391" cy="75" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="278" cy="47" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="360" cy="198" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="334" cy="72" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="232" cy="251" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="339" cy="187" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="291" cy="215" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="76" cy="70" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="101" cy="252" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="273" cy="198" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="227" cy="37" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="313" cy="166" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="284" cy="53" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="149" cy="55" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="307" cy="89" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="388" cy="163" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="224" cy="212" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="270" cy="202" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="115" cy="102" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="166" cy="182" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="86" cy="105" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="294" cy="210" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="236" cy="156" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="105" cy="267" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="389" cy="278" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="217" cy="248" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="214" cy="105" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="378" cy="90" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="113" cy="171" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="110" cy="248" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="359" cy="217" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="362" cy="161" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="67" cy="163" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="166" cy="72" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="170" cy="253" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="314" cy="252" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="372" cy="220" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="162" cy="132" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="396" cy="188" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="207" cy="107" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="100" cy="251" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="375" cy="100" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="235" cy="85" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="382" cy="264" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="274" cy="272" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="247" cy="222" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="308" cy="152" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="279" cy="110" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="372" cy="69" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="179" cy="113" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="388" cy="103" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="165" cy="180" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="121" cy="78" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="365" cy="164" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="365" cy="293" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="112" cy="86" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="179" cy="60" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="151" cy="183" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="313" cy="142" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="239" cy="133" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="86" cy="108" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="108" cy="166" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="351" cy="92" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="148" cy="139" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="381" cy="255" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="73" cy="44" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="362" cy="158" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="66" cy="137" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="338" cy="257" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="148" cy="64" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="238" cy="212" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="304" cy="203" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="217" cy="178" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="324" cy="96" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="279" cy="114" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="149" cy="200" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="103" cy="54" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="258" cy="136" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="264" cy="39" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="218" cy="283" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="358" cy="159" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="148" cy="284" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="167" cy="42" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="289" cy="144" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="286" cy="275" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="77" cy="123" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="291" cy="87" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="310" cy="166" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="386" cy="116" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="142" cy="93" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="163" cy="282" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="128" cy="94" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="286" cy="281" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="196" cy="91" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="113" cy="49" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="196" cy="268" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="308" cy="293" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="175" cy="84" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="312" cy="44" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="191" cy="132" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="122" cy="37" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="182" cy="283" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="384" cy="90" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="337" cy="248" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="82" cy="158" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="369" cy="86" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="362" cy="44" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="334" cy="234" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="78" cy="52" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="151" cy="229" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="178" cy="106" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="270" cy="104" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="170" cy="107" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="315" cy="272" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="377" cy="42" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="223" cy="283" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="194" cy="101" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="229" cy="275" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="331" cy="227" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="321" cy="193" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="171" cy="129" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="92" cy="87" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="148" cy="53" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="248" cy="120" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="358" cy="291" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="94" cy="61" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="300" cy="151" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="204" cy="196" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="313" cy="255" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="106" cy="253" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="253" cy="132" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="132" cy="100" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="117" cy="264" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="174" cy="138" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="233" cy="96" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="282" cy="292" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="223" cy="247" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="368" cy="46" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="105" cy="85" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="258" cy="276" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="352" cy="152" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="323" cy="280" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="263" cy="196" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="188" cy="72" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="150" cy="191" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="133" cy="39" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="290" cy="84" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="133" cy="241" r="3.4" fill="var(--marca)" opacity=".5"/>
+      <circle cx="87" cy="62" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="248" cy="201" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="120" cy="215" r="3.4" fill="var(--marca2)" opacity=".5"/>
+      <circle cx="159" cy="115" r="3.4" fill="var(--marca)" opacity=".5"/>
+    </svg>
+  </div>
+</section>
+
+<section class="esc" data-esc="9">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso viva">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso">decisión</div></div>
+  <h2>Y además los datos vienen sucios.</h2>
+  <p>Miren este perfil: 31 horas seguidas sin pausa. Eso no es alguien viendo televisión, es una tele que se quedó prendida.</p>
+  <p class='mut'>Si yo cuento eso como si fuera una persona viendo, mis números quedan mal. Parte del trabajo es darse cuenta antes.</p>
+  <div class="vis">
+    <svg viewBox="0 0 420 345" role="img" aria-label="Gráfico de personas según lo que ven">
+      <rect x="78" y="112" width="266" height="112" rx="3" fill="var(--sup)" stroke="var(--linea)"/>
+      <text x="96" y="140" class="cap-f">perfil 40318</text>
+      <text x="96" y="162" class="cap">vio 31 horas seguidas, sin pausa</text>
+      <text x="96" y="192" class="cap-f" fill="var(--rojo)">nadie ve 31 horas sin parar</text>
+      <text x="96" y="212" class="cap">se quedó la tele prendida</text>
+    </svg>
+  </div>
+</section>
+
+<section class="esc" data-esc="10">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso viva">herramienta</div><div class="fle">&rsaquo;</div><div class="paso">decisión</div></div>
+  <h2>Aquí entran las herramientas.</h2>
+  <p>Se las voy a presentar por lo que nos dan, no por cómo se escriben. Piquen la que quieran:</p>
+  <div class="vis">
+    <div class="herr">
+      <button type="button" data-h="sql" aria-pressed="false">
+        <span class="ico"><svg viewBox="0 0 24 24"><use href="#i-pg"/></svg></span>SQL</button>
+      <button type="button" data-h="hoja" aria-pressed="false">
+        <span class="ico"><svg viewBox="0 0 32 32"><use href="#i-xl"/></svg></span>Hoja de cálculo</button>
+      <button type="button" data-h="est" aria-pressed="false">
+        <span class="ico"><svg viewBox="0 0 24 24"><use href="#i-py"/></svg></span>Estadística</button>
+      <button type="button" data-h="bi" aria-pressed="false">
+        <span class="ico"><svg viewBox="0 0 1200 1600"><use href="#i-pbi"/></svg></span>Power BI</button>
+    </div>
+    <div class="es">
+      <div class="es-caja"><h4 class="h-ent">lo que recibe</h4>
+        <div class="es-cuerpo ent-h"><p class="mut" style="margin:0;font-size:15px">Escojan una herramienta para ver qué entra y qué sale.</p></div></div>
+      <div class="fle-g">&rarr;<small class="verbo"></small></div>
+      <div class="es-caja"><h4 class="h-sal">lo que devuelve</h4>
+        <div class="es-cuerpo sal-h"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="esc" data-esc="11">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso viva">decisión</div></div>
+  <h2>Y así queda el camino completo.</h2>
+  <p>Una pregunta que le importa a alguien. Datos que ya existían. Una herramienta para poder verlos. Y una decisión que cambia algo.</p>
+  <p class='mut'>Eso es el trabajo. Todo lo demás son detalles.</p>
+  <div class="vis">
+    <div class="flujo">
+      <div class="et"><div class="caja">pregunta</div>
+        <div class="pie">alguien necesita decidir algo</div></div>
+      <div class="fle">&rsaquo;</div>
+      <div class="et"><div class="caja">datos</div>
+        <div class="pie">ya existían, nadie los había juntado</div></div>
+      <div class="fle">&rsaquo;</div>
+      <div class="et"><div class="caja">herramienta</div>
+        <div class="pie">para poder verlos cuando son muchos</div></div>
+      <div class="fle">&rsaquo;</div>
+      <div class="et"><div class="caja">decisión</div>
+        <div class="pie">cambia lo que ve la gente</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="esc" data-esc="12">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso viva">decisión</div></div>
+  <h2>Ahora quiero que cambiemos la tabla.</h2>
+  <p>Porque esto es lo que de verdad me interesa que se lleven hoy: el método que acabamos de recorrer no cambia. Lo único que cambia es qué hay en las columnas.</p>
+  <p class='mut'>Busquen la suya.</p>
+  <div class="vis">
+    <svg viewBox="0 0 420 150" role="img" aria-label="Cambia la tabla, no cambia el método">
+      <text x="210" y="62" text-anchor="middle" class="lema">cambia la tabla</text>
+      <text x="210" y="106" text-anchor="middle" class="lema" fill="var(--azul)">no cambia el método</text>
+    </svg>
+  </div>
+</section>
+
+<section class="esc" data-esc="13">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso viva">decisión</div></div>
+  <h2>¿Y en tu profesión?</h2>
+    <div class="prof">
+      <h3>Psicología</h3>
+      <p class="caso">¿Cómo le ponemos número a qué tan ansioso está alguien? Un test no mide la ansiedad: mide respuestas que se le parecen.</p>
+      <p class="liga">Es <b>lo mismo que hicimos</b> con las horas de comedia. Nadie midió el gusto de nadie: medimos lo que la gente hace y de ahí dedujimos el resto.</p>
+      <div class="mini"><span class="">pregunta</span><span class="ac">datos</span><span class="">herramienta</span><span class="">decisión</span></div>
+    </div>
+    <div class="prof">
+      <h3>Salud y enfermería</h3>
+      <p class="caso">¿Qué paciente se nos complica esta noche? Presión, pulso, temperatura, y una raya que separa «vigilar» de «ya».</p>
+      <p class="liga">Es <b>la misma raya</b> que ustedes trazaron entre los dos grupos. Solo que los ejes ahora dicen presión y pulso.</p>
+      <div class="mini"><span class="">pregunta</span><span class="">datos</span><span class="ac">herramienta</span><span class="">decisión</span></div>
+    </div>
+  <div class="vis">
+    <div class="dos-fotos">
+      <div class="foto"><img src="img/psico-720.webp" srcset="img/psico-720.webp 720w, img/psico-1440.webp 1440w" sizes="(max-width:900px) 100vw, 620px" alt="Una terapeuta toma notas durante una sesión" loading="lazy" decoding="async"><div class="et-foto"><b>Psicología</b>Anotar lo que se observa ya es convertirlo en dato</div></div>
+      <div class="foto"><img src="img/salud-720.webp" srcset="img/salud-720.webp 720w, img/salud-1440.webp 1440w" sizes="(max-width:900px) 100vw, 620px" alt="Un médico observa un estudio en la pantalla" loading="lazy" decoding="async"><div class="et-foto"><b>Salud</b>Leer una pantalla para decidir qué hacer con un paciente</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="esc" data-esc="14">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso viva">decisión</div></div>
+  <h2>Y también aquí.</h2>
+    <div class="prof">
+      <h3>Ingeniería</h3>
+      <p class="caso">¿Cuándo se nos va a romper la máquina? Los sensores avisan antes, si alguien está mirando.</p>
+      <p class="liga">Son <b>las 31 horas seguidas</b>. En los datos de sensores el faltante viene como −200, un número imposible que se cuela en el promedio si no lo cachamos.</p>
+      <div class="mini"><span class="">pregunta</span><span class="ac">datos</span><span class="">herramienta</span><span class="">decisión</span></div>
+    </div>
+    <div class="prof">
+      <h3>Negocio, marketing, ventas</h3>
+      <p class="caso">¿Qué clientes están por irse? Retener cuesta menos que conseguir uno nuevo.</p>
+      <p class="liga">Es <b>el recomendador al revés</b>. En vez de predecir qué te va a gustar, predice quién ya se cansó.</p>
+      <div class="mini"><span class="">pregunta</span><span class="">datos</span><span class="">herramienta</span><span class="ac">decisión</span></div>
+    </div>
+  <div class="vis">
+    <div class="foto una-foto"><img src="img/ing-720.webp" srcset="img/ing-720.webp 720w, img/ing-1440.webp 1440w" sizes="(max-width:900px) 100vw, 620px" alt="Un operario trabaja frente a un tablero de control" loading="lazy" decoding="async"><div class="et-foto"><b>Ingeniería</b>Los sensores avisan antes, si alguien está mirando</div></div>
+  </div>
+</section>
+
+<section class="esc" data-esc="15">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso viva">decisión</div></div>
+  <h2>«¿Y esto para qué sirve?»</h2>
+  <p>Es la pregunta justa, y se las voy a contestar con cuatro casos publicados, con nombre y cifras. No son ejemplos que me inventé.</p>
+  <p class="mut">En todos, lo único que cambió fue mirar los datos que ya existían.</p>
+  <div class="vis">
+    <svg viewBox="0 0 420 150" role="img" aria-label="Los datos ya estaban ahí">
+      <text x="210" y="62" text-anchor="middle" class="lema">los datos ya estaban ahí</text>
+      <text x="210" y="106" text-anchor="middle" class="lema" fill="var(--verde)">alguien los miró</text>
+    </svg>
+  </div>
+</section>
+
+<section class="esc" data-esc="16">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso viva">decisión</div></div>
+  <h2>El caso que más me gusta.</h2>
+  <p>A un grupo de pacientes con depresión les dieron los medicamentos de siempre. Al otro grupo, <b>los mismos medicamentos</b>. La única diferencia fue que al segundo le aplicaban un cuestionario en cada sesión y ajustaban el tratamiento con esas respuestas.</p>
+  <p class='mut'>El doble de ajustes, y mucho más temprano. Eso fue todo.</p>
+  <div class="vis">
+    <div class="es">
+      <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
+        <table class="tabla"><tr><th>paciente</th><th class="num">al inicio</th><th class="num">a las 4 sem.</th></tr><tr><td>A-102</td><td class="num">24</td><td class="num">21</td></tr><tr><td>A-118</td><td class="num">26</td><td class="num">14</td></tr><tr><td>A-133</td><td class="num">22</td><td class="num">20</td></tr><tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr></table>
+      </div></div>
+      <div class="fle-g">&rarr;<small>se compara</small></div>
+      <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
+        <div class="ins"><span class="grande">Dos de estos tres no están mejorando.</span>El cuestionario en cada sesión lo muestra a las cuatro semanas, no a los seis meses.</div>
+      </div></div>
+    </div>
+    <div class="result">
+      <span class="q">Y ESTO CAMBIÓ</span>
+      <span class="cifra">La recuperación pasó de 28.8% a 73.8%</span>
+      <div class="det">Los medicamentos fueron los mismos en los dos grupos. Lo único que cambió fue medir en cada sesión y ajustar el tratamiento con esos datos.</div>
+      <div class="fte">Estudio con 120 pacientes, American Journal of Psychiatry, 2015</div>
+    </div>
+  </div>
+</section>
+
+<section class="esc" data-esc="17">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso viva">decisión</div></div>
+  <h2>Y este salva vidas.</h2>
+  <p>Los signos vitales ya se anotaban. Siempre se anotaron. Lo nuevo fue juntarlos y buscar el patrón que aparece <b>horas antes</b> de que alguien se complique.</p>
+  <p class='mut'>Nadie compró una máquina nueva. Miraron mejor lo que ya tenían.</p>
+  <div class="vis">
+    <div class="es">
+      <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
+        <table class="tabla"><tr><th>paciente</th><th class="num">presión</th><th class="num">pulso</th></tr><tr><td>4821</td><td class="num">90</td><td class="num">118</td></tr><tr><td>4822</td><td class="num">130</td><td class="num">76</td></tr><tr><td>4823</td><td class="num">84</td><td class="num">126</td></tr><tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr></table>
+      </div></div>
+      <div class="fle-g">&rarr;<small>se vigila</small></div>
+      <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
+        <div class="ins"><span class="grande">Dos de estos van a empeorar esta noche.</span>No es una corazonada: son las señales que aparecen horas antes de que se complique.</div>
+      </div></div>
+    </div>
+    <div class="result">
+      <span class="q">Y ESTO CAMBIÓ</span>
+      <span class="cifra">La mortalidad bajó de 13.9% a 8.8%</span>
+      <div class="det">En cuatro hospitales, con 6,681 pacientes. Los enfermeros revisaban cada dos horas a quien el sistema marcaba.</div>
+      <div class="fte">Critical Care Medicine, 2022</div>
+    </div>
+  </div>
+</section>
+
+<section class="esc" data-esc="18">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso viva">decisión</div></div>
+  <h2>Lo mismo, con el viento.</h2>
+  <p>Una granja de turbinas no puede prometer energía si no sabe cuánta va a producir. Con el clima y el historial, se estima con <b>36 horas</b> de anticipación.</p>
+  <p class='mut'>La turbina es la misma. Lo que cambió fue saber qué va a pasar.</p>
+  <div class="vis">
+    <div class="es">
+      <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
+        <table class="tabla"><tr><th>hora</th><th class="num">viento</th><th class="num">energía</th></tr><tr><td>06:00</td><td class="num">14 km/h</td><td class="num">38</td></tr><tr><td>07:00</td><td class="num">22 km/h</td><td class="num">61</td></tr><tr><td>08:00</td><td class="num">19 km/h</td><td class="num">52</td></tr><tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr></table>
+      </div></div>
+      <div class="fle-g">&rarr;<small>se predice</small></div>
+      <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
+        <div class="ins"><span class="grande">Cuánta energía va a haber pasado mañana.</span>Con el clima y lo que pasó otras veces, se estima la producción con 36 horas de anticipación.</div>
+      </div></div>
+    </div>
+    <div class="result">
+      <span class="q">Y ESTO CAMBIÓ</span>
+      <span class="cifra">Subió 20% el valor de esa energía</span>
+      <div class="det">Sobre un parque eólico grande. Saber cuánta energía habrá permite comprometerla con un día de anticipación, y eso vale más que venderla sobre la marcha.</div>
+      <div class="fte">Google, 2019</div>
+    </div>
+  </div>
+</section>
+
+<section class="esc" data-esc="19">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso viva">decisión</div></div>
+  <h2>Y lo mismo con los clientes.</h2>
+  <p>Alguien que deja de usar un servicio casi nunca avisa. Pero en los datos se ve semanas antes: entra menos, tarda más en volver.</p>
+  <p class='mut'>Es el recomendador del principio, al revés.</p>
+  <div class="vis">
+    <div class="es">
+      <div class="es-caja"><h4>lo que se mide</h4><div class="es-cuerpo">
+        <table class="tabla"><tr><th>cliente</th><th class="num">usos/mes</th><th class="num">hace</th></tr><tr><td>C-4410</td><td class="num">18</td><td class="num">2 días</td></tr><tr><td>C-4411</td><td class="num">3</td><td class="num">26 días</td></tr><tr><td>C-4412</td><td class="num">21</td><td class="num">1 día</td></tr><tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr></table>
+      </div></div>
+      <div class="fle-g">&rarr;<small>se agrupa</small></div>
+      <div class="es-caja"><h4>lo que se descubre</h4><div class="es-cuerpo">
+        <div class="ins"><span class="grande">El de en medio ya se fue, aunque siga pagando.</span>Dejó de usarlo hace casi un mes. La baja formal llega después.</div>
+      </div></div>
+    </div>
+    <div class="result">
+      <span class="q">Y ESTO CAMBIÓ</span>
+      <span class="cifra">Netflix estima más de mil millones al año</span>
+      <div class="det">Es el mismo sistema de recomendación del principio, pero al revés: en vez de adivinar qué te va a gustar, detecta a quién está por irse.</div>
+      <div class="fte">Escrito por gente de Netflix, 2015. La idea de que retener cuesta unas cinco veces menos que captar viene de Harvard Business Review, 1990.</div>
+    </div>
+  </div>
+</section>
+
+<section class="esc" data-esc="20">
+  <div class="mapa" aria-hidden="true"><div class="paso">pregunta</div><div class="fle">&rsaquo;</div><div class="paso">datos</div><div class="fle">&rsaquo;</div><div class="paso">herramienta</div><div class="fle">&rsaquo;</div><div class="paso viva">decisión</div></div>
+  <h2>Una última cosa, y los dejo.</h2>
+  <p>Van a oír «analista» y «científico de datos» como si uno fuera mejor. El analista responde <b>qué pasó</b>; el científico estima <b>qué va a pasar</b>. El segundo hace todo lo del primero, más predicción.</p>
+  <p class="mut">Por eso se empieza por analista: no es la versión chiquita, es la base sobre la que va lo demás.</p>
+  <p>Y todo lo que vimos hoy (los grupos, la línea, el dato sucio) ya lo hicieron ustedes en quince minutos, sin escribir una sola línea de código.</p>
+  <div class="vis">
+    <div class="flujo">
+      <div class="et"><div class="caja">analista</div>
+        <div class="pie">responde qué pasó</div></div>
+      <div class="fle">&rsaquo;</div>
+      <div class="et"><div class="caja">científico</div>
+        <div class="pie">estima qué va a pasar, y hace todo lo anterior</div></div>
+    </div>
+  </div>
+</section>
 
 <section class="apen" data-esc="21">
   <h2>De dónde salió cada cosa</h2>
@@ -1080,135 +1046,57 @@ svg{width:100%;height:auto;display:block;overflow:visible}
   'use strict';
   history.scrollRestoration = 'manual';
 
-  var TOTAL = 21;
-  var qs    = new URLSearchParams(location.search);
-  var ini   = parseInt(qs.get('esc'), 10);
-  var escs  = [].slice.call(document.querySelectorAll('[data-esc]'));
-  var capas = [].slice.call(document.querySelectorAll('[data-desde]'));
-  var solos = [].slice.call(document.querySelectorAll('[data-solo]'));
+  var escs   = [].slice.call(document.querySelectorAll('[data-esc]'));
+  var TOTAL  = escs.length - 1;
+  var qs     = new URLSearchParams(location.search);
   var actual = -1;
 
-  // qué etapa del mapa se enciende en cada escena
-  var ETAPA = {1:1,2:1,3:1,4:2,5:2,6:2,7:2,8:2,9:2,10:3,11:4,12:4,13:5,14:5,15:5,16:5,17:5,18:5,19:5,20:5};
-  // la anotación bajo el mapa: es lo que lo vuelve narración
-  var NOTA = {
-    1:'Alguien tiene que decidir qué aparece en su pantalla',
-    2:'', 3:'La pregunta manda: define qué datos hacen falta',
-    4:'Los datos ya existían; nadie los había juntado',
-    5:'', 6:'Dos columnas bastan para ver grupos',
-    7:'', 8:'Con 300 millones de cuentas el ojo ya no alcanza',
-    9:'Y además vienen sucios',
-    10:'Cada herramienta resuelve un tramo distinto',
-    11:'El camino completo, de la pregunta al resultado',
-    12:'', 13:'Cambia la tabla, no cambia el método',
-    14:'', 15:'Y alguien decide con eso'
-  };
+  var atras    = document.getElementById('atras');
+  var adelante = document.getElementById('adelante');
+  var prog     = document.getElementById('prog');
 
-  // portada: mosaicos con los mismos tonos que las pantallas
+  // La portada: mosaicos con los mismos tonos que las pantallas.
   (function(){
-    var r = document.querySelector('.rejilla'); if (!r) return;
-    var t = ['#5B3A8C,#3B2560','#1F5A7A,#164257','#A8452F,#7A3222',
-             '#2F6B4F,#215037','#8A7330,#63521F','#3F4757,#2C323E'];
+    var r = document.querySelector('.rejilla');
+    if (!r) return;
+    var tonos = ['#5B3A8C,#3B2560','#1F5A7A,#164257','#A8452F,#7A3222',
+                 '#2F6B4F,#215037','#8A7330,#63521F','#3F4757,#2C323E'];
     var h = '';
     for (var i = 0; i < 80; i++){
-      var g = t[(Math.random()*t.length)|0].split(',');
-      h += '<i style="background:linear-gradient(160deg,'+g[0]+','+g[1]+')"></i>';
+      var g = tonos[(Math.random()*tonos.length)|0].split(',');
+      h += '<i style="background:linear-gradient(160deg,' + g[0] + ',' + g[1] + ')"></i>';
     }
     r.innerHTML = h;
   })();
 
-  // la nube de la escena 8: muchos perfiles, sin patrón visible
-  (function(){
-    var g = document.getElementById('ruido'), s = '';
-    for (var i = 0; i < 300; i++){
-      var x = 74 + Math.random()*342, y = 46 + Math.random()*278;
-      var c = Math.random() > .5 ? 'var(--marca)' : 'var(--marca2)';
-      s += '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="3.4" fill="'+c+'" opacity=".5"/>';
-    }
-    g.innerHTML = s;
-  })();
-
-  function pinta(n){
+  function ve(n){
+    n = Math.min(TOTAL, Math.max(0, n));
     if (n === actual) return;
     actual = n;
-    capas.forEach(function(el){
-      el.classList.toggle('on', n >= +el.getAttribute('data-desde'));
-    });
-    solos.forEach(function(el){
-      var vale = [el.getAttribute('data-solo')]
-        .concat((el.getAttribute('data-tambien') || '').split(',').filter(Boolean));
-      el.classList.toggle('on-solo', vale.indexOf(String(n)) > -1);
-    });
-    // en el abrumo y en el cierre, las referencias viejas estorban
-    var tapa = (n === 8 || n === 9 || n >= 11);
-    ['gejes','g4','g5','g6'].forEach(function(id){
-      var el = document.getElementById(id);
-      if (el) el.classList.toggle('tapar', tapa && !(id === 'gejes' && n < 12));
-    });
-    // franja del recorrido: qué etapa toca en cada escena
-
-    var vis = document.querySelectorAll('.vis'), hayVis = false;
-    [].forEach.call(vis, function(el){
-      var v = (+el.getAttribute('data-vis') === n);
-      el.classList.toggle('on', v); if (v) hayVis = true;
-    });
-    document.querySelector('.fig').classList.toggle('con-vis', hayVis);
-    var elMapa = document.getElementById('mapa');
-    if (elMapa){
-      elMapa.classList.toggle('on', n >= 1 && n <= 20 && n !== 11);
-      var etapa = ETAPA[n] || 0;
-      [].forEach.call(elMapa.querySelectorAll('.paso'), function(el){
-        el.classList.toggle('viva', +el.getAttribute('data-paso') === etapa);
-      });
-      var nota = document.getElementById('mapa-nota');
-      if (nota) nota.textContent = NOTA[n] || '';
-    }
-    document.getElementById('prog').style.width = (n/TOTAL*100) + '%';
-  }
-  function ir(d){ vePor(Math.min(TOTAL, Math.max(0, actual + d))); }
-
-  function vePor(n){
-    pinta(n);
     escs.forEach(function(el){
       el.classList.toggle('viva', +el.getAttribute('data-esc') === n);
     });
-    // el visual de esta escena; si no tiene, se queda el gráfico acumulado
-    [].forEach.call(document.querySelectorAll('.vis'), function(el){
-      el.classList.toggle('viva', +el.getAttribute('data-vis') === n);
-    });
-    var sinPropio = !document.querySelector('.vis[data-vis="' + n + '"]');
-    var gp = document.getElementById('grafPanel');
-    if (gp){
-      var muestra = sinPropio && n >= 4 && n <= 15;
-      gp.classList.toggle('viva', muestra);
-      // moverlo dentro de la escena activa, para que se vea con su texto
-      var sec = document.querySelector('section.esc.viva');
-      if (muestra && sec && gp.parentElement !== sec) sec.appendChild(gp);
-    }
-    var a = document.getElementById('atras'), q = document.getElementById('adelante');
-    if (a) a.disabled = (n === 0);
-    if (q) q.disabled = (n === TOTAL);
+    prog.style.width = (n / TOTAL * 100) + '%';
+    atras.disabled = (n === 0);
+    adelante.disabled = (n === TOTAL);
     window.scrollTo(0, 0);
   }
 
+  function ir(d){ ve(actual + d); }
+
+  atras.addEventListener('click', function(){ ir(-1); });
+  adelante.addEventListener('click', function(){ ir(1); });
+
   addEventListener('keydown', function(e){
-    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' '){ e.preventDefault(); ir(1); }
+    // Espacio y Enter los usan los botones y los desplegables: no los tocamos.
+    if (e.key === ' ' || e.key === 'Enter') return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown'){ e.preventDefault(); ir(1); }
     else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); ir(-1); }
-    else if (e.key === 'Home'){ e.preventDefault(); vePor(0); }
-    else if (e.key === 'End'){ e.preventDefault(); vePor(TOTAL); }
+    else if (e.key === 'Home'){ e.preventDefault(); ve(0); }
+    else if (e.key === 'End'){ e.preventDefault(); ve(TOTAL); }
   });
 
-  // tocar la pantalla: derecha avanza, izquierda regresa
-  addEventListener('click', function(e){
-    if (e.target.closest('button,a,summary,details')) return;
-    ir(e.clientX > innerWidth / 2 ? 1 : -1);
-  });
-
-  document.getElementById('atras').addEventListener('click', function(){ ir(-1); });
-  document.getElementById('adelante').addEventListener('click', function(){ ir(1); });
-
-  vePor(isNaN(ini) ? 0 : Math.min(TOTAL, Math.max(0, ini)));
-
+  // La pregunta de la escena 3.
   var eco = document.getElementById('eco');
   [].forEach.call(document.querySelectorAll('[data-pick]'), function(b){
     b.addEventListener('click', function(){
@@ -1221,67 +1109,57 @@ svg{width:100%;height:auto;display:block;overflow:visible}
     });
   });
 
-  var TXT = {
-    sql: ['SQL',
-      'Nos trae los datos que ya están guardados.',
-      'toda la base, millones de filas',
+  // Las herramientas. Se buscan por clase DENTRO de la escena, no por id global:
+  // así no puede haber ids repetidos que rompan la interacción.
+  var HERR = {
+    sql: ['SQL', 'toda la base, millones de filas', 'pedimos',
       '<table class="tabla">'
-      +'<tr><th>perfil</th><th class="num">comedia</th><th class="num">suspenso</th></tr>'
-      +'<tr><td>1041</td><td class="num">12 h</td><td class="num">1 h</td></tr>'
-      +'<tr><td>3814</td><td class="num">11 h</td><td class="num">2 h</td></tr>'
-      +'<tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr></table>',
+      + '<tr><th>perfil</th><th class="num">comedia</th><th class="num">suspenso</th></tr>'
+      + '<tr><td>1041</td><td class="num">12 h</td><td class="num">1 h</td></tr>'
+      + '<tr><td>3814</td><td class="num">11 h</td><td class="num">2 h</td></tr>'
+      + '<tr class="mas"><td>…</td><td class="num">…</td><td class="num">…</td></tr></table>',
       '<div class="ins"><span class="grande">Solo las filas que pedimos.</span>'
-      +'De millones, nos deja las que importan para esta pregunta.</div>',
-      'pedimos'],
-    hoja: ['Hoja de cálculo',
-      'Nos deja verlos y moverlos.',
-      'las filas que trajo SQL',
+      + 'De millones, nos deja las que importan para esta pregunta.</div>'],
+    hoja: ['Hoja de cálculo', 'las filas que trajo SQL', 'ordenamos',
       '<table class="tabla">'
-      +'<tr><th>perfil</th><th class="num">horas</th></tr>'
-      +'<tr><td>1041</td><td class="num">13 h</td></tr>'
-      +'<tr><td>9902</td><td class="num">31 h</td></tr>'
-      +'<tr><td>3814</td><td class="num">13 h</td></tr></table>',
+      + '<tr><th>perfil</th><th class="num">horas</th></tr>'
+      + '<tr><td>1041</td><td class="num">13 h</td></tr>'
+      + '<tr><td>9902</td><td class="num">31 h</td></tr>'
+      + '<tr><td>3814</td><td class="num">13 h</td></tr></table>',
       '<div class="ins"><span class="grande">31 horas seguidas.</span>'
-      +'Al ordenar, el dato imposible salta a la vista.'
-      +'<div class="accion">Se revisa <b>antes</b> de promediar.</div></div>',
-      'ordenamos'],
-    est: ['Estadística',
-      'Nos dice si el patrón es real o es casualidad.',
-      'los dos grupos que encontramos',
+      + 'Al ordenar, el dato imposible salta a la vista.'
+      + '<div class="accion">Se revisa <b>antes</b> de promediar.</div></div>'],
+    est: ['Estadística', 'los dos grupos que encontramos', 'comparamos',
       '<table class="tabla">'
-      +'<tr><th>grupo</th><th class="num">gente</th><th class="num">comedia</th></tr>'
-      +'<tr><td>A</td><td class="num">4 812</td><td class="num">11.4 h</td></tr>'
-      +'<tr><td>B</td><td class="num">5 190</td><td class="num">2.1 h</td></tr></table>',
+      + '<tr><th>grupo</th><th class="num">gente</th><th class="num">comedia</th></tr>'
+      + '<tr><td>A</td><td class="num">4 812</td><td class="num">11.4 h</td></tr>'
+      + '<tr><td>B</td><td class="num">5 190</td><td class="num">2.1 h</td></tr></table>',
       '<div class="ins"><span class="grande">No fue casualidad.</span>'
-      +'Con miles de personas en cada grupo, la diferencia se sostiene.'
-      +'<div class="accion">No fueron <b>cuatro raros</b>.</div></div>',
-      'comparamos'],
-    bi: ['Power BI',
-      'Se lo enseña a quien decide.',
-      'el resultado del análisis',
-      '<div class="ins" style="font-size:15px">Una tabla con números que'
-      +' su jefe no va a leer.</div>',
+      + 'Con miles de personas en cada grupo, la diferencia se sostiene.'
+      + '<div class="accion">No fueron <b>cuatro raros</b>.</div></div>'],
+    bi: ['Power BI', 'el resultado del análisis', 'mostramos',
+      '<div class="ins" style="font-size:15px">Una tabla con números que su jefe no va a leer.</div>',
       '<div class="ins"><span class="grande">Un gráfico de diez segundos.</span>'
-      +'La misma información, pero que alguien puede mirar y preguntar.'
-      +'<div class="accion">De ahí sale <b>la decisión</b>.</div></div>',
-      'mostramos']
+      + 'La misma información, pero que alguien puede mirar y preguntar.'
+      + '<div class="accion">De ahí sale <b>la decisión</b>.</div></div>']
   };
-  var sal = document.getElementById('salida');
+
   [].forEach.call(document.querySelectorAll('[data-h]'), function(b){
     b.addEventListener('click', function(){
-      [].forEach.call(document.querySelectorAll('[data-h]'), function(o){
+      var escena = b.closest('.esc');
+      [].forEach.call(escena.querySelectorAll('[data-h]'), function(o){
         o.setAttribute('aria-pressed', String(o === b));
       });
-      var t = TXT[b.dataset.h];
-      sal.textContent = t[1];
-      document.getElementById('h-ent').textContent = t[2];
-      document.getElementById('ent-h').innerHTML = t[3];
-      document.getElementById('sal-h').innerHTML = t[4];
-      document.getElementById('h-sal').textContent = 'lo que devuelve ' + t[0];
-      document.querySelector('#fle-h small').textContent = t[5];
+      var t = HERR[b.dataset.h];
+      escena.querySelector('.h-ent').textContent = t[1];
+      escena.querySelector('.verbo').textContent = t[2];
+      escena.querySelector('.ent-h').innerHTML   = t[3];
+      escena.querySelector('.h-sal').textContent = 'lo que devuelve ' + t[0];
+      escena.querySelector('.sal-h').innerHTML   = t[4];
     });
   });
-  var hIni = qs.get('h');
-  if (hIni && TXT[hIni]) { var bi = document.querySelector('[data-h="'+hIni+'"]'); if (bi) bi.click(); }
+
+  var ini = parseInt(qs.get('esc'), 10);
+  ve(isNaN(ini) ? 0 : ini);
 })();
 </script>
